@@ -1,0 +1,395 @@
+<!-- Dashboard -->
+<div class="menu-item">
+  <a
+    class="menu-link without-sub"
+    routerLink="/dashboard"
+    routerLinkActive="active"
+    ><span class="menu-icon">
+      <span
+        [inlineSVG]="'./assets/media/icons/duotune/general/gen001.svg'"
+        class="svg-icon svg-icon-2"
+      ></span>
+    </span>
+    <span class="menu-title" translate="MENU.DASHBOARD"></span
+  ></a>
+</div>
+
+<!-- Separator -->
+<div class="menu-item">
+  <div class="menu-content pt-8 pb-2">
+    <span class="menu-section text-muted text-uppercase fs-8 ls-1"
+      >Modules</span
+    >
+  </div>
+</div>
+
+<!-- Projects -->
+<div
+  class="menu-item menu-accordion"
+  data-kt-menu-trigger="click"
+  routerLinkActive="here show"
+>
+  <span class="menu-link"
+    ><span class="menu-icon"
+      ><span
+        class="svg-icon svg-icon-2"
+        [inlineSVG]="'./assets/media/icons/duotune/general/gen002.svg'"
+      ></span></span
+    ><span class="menu-title" data-link="/projects">Projects</span
+    ><span class="menu-arrow"></span
+  ></span>
+  <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
+    <div class="menu-item">
+      <a
+        class="menu-link without-sub"
+        routerLinkActive="active"
+        routerLink="/projects/create"
+      ><span class="menu-bullet"><span class="bullet bullet-dot"></span></span
+      ><span class="menu-title">Create Project</span></a
+      >
+    </div>
+    <div class="menu-item">
+      <a
+        class="menu-link without-sub"
+        routerLinkActive="active"
+        routerLink="/projects/all"
+        ><span class="menu-bullet"><span class="bullet bullet-dot"></span></span
+        ><span class="menu-title">All</span></a
+      >
+    </div>
+
+  </div>
+</div>
+<!-- Actions -->
+<div
+  class="menu-item menu-accordion"
+  data-kt-menu-trigger="click"
+  routerLinkActive="here show"
+>
+  <span class="menu-link"
+  ><span class="menu-icon"
+  ><span
+    class="svg-icon svg-icon-2"
+    [inlineSVG]="'./assets/media/icons/duotune/files/fil001.svg'"
+  ></span></span
+  ><span class="menu-title" data-link="/actions">Actions</span
+  ><span class="menu-arrow"></span
+  ></span>
+  <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
+    <div class="menu-item">
+      <a
+        class="menu-link without-sub"
+        routerLinkActive="active"
+        routerLink="/actions/create"
+      ><span class="menu-bullet"><span class="bullet bullet-dot"></span></span
+      ><span class="menu-title">Create Action</span></a
+      >
+    </div>
+    <div class="menu-item">
+      <a
+        class="menu-link without-sub"
+        routerLinkActive="active"
+        routerLink="/actions/all"
+      ><span class="menu-bullet"><span class="bullet bullet-dot"></span></span
+      ><span class="menu-title">All</span></a
+      >
+    </div>
+  </div>
+</div>
+
+<!-- Parametrage -->
+<div
+  class="menu-item menu-accordion"
+  data-kt-menu-trigger="click"
+  routerLinkActive="here show"
+>
+  <span class="menu-link"
+  ><span class="menu-icon"
+  ><span
+    class="svg-icon svg-icon-2"
+    [inlineSVG]="'./assets/media/icons/duotune/coding/cod001.svg'"
+  ></span></span
+  ><span class="menu-title">Parametrage</span
+  ><span class="menu-arrow"></span
+  ></span>
+
+  <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
+
+    <!-- Structures -->
+    <div
+      class="menu-item menu-accordion"
+      data-kt-menu-trigger="click"
+      routerLinkActive="here show"
+    >
+  <span class="menu-link"
+  ><span class="menu-icon"
+  ><span
+    class="svg-icon svg-icon-2"
+    [inlineSVG]="'./assets/media/icons/duotune/finance/fin001.svg'"
+  ></span></span
+  ><span class="menu-title" data-link="/structures">Structures</span
+  ><span class="menu-arrow"></span
+  ></span>
+      <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
+        <div class="menu-item">
+          <a
+            class="menu-link without-sub"
+            routerLinkActive="active"
+            routerLink="/structures/create"
+          ><span class="menu-bullet"><span class="bullet bullet-dot"></span></span
+          ><span class="menu-title">Create Structure</span></a
+          >
+        </div>
+      </div>
+      <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
+        <div class="menu-item">
+          <a
+            class="menu-link without-sub"
+            routerLinkActive="active"
+            routerLink="/structures/all"
+          ><span class="menu-bullet"><span class="bullet bullet-dot"></span></span
+          ><span class="menu-title">All</span></a
+          >
+        </div>
+      </div>
+    </div>
+    <!-- Evaluations -->
+    <div
+      class="menu-item menu-accordion"
+      data-kt-menu-trigger="click"
+      routerLinkActive="here show"
+    >
+  <span class="menu-link"
+  ><span class="menu-icon"
+  ><span
+    class="svg-icon svg-icon-2"
+    [inlineSVG]="'./assets/media/icons/duotune/communication/com006.svg'"
+  ></span></span
+  ><span class="menu-title" data-link="/evaluations">Evaluations</span
+  ><span class="menu-arrow"></span
+  ></span>
+      <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
+        <div class="menu-item">
+          <a
+            class="menu-link without-sub"
+            routerLinkActive="active"
+            routerLink="/evaluations/create"
+          ><span class="menu-bullet"><span class="bullet bullet-dot"></span></span
+          ><span class="menu-title">Create Evaluation</span></a
+          >
+        </div>
+        <div class="menu-item">
+          <a
+            class="menu-link without-sub"
+            routerLinkActive="active"
+            routerLink="/evaluations/all"
+          ><span class="menu-bullet"><span class="bullet bullet-dot"></span></span
+          ><span class="menu-title">All</span></a
+          >
+        </div>
+      </div>
+    </div>
+    <!-- Statuts -->
+    <div
+      class="menu-item menu-accordion"
+      data-kt-menu-trigger="click"
+      routerLinkActive="here show"
+    >
+  <span class="menu-link"
+  ><span class="menu-icon"
+  ><span
+    class="svg-icon svg-icon-2"
+    [inlineSVG]="'./assets/media/icons/duotune/general/gen019.svg'"
+  ></span></span
+  ><span class="menu-title" data-link="/statuts">Statuts</span
+  ><span class="menu-arrow"></span
+  ></span>
+      <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
+        <div class="menu-item">
+          <a
+            class="menu-link without-sub"
+            routerLinkActive="active"
+            routerLink="/statuts/create"
+          ><span class="menu-bullet"><span class="bullet bullet-dot"></span></span
+          ><span class="menu-title">Create Statut</span></a
+          >
+        </div>
+        <div class="menu-item">
+          <a
+            class="menu-link without-sub"
+            routerLinkActive="active"
+            routerLink="/statuts/all"
+          ><span class="menu-bullet"><span class="bullet bullet-dot"></span></span
+          ><span class="menu-title">All</span></a
+          >
+        </div>
+      </div>
+    </div>
+    <!-- Types Project -->
+    <div
+      class="menu-item menu-accordion"
+      data-kt-menu-trigger="click"
+      routerLinkActive="here show"
+    >
+  <span class="menu-link"
+  ><span class="menu-icon"
+  ><span
+    class="svg-icon svg-icon-2"
+    [inlineSVG]="'./assets/media/icons/duotune/general/gen007.svg'"
+  ></span></span
+  ><span class="menu-title" data-link="/typesproject">Types Project</span
+  ><span class="menu-arrow"></span
+  ></span>
+      <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
+        <div class="menu-item">
+          <a
+            class="menu-link without-sub"
+            routerLinkActive="active"
+            routerLink="/typesproject/create"
+          ><span class="menu-bullet"><span class="bullet bullet-dot"></span></span
+          ><span class="menu-title">Create Type Project </span></a
+          >
+        </div>
+        <div class="menu-item">
+          <a
+            class="menu-link without-sub"
+            routerLinkActive="active"
+            routerLink="/typesproject/all"
+          ><span class="menu-bullet"><span class="bullet bullet-dot"></span></span
+          ><span class="menu-title">All</span></a
+          >
+        </div>
+      </div>
+    </div>
+    <!-- Contrats -->
+    <div
+      class="menu-item menu-accordion"
+      data-kt-menu-trigger="click"
+      routerLinkActive="here show"
+    >
+  <span class="menu-link"
+  ><span class="menu-icon"
+  ><span
+    class="svg-icon svg-icon-2"
+    [inlineSVG]="'./assets/media/icons/duotune/coding/cod002.svg'"
+  ></span></span
+  ><span class="menu-title" data-link="/contrats">Contrats</span
+  ><span class="menu-arrow"></span
+  ></span>
+      <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
+        <div class="menu-item">
+          <a
+            class="menu-link without-sub"
+            routerLinkActive="active"
+            routerLink="/contrats/create"
+          ><span class="menu-bullet"><span class="bullet bullet-dot"></span></span
+          ><span class="menu-title">Create Contrat</span></a
+          >
+        </div>
+        <div class="menu-item">
+          <a
+            class="menu-link without-sub"
+            routerLinkActive="active"
+            routerLink="/contrats/all"
+          ><span class="menu-bullet"><span class="bullet bullet-dot"></span></span
+          ><span class="menu-title">All</span></a
+          >
+        </div>
+      </div>
+    </div>
+    <!-- Users -->
+    <div
+      class="menu-item menu-accordion"
+      data-kt-menu-trigger="click"
+      routerLinkActive="here show"
+    >
+  <span class="menu-link"
+  ><span class="menu-icon"
+  ><span
+    class="svg-icon svg-icon-2"
+    [inlineSVG]="'./assets/media/icons/duotune/communication/com014.svg'"
+  ></span></span
+  ><span class="menu-title" data-link="/crafted/account">Users</span
+  ><span class="menu-arrow"></span
+  ></span>
+      <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
+        <div class="menu-item">
+          <a
+            class="menu-link without-sub"
+            routerLinkActive="active"
+            routerLink="/crafted/account/overview"
+          ><span class="menu-bullet"><span class="bullet bullet-dot"></span></span
+          ><span class="menu-title">Overview</span></a
+          >
+        </div>
+        <div class="menu-item">
+          <a
+            class="menu-link without-sub"
+            routerLinkActive="active"
+            routerLink="/crafted/account/settings"
+          ><span class="menu-bullet"><span class="bullet bullet-dot"></span></span
+          ><span class="menu-title">Settings</span></a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Users -->
+<div
+  class="menu-item menu-accordion"
+  data-kt-menu-trigger="click"
+  routerLinkActive="here show"
+>
+  <span class="menu-link"
+  ><span class="menu-icon"
+  ><span
+    class="svg-icon svg-icon-2"
+    [inlineSVG]="'./assets/media/icons/duotune/communication/com006.svg'"
+  ></span></span
+  ><span class="menu-title" data-link="/crafted/account">Accounts</span
+  ><span class="menu-arrow"></span
+  ></span>
+  <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
+    <div class="menu-item">
+      <a
+        class="menu-link without-sub"
+        routerLinkActive="active"
+        routerLink="/crafted/account/overview"
+      ><span class="menu-bullet"><span class="bullet bullet-dot"></span></span
+      ><span class="menu-title">Overview</span></a
+      >
+    </div>
+    <div class="menu-item">
+      <a
+        class="menu-link without-sub"
+        routerLinkActive="active"
+        routerLink="/crafted/account/settings"
+      ><span class="menu-bullet"><span class="bullet bullet-dot"></span></span
+      ><span class="menu-title">Settings</span></a
+      >
+    </div>
+  </div>
+</div>
+
+
+<!-- Separator -->
+<div class="menu-item">
+  <div class="menu-content">
+    <div class="separator mx-1 my-4"></div>
+  </div>
+</div>
+
+<!-- Changelog  -->
+<div class="menu-item">
+  <a target="_blank" class="menu-link" [href]="appPreviewChangelogUrl">
+    <span class="menu-icon">
+      <span
+        class="svg-icon svg-icon-2"
+        [inlineSVG]="'./assets/media/icons/duotune/general/gen005.svg'"
+      ></span>
+    </span>
+    <span class="menu-title">Changelog {{ appAngularVersion }}</span>
+  </a>
+</div>

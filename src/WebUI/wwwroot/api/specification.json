@@ -1,75 +1,41 @@
 {
-  "x-generator": "NSwag v13.9.4.0 (NJsonSchema v10.3.1.0 (Newtonsoft.Json v13.0.0.0))",
+  "x-generator": "NSwag v13.14.4.0 (NJsonSchema v10.5.2.0 (Newtonsoft.Json v13.0.0.0))",
   "openapi": "3.0.0",
   "info": {
     "title": "CleanArchitecture API",
     "version": "1.0.0"
   },
   "paths": {
-    "/api/TodoItems": {
+    "/api/ActionPs": {
       "get": {
         "tags": [
-          "TodoItems"
+          "ActionPs"
         ],
-        "operationId": "TodoItems_GetTodoItemsWithPagination",
-        "parameters": [
-          {
-            "name": "ListId",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "x-position": 1
-          },
-          {
-            "name": "PageNumber",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "x-position": 2
-          },
-          {
-            "name": "PageSize",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "x-position": 3
-          }
-        ],
+        "operationId": "ActionPs_Get",
         "responses": {
           "200": {
             "description": "",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PaginatedListOfTodoItemBriefDto"
+                  "$ref": "#/components/schemas/ActionPsVm"
                 }
               }
             }
           }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
+        }
       },
       "post": {
         "tags": [
-          "TodoItems"
+          "ActionPs"
         ],
-        "operationId": "TodoItems_Create",
+        "operationId": "ActionPs_Create",
         "requestBody": {
           "x-name": "command",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateTodoItemCommand"
+                "$ref": "#/components/schemas/CreateActionPCommand"
               }
             }
           },
@@ -88,184 +54,145 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
+        }
       }
     },
-    "/api/TodoItems/{id}": {
-      "put": {
-        "tags": [
-          "TodoItems"
-        ],
-        "operationId": "TodoItems_Update",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "x-position": 1
-          }
-        ],
-        "requestBody": {
-          "x-name": "command",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateTodoItemCommand"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 2
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
-      },
-      "delete": {
-        "tags": [
-          "TodoItems"
-        ],
-        "operationId": "TodoItems_Delete",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "x-position": 1
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
-      }
-    },
-    "/api/TodoItems/UpdateItemDetails": {
-      "put": {
-        "tags": [
-          "TodoItems"
-        ],
-        "operationId": "TodoItems_UpdateItemDetails",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "x-position": 1
-          }
-        ],
-        "requestBody": {
-          "x-name": "command",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateTodoItemDetailCommand"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 2
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
-      }
-    },
-    "/api/TodoLists": {
+    "/api/ActionPs/{id}": {
       "get": {
         "tags": [
-          "TodoLists"
+          "ActionPs"
         ],
-        "operationId": "TodoLists_Get",
+        "operationId": "ActionPs_Get2",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
         "responses": {
           "200": {
             "description": "",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TodosVm"
+                  "$ref": "#/components/schemas/ActionPByIdVm"
                 }
               }
             }
           }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
+        }
       },
-      "post": {
+      "put": {
         "tags": [
-          "TodoLists"
+          "ActionPs"
         ],
-        "operationId": "TodoLists_Create",
+        "operationId": "ActionPs_Update",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
         "requestBody": {
           "x-name": "command",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateTodoListCommand"
+                "$ref": "#/components/schemas/UpdateActionPCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "ActionPs"
+        ],
+        "operationId": "ActionPs_Delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/ContratObjectifs": {
+      "get": {
+        "tags": [
+          "ContratObjectifs"
+        ],
+        "operationId": "ContratObjectifs_Get",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContratObjectifsVm"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "ContratObjectifs"
+        ],
+        "operationId": "ContratObjectifs_Create",
+        "requestBody": {
+          "x-name": "command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateContratObjectifCommand"
               }
             }
           },
@@ -284,20 +211,45 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
+        }
       }
     },
-    "/api/TodoLists/{id}": {
+    "/api/ContratObjectifs/{id}": {
       "get": {
         "tags": [
-          "TodoLists"
+          "ContratObjectifs"
         ],
-        "operationId": "TodoLists_Get2",
+        "operationId": "ContratObjectifs_Get2",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContratObjectifByIdVm"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "ContratObjectifs"
+        ],
+        "operationId": "ContratObjectifs_Delete",
         "parameters": [
           {
             "name": "id",
@@ -322,18 +274,552 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "JWT": []
+        }
+      }
+    },
+    "/api/Evaluations": {
+      "get": {
+        "tags": [
+          "Evaluations"
+        ],
+        "operationId": "Evaluations_Get",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvaluationsVm"
+                }
+              }
+            }
           }
-        ]
+        }
+      },
+      "post": {
+        "tags": [
+          "Evaluations"
+        ],
+        "operationId": "Evaluations_Create",
+        "requestBody": {
+          "x-name": "command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateEvaluationCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Evaluations/{id}": {
+      "get": {
+        "tags": [
+          "Evaluations"
+        ],
+        "operationId": "Evaluations_Get2",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvaluationByIdVm"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Evaluations"
+        ],
+        "operationId": "Evaluations_Delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Projects": {
+      "get": {
+        "tags": [
+          "Projects"
+        ],
+        "operationId": "Projects_Get",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectsVm"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Projects"
+        ],
+        "operationId": "Projects_Create",
+        "requestBody": {
+          "x-name": "command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateProjectCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Projects/{id}": {
+      "get": {
+        "tags": [
+          "Projects"
+        ],
+        "operationId": "Projects_Get2",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectByIdVm"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Projects"
+        ],
+        "operationId": "Projects_Delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Statuts": {
+      "get": {
+        "tags": [
+          "Statuts"
+        ],
+        "operationId": "Statuts_Get",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatutsVm"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Statuts"
+        ],
+        "operationId": "Statuts_Create",
+        "requestBody": {
+          "x-name": "command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateStatutCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Statuts/{id}": {
+      "get": {
+        "tags": [
+          "Statuts"
+        ],
+        "operationId": "Statuts_Get2",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatutByIdVm"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Statuts"
+        ],
+        "operationId": "Statuts_Delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Structures": {
+      "get": {
+        "tags": [
+          "Structures"
+        ],
+        "operationId": "Structures_Get",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StructuresVm"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Structures"
+        ],
+        "operationId": "Structures_Create",
+        "requestBody": {
+          "x-name": "command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateStructureCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Structures/{id}": {
+      "get": {
+        "tags": [
+          "Structures"
+        ],
+        "operationId": "Structures_Get2",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StructureByIdVm"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Structures"
+        ],
+        "operationId": "Structures_Delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/TypeProjects": {
+      "get": {
+        "tags": [
+          "TypeProjects"
+        ],
+        "operationId": "TypeProjects_Get",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TypeProjectsVm"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "TypeProjects"
+        ],
+        "operationId": "TypeProjects_Create",
+        "requestBody": {
+          "x-name": "command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTypeProjectCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/TypeProjects/{id}": {
+      "get": {
+        "tags": [
+          "TypeProjects"
+        ],
+        "operationId": "TypeProjects_Get2",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TypeProjectByIdVm"
+                }
+              }
+            }
+          }
+        }
       },
       "put": {
         "tags": [
-          "TodoLists"
+          "TypeProjects"
         ],
-        "operationId": "TodoLists_Update",
+        "operationId": "TypeProjects_Update",
         "parameters": [
           {
             "name": "id",
@@ -351,7 +837,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateTodoListCommand"
+                "$ref": "#/components/schemas/UpdateTypeProjectCommand"
               }
             }
           },
@@ -370,18 +856,13 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
+        }
       },
       "delete": {
         "tags": [
-          "TodoLists"
+          "TypeProjects"
         ],
-        "operationId": "TodoLists_Delete",
+        "operationId": "TypeProjects_Delete",
         "parameters": [
           {
             "name": "id",
@@ -402,34 +883,6 @@
                 "schema": {
                   "type": "string",
                   "format": "binary"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
-      }
-    },
-    "/api/WeatherForecast": {
-      "get": {
-        "tags": [
-          "WeatherForecast"
-        ],
-        "operationId": "WeatherForecast_Get",
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/WeatherForecast"
-                  }
                 }
               }
             }
@@ -440,108 +893,346 @@
   },
   "components": {
     "schemas": {
-      "PaginatedListOfTodoItemBriefDto": {
+      "ActionPsVm": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "items": {
+          "actionPDtos": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/TodoItemBriefDto"
+              "$ref": "#/components/schemas/ActionP"
             }
-          },
-          "pageNumber": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "totalPages": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "totalCount": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "hasPreviousPage": {
-            "type": "boolean"
-          },
-          "hasNextPage": {
-            "type": "boolean"
           }
         }
       },
-      "TodoItemBriefDto": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
+      "ActionP": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AuditableEntity"
           },
-          "listId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "title": {
-            "type": "string",
-            "nullable": true
-          },
-          "done": {
-            "type": "boolean"
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "title": {
+                "type": "string"
+              },
+              "note": {
+                "type": "string",
+                "nullable": true
+              },
+              "tauxR": {
+                "type": "integer",
+                "format": "int32",
+                "nullable": true
+              },
+              "budgR": {
+                "type": "number",
+                "format": "float",
+                "nullable": true
+              },
+              "startDatePrv": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true
+              },
+              "endDatePrv": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true
+              },
+              "startDate": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true
+              },
+              "endDate": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true
+              },
+              "budgPrv": {
+                "type": "number",
+                "format": "float",
+                "nullable": true
+              },
+              "statutId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "statut": {
+                "$ref": "#/components/schemas/Statut"
+              },
+              "projectId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "project": {
+                "$ref": "#/components/schemas/Project"
+              },
+              "structures": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Structure"
+                }
+              },
+              "evaluations": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/EvaluationActionP"
+                }
+              }
+            }
           }
-        }
+        ]
       },
-      "CreateTodoItemCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "listId": {
-            "type": "integer",
-            "format": "int32"
+      "Statut": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AuditableEntity"
           },
-          "title": {
-            "type": "string",
-            "nullable": true
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "title": {
+                "type": "string"
+              },
+              "note": {
+                "type": "string"
+              },
+              "color": {
+                "$ref": "#/components/schemas/ColorStatut"
+              },
+              "contratObjectifs": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ContratObjectif"
+                }
+              },
+              "actionPs": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ActionP"
+                }
+              },
+              "projects": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Project"
+                }
+              },
+              "evaluations": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Evaluation"
+                }
+              }
+            }
           }
-        }
+        ]
       },
-      "UpdateTodoItemCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "title": {
-            "type": "string",
-            "nullable": true
-          },
-          "done": {
-            "type": "boolean"
-          }
-        }
+      "ColorStatut": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "primary",
+          "success",
+          "info",
+          "warning",
+          "danger",
+          "secondary",
+          "dark",
+          "light",
+          "none"
+        ],
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ]
       },
-      "UpdateTodoItemDetailCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
+      "ContratObjectif": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AuditableEntity"
           },
-          "listId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "priority": {
-            "$ref": "#/components/schemas/PriorityLevel"
-          },
-          "note": {
-            "type": "string",
-            "nullable": true
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "codeCO": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string"
+              },
+              "note": {
+                "type": "string",
+                "nullable": true
+              },
+              "startDate": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "endDate": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "isActive": {
+                "type": "boolean"
+              },
+              "statutId": {
+                "type": "integer",
+                "format": "int32",
+                "nullable": true
+              },
+              "statut": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Statut"
+                  }
+                ]
+              },
+              "projects": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Project"
+                }
+              },
+              "structures": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Structure"
+                }
+              }
+            }
           }
-        }
+        ]
+      },
+      "Project": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AuditableEntity"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "codeProject": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string"
+              },
+              "note": {
+                "type": "string",
+                "nullable": true
+              },
+              "startDatePrv": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true
+              },
+              "endDatePrv": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true
+              },
+              "startDate": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true
+              },
+              "endDate": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true
+              },
+              "priority": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/PriorityLevel"
+                  }
+                ]
+              },
+              "tauxR": {
+                "type": "integer",
+                "format": "int32",
+                "nullable": true
+              },
+              "modeReel": {
+                "type": "string",
+                "nullable": true
+              },
+              "isInitial": {
+                "type": "boolean"
+              },
+              "statutId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "statut": {
+                "$ref": "#/components/schemas/Statut"
+              },
+              "typeProjectId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "typeProject": {
+                "$ref": "#/components/schemas/TypeProject"
+              },
+              "contratObjectifs": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ContratObjectif"
+                }
+              },
+              "actions": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ActionP"
+                }
+              },
+              "structures": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Structure"
+                }
+              },
+              "evaluations": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/EvaluationProject"
+                }
+              }
+            }
+          }
+        ]
       },
       "PriorityLevel": {
         "type": "integer",
@@ -559,102 +1250,373 @@
           3
         ]
       },
-      "TodosVm": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "priorityLevels": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/PriorityLevelDto"
-            }
+      "TypeProject": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AuditableEntity"
           },
-          "lists": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/TodoListDto"
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "codeTP": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string"
+              },
+              "note": {
+                "type": "string",
+                "nullable": true
+              },
+              "projects": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Project"
+                }
+              }
             }
           }
-        }
+        ]
       },
-      "PriorityLevelDto": {
+      "AuditableEntity": {
         "type": "object",
+        "x-abstract": true,
         "additionalProperties": false,
         "properties": {
-          "value": {
-            "type": "integer",
-            "format": "int32"
+          "created": {
+            "type": "string",
+            "format": "date-time"
           },
-          "name": {
+          "createdBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastModified": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "lastModifiedBy": {
             "type": "string",
             "nullable": true
           }
         }
       },
-      "TodoListDto": {
+      "Structure": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AuditableEntity"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "codeStructure": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string"
+              },
+              "note": {
+                "type": "string",
+                "nullable": true
+              },
+              "startDate": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "endDate": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "gestionnaires": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Gestionnaire"
+                }
+              },
+              "parentStructure": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Structure"
+                  }
+                ]
+              },
+              "structureChildren": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Structure"
+                }
+              },
+              "projects": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Project"
+                }
+              },
+              "contratObjectifs": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ContratObjectif"
+                }
+              },
+              "actionPs": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ActionP"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "Gestionnaire": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AuditableEntity"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "nom": {
+                "type": "string",
+                "nullable": true
+              },
+              "prenom": {
+                "type": "string",
+                "nullable": true
+              },
+              "login": {
+                "type": "string"
+              },
+              "password": {
+                "type": "string"
+              },
+              "code": {
+                "type": "string"
+              },
+              "structureId": {
+                "type": "integer",
+                "format": "int32",
+                "nullable": true
+              },
+              "structure": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Structure"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "EvaluationProject": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AuditableEntity"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "evaluationId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "evaluation": {
+                "$ref": "#/components/schemas/Evaluation"
+              },
+              "projectId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "project": {
+                "$ref": "#/components/schemas/Project"
+              },
+              "tauxR": {
+                "type": "integer",
+                "format": "int32",
+                "nullable": true
+              }
+            }
+          }
+        ]
+      },
+      "Evaluation": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AuditableEntity"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "title": {
+                "type": "string"
+              },
+              "note": {
+                "type": "string"
+              },
+              "startDate": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "endDate": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "statutId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "statut": {
+                "$ref": "#/components/schemas/Statut"
+              },
+              "projects": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/EvaluationProject"
+                }
+              },
+              "actionPs": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/EvaluationActionP"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "EvaluationActionP": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AuditableEntity"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "evaluationId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "evaluation": {
+                "$ref": "#/components/schemas/Evaluation"
+              },
+              "actionPId": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "actionP": {
+                "$ref": "#/components/schemas/ActionP"
+              },
+              "tauxR": {
+                "type": "integer",
+                "format": "int32",
+                "nullable": true
+              }
+            }
+          }
+        ]
+      },
+      "ActionPByIdVm": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
+          "actionPDto": {
+            "$ref": "#/components/schemas/ActionP"
+          }
+        }
+      },
+      "CreateActionPCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
           "title": {
-            "type": "string",
-            "nullable": true
-          },
-          "colour": {
-            "type": "string",
-            "nullable": true
-          },
-          "items": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/TodoItemDto"
-            }
-          }
-        }
-      },
-      "TodoItemDto": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "listId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "title": {
-            "type": "string",
-            "nullable": true
-          },
-          "done": {
-            "type": "boolean"
-          },
-          "priority": {
-            "type": "integer",
-            "format": "int32"
+            "type": "string"
           },
           "note": {
             "type": "string",
             "nullable": true
-          }
-        }
-      },
-      "CreateTodoListCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "title": {
-            "type": "string",
+          },
+          "tauxR": {
+            "type": "integer",
+            "format": "int32",
             "nullable": true
+          },
+          "budgR": {
+            "type": "number",
+            "format": "float",
+            "nullable": true
+          },
+          "startDatePrv": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endDatePrv": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "budgPrv": {
+            "type": "number",
+            "format": "float",
+            "nullable": true
+          },
+          "statutId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "projectId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "projectTypeId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "structures": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
           }
         }
       },
-      "UpdateTodoListCommand": {
+      "UpdateActionPCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -668,23 +1630,854 @@
           }
         }
       },
-      "WeatherForecast": {
+      "ContratObjectifsVm": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "date": {
+          "contratObjectifDtos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ContratObjectif"
+            }
+          }
+        }
+      },
+      "ContratObjectifByIdVm": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "contratObjectifDto": {
+            "$ref": "#/components/schemas/ContratObjectif"
+          }
+        }
+      },
+      "CreateContratObjectifCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "startD": {
             "type": "string",
             "format": "date-time"
           },
-          "temperatureC": {
+          "endD": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "statut": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        }
+      },
+      "EvaluationsVm": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "evaluationDtos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Evaluation"
+            }
+          }
+        }
+      },
+      "EvaluationByIdVm": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "evaluationDto": {
+            "$ref": "#/components/schemas/EvaluationDto"
+          }
+        }
+      },
+      "EvaluationDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
             "type": "integer",
             "format": "int32"
           },
-          "temperatureF": {
+          "title": {
+            "type": "string"
+          },
+          "note": {
+            "type": "string"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "statutId": {
             "type": "integer",
             "format": "int32"
           },
-          "summary": {
+          "statut": {
+            "$ref": "#/components/schemas/StatutDto"
+          },
+          "projects": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EvaluationProjectDto"
+            }
+          },
+          "actionPs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EvaluationActionPDto"
+            }
+          }
+        }
+      },
+      "StatutDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "title": {
+            "type": "string"
+          },
+          "note": {
+            "type": "string"
+          },
+          "contratObjectifs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ContratObjectifDto"
+            }
+          },
+          "actionPs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ActionPDto"
+            }
+          },
+          "projects": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProjectDto"
+            }
+          },
+          "evaluations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EvaluationDto"
+            }
+          }
+        }
+      },
+      "ContratObjectifDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "codeCO": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "note": {
+            "type": "string",
+            "nullable": true
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "statutId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "statut": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/StatutDto"
+              }
+            ]
+          },
+          "projects": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProjectDto"
+            }
+          },
+          "structures": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StructureDto"
+            }
+          }
+        }
+      },
+      "ProjectDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "codeProject": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "note": {
+            "type": "string",
+            "nullable": true
+          },
+          "startDatePrv": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "endDatePrv": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "priority": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "tauxR": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "modeReel": {
+            "type": "string",
+            "nullable": true
+          },
+          "isInitial": {
+            "type": "boolean"
+          },
+          "statutId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "statut": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/StatutDto"
+              }
+            ]
+          },
+          "typeProjectId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "typeProject": {
+            "$ref": "#/components/schemas/TypeProjectDto"
+          },
+          "contratObjectifId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "contratObjectif": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ContratObjectifDto"
+              }
+            ]
+          },
+          "actions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ActionPDto"
+            }
+          },
+          "structures": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StructureDto"
+            }
+          },
+          "evaluations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EvaluationProjectDto"
+            }
+          }
+        }
+      },
+      "TypeProjectDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "codeTP": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "projects": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProjectDto"
+            }
+          }
+        }
+      },
+      "ActionPDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "title": {
+            "type": "string"
+          },
+          "note": {
+            "type": "string",
+            "nullable": true
+          },
+          "tauxR": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "budgR": {
+            "type": "number",
+            "format": "float",
+            "nullable": true
+          },
+          "startDatePrv": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "endDatePrv": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "budgPrv": {
+            "type": "number",
+            "format": "float",
+            "nullable": true
+          },
+          "statutId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "statut": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/StatutDto"
+              }
+            ]
+          },
+          "projectId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "project": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ProjectDto"
+              }
+            ]
+          },
+          "structures": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StructureDto"
+            }
+          },
+          "evaluations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EvaluationActionPDto"
+            }
+          }
+        }
+      },
+      "StructureDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "codeStructure": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "note": {
+            "type": "string"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "parentStructure": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/StructureDto"
+              }
+            ]
+          },
+          "gestionnaires": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GestionnaireDto"
+            }
+          },
+          "structureChildren": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StructureDto"
+            }
+          },
+          "projects": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProjectDto"
+            }
+          },
+          "contratObjectifs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ContratObjectifDto"
+            }
+          },
+          "actionPs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ActionPDto"
+            }
+          }
+        }
+      },
+      "GestionnaireDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "nom": {
+            "type": "string",
+            "nullable": true
+          },
+          "prenom": {
+            "type": "string",
+            "nullable": true
+          },
+          "login": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string"
+          },
+          "structure": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/StructureDto"
+              }
+            ]
+          }
+        }
+      },
+      "EvaluationActionPDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "evaluationId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "evaluation": {
+            "$ref": "#/components/schemas/EvaluationDto"
+          },
+          "actionPId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "actionP": {
+            "$ref": "#/components/schemas/ActionPDto"
+          },
+          "tauxR": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        }
+      },
+      "EvaluationProjectDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "evaluationId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "evaluation": {
+            "$ref": "#/components/schemas/EvaluationDto"
+          },
+          "projectId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "project": {
+            "$ref": "#/components/schemas/ProjectDto"
+          },
+          "tauxR": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        }
+      },
+      "CreateEvaluationCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "startD": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endD": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "statut": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        }
+      },
+      "ProjectsVm": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "projectDtos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Project"
+            }
+          }
+        }
+      },
+      "ProjectByIdVm": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "projectDto": {
+            "$ref": "#/components/schemas/Project"
+          }
+        }
+      },
+      "CreateProjectCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "note": {
+            "type": "string",
+            "nullable": true
+          },
+          "startDatePrv": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "endDatePrv": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "priority": {
+            "$ref": "#/components/schemas/PriorityLevel"
+          },
+          "tauxR": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "modeReel": {
+            "type": "string",
+            "nullable": true
+          },
+          "isInitial": {
+            "type": "boolean"
+          },
+          "statut": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "typeProjectId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "contratObjectifs": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          "structures": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        }
+      },
+      "StatutsVm": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "statutDtos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Statut"
+            }
+          }
+        }
+      },
+      "StatutByIdVm": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "statutDto": {
+            "$ref": "#/components/schemas/StatutDto"
+          }
+        }
+      },
+      "CreateStatutCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "color": {
+            "$ref": "#/components/schemas/ColorStatut"
+          }
+        }
+      },
+      "StructuresVm": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "structureDtos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Structure"
+            }
+          }
+        }
+      },
+      "StructureByIdVm": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "structureDto": {
+            "$ref": "#/components/schemas/Structure"
+          }
+        }
+      },
+      "CreateStructureCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "startD": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endD": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "parent": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "contrats": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        }
+      },
+      "TypeProjectsVm": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "typeProjectDtos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TypeProject"
+            }
+          }
+        }
+      },
+      "TypeProjectByIdVm": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "typeProjectDto": {
+            "$ref": "#/components/schemas/TypeProjectDto"
+          }
+        }
+      },
+      "CreateTypeProjectCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "codeTP": {
+            "type": "string",
+            "nullable": true
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateTypeProjectCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "codeTP": {
+            "type": "string",
+            "nullable": true
+          },
+          "comment": {
             "type": "string",
             "nullable": true
           }

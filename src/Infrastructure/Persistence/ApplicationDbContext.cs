@@ -10,27 +10,29 @@ using Microsoft.Extensions.Options;
 
 namespace CleanArchitecture.Infrastructure.Persistence;
 
-public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, IApplicationDbContext
+public class ApplicationDbContext : DbContext, IApplicationDbContext
 {
-    private readonly ICurrentUserService _currentUserService;
     private readonly IDateTime _dateTime;
-    private readonly IDomainEventService _domainEventService;
 
     public ApplicationDbContext(
         DbContextOptions<ApplicationDbContext> options,
         IOptions<OperationalStoreOptions> operationalStoreOptions,
         ICurrentUserService currentUserService,
         IDomainEventService domainEventService,
-        IDateTime dateTime) : base(options, operationalStoreOptions)
+        IDateTime dateTime) : base(options)
     {
-        _currentUserService = currentUserService;
-        _domainEventService = domainEventService;
+       
         _dateTime = dateTime;
     }
+    public DbSet<Structure> Structures => Set<Structure>();
+    public DbSet<ContratObjectif> ContratObjectifs => Set<ContratObjectif>();
+    public DbSet<Project> Projects => Set<Project>();
+    public DbSet<TypeProject> TypeProjects => Set<TypeProject>();
+    public DbSet<Statut> Statuts => Set<Statut>();
+    public DbSet<ActionP> ActionPs => Set<ActionP>();
+    public DbSet<Evaluation> Evaluations => Set<Evaluation>();
+    public DbSet<Gestionnaire> Gestionnaires => Set<Gestionnaire>();
 
-    public DbSet<TodoList> TodoLists => Set<TodoList>();
-
-    public DbSet<TodoItem> TodoItems => Set<TodoItem>();
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
     {
@@ -39,26 +41,25 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
             switch (entry.State)
             {
                 case EntityState.Added:
-                    entry.Entity.CreatedBy = _currentUserService.UserId;
+                  //  entry.Entity.CreatedBy = _currentUserService.UserId;
                     entry.Entity.Created = _dateTime.Now;
                     break;
 
                 case EntityState.Modified:
-                    entry.Entity.LastModifiedBy = _currentUserService.UserId;
+                 //   entry.Entity.LastModifiedBy = _currentUserService.UserId;
                     entry.Entity.LastModified = _dateTime.Now;
                     break;
             }
         }
 
-        var events = ChangeTracker.Entries<IHasDomainEvent>()
+        /*var events = ChangeTracker.Entries<IHasDomainEvent>()
                 .Select(x => x.Entity.DomainEvents)
                 .SelectMany(x => x)
                 .Where(domainEvent => !domainEvent.IsPublished)
-                .ToArray();
+                .ToArray();*/
 
         var result = await base.SaveChangesAsync(cancellationToken);
-
-        await DispatchEvents(events);
+        
 
         return result;
     }
@@ -70,12 +71,5 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
         base.OnModelCreating(builder);
     }
 
-    private async Task DispatchEvents(DomainEvent[] events)
-    {
-        foreach (var @event in events)
-        {
-            @event.IsPublished = true;
-            await _domainEventService.Publish(@event);
-        }
-    }
+   
 }

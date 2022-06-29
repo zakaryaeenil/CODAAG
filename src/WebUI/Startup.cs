@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using CleanArchitecture.Application;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Infrastructure;
@@ -6,6 +7,7 @@ using CleanArchitecture.WebUI.Filters;
 using CleanArchitecture.WebUI.Services;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using NSwag;
 using NSwag.Generation.Processors.Security;
 
@@ -37,9 +39,19 @@ public class Startup
 
         services.AddControllersWithViews(options =>
             options.Filters.Add<ApiExceptionFilterAttribute>())
-                .AddFluentValidation(x => x.AutomaticValidationEnabled = false);
-
-        services.AddRazorPages();
+                .AddFluentValidation(x => x.AutomaticValidationEnabled = false)
+                .AddNewtonsoftJson(
+                    options => {
+                        options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore; 
+                    })
+                ;
+       
+        services.AddRazorPages() 
+            .AddNewtonsoftJson(
+            options => {
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore; 
+            })
+            ;
 
         // Customise default API behaviour
         services.Configure<ApiBehaviorOptions>(options => 
@@ -95,8 +107,8 @@ public class Startup
 
         app.UseRouting();
 
-        app.UseAuthentication();
-        app.UseIdentityServer();
+        //app.UseAuthentication();
+       // app.UseIdentityServer();
         app.UseAuthorization();
         app.UseEndpoints(endpoints =>
         {

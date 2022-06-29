@@ -1,0 +1,103 @@
+<!--begin::Card-->
+<div *ngIf="receivedValuea.evaluationDto" class="card card-flush mb-6 mb-xl-9">
+  <!--begin::Card header-->
+  <div class="card-header mt-6">
+    <!--begin::Card title-->
+    <div class="card-title flex-column">
+      <h2 class="mb-1">User's Schedule</h2>
+      <div class="fs-6 fw-bold text-muted">2 upcoming meetings</div>
+    </div>
+    <!--end::Card title-->
+    <!--begin::Card toolbar-->
+    <div class="card-toolbar">
+      <button type="button" class="btn btn-light-primary btn-sm" data-bs-toggle="modal" data-bs-target="#kt_modal_add_schedule">
+        <!--SVG file not found: media/icons/duotune/art/art008.svg-->
+        Add Schedule</button>
+    </div>
+    <!--end::Card toolbar-->
+  </div>
+  <!--end::Card header-->
+  <!--begin::Card body-->
+  <div *ngIf="receivedValuea.evaluationDto.actionPs"  class="card-body p-9 pt-4">
+    <!-- begin::Table container -->
+    <div  class="table-responsive">
+      <!-- begin::Table -->
+      <table
+        class="table table-row-bordered table-row-gray-100 align-middle gs-0 gy-3"
+      >
+        <!-- begin::Table head -->
+        <thead>
+        <tr class="fw-bolder text-muted">
+          <th class="min-w-150px">ID</th>
+          <th class="min-w-140px">Title</th>
+          <th class="min-w-120px">Start Date </th>
+          <th class="min-w-120px">End Date</th>
+          <th class="min-w-120px">Status</th>
+
+
+        </tr>
+        </thead>
+        <!-- end::Table head -->
+        <!-- begin::Table body -->
+
+        <tbody>
+        <tr *ngFor="let actionp of  receivedValuea.evaluationDto.actionPs | paginate
+              : {
+                  itemsPerPage: tableSize,
+                  currentPage: page,
+                  totalItems: count
+                };
+          let i = index;">
+
+          <td>
+            <a href="#" class="text-dark fw-bolder text-hover-primary fs-6">
+              {{actionp.actionP?.id}}
+            </a>
+          </td>
+          <td>
+            <a
+              href="#"
+              class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6"
+            >
+              {{actionp.actionP?.title}}
+            </a>
+
+          </td>
+
+          <td>
+
+            <span class="text-muted fw-bold text-muted d-block fs-7">
+             {{actionp.actionP?.startDate |  date:'medium'}}
+            </span>
+          </td>
+          <td>
+
+            <span class="text-muted fw-bold text-muted d-block fs-7">
+             {{actionp.actionP?.endDate |  date:'medium'}}
+            </span>
+          </td>
+          <td>
+            <span class="badge badge-light-success">AC</span>
+          </td>
+
+
+        </tr>
+        </tbody>
+        <!-- end::Table body -->
+      </table>
+      <!-- end::Table -->
+      <div class="d-flex justify-content-center">
+        <pagination-controls
+          previousLabel="Prev"
+          nextLabel="Next"
+          (pageChange)="onTableDataChange($event)"
+        >
+        </pagination-controls>
+      </div>
+    </div>
+    <!-- end::Table container -->
+  </div>
+  <!--end::Card body-->
+</div>
+<!--end::Card-->
+

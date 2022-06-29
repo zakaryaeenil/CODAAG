@@ -1,0 +1,53 @@
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+import { StructuresRoutingModule } from './structures-routing.module';
+import { StructuresComponent } from './structures.component';
+import { StructuresViewComponent } from './structures-view/structures-view.component';
+import {DropdownMenusModule} from "../../_metronic/partials";
+import {InlineSVGModule} from "ng-inline-svg-2";
+import {NgbDropdownModule, NgbModule} from "@ng-bootstrap/ng-bootstrap";
+import {NgxPaginationModule} from "ngx-pagination";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import { StructureDetailsComponent } from './structure-details/structure-details.component';
+import { OStructureComponent } from './structure-details/o-structure/o-structure.component';
+import { ScStructureComponent } from './structure-details/sc-structure/sc-structure.component';
+import { GStructureComponent } from './structure-details/g-structure/g-structure.component';
+import { PStructureComponent } from './structure-details/p-structure/p-structure.component';
+import { AStructureComponent } from './structure-details/a-structure/a-structure.component';
+import { CoStructureComponent } from './structure-details/co-structure/co-structure.component';
+import { StructureCreateComponent } from './structure-create/structure-create.component';
+import {MatSelectModule} from "@angular/material/select";
+import {NgMultiSelectDropDownModule} from "ng-multiselect-dropdown";
+
+
+
+@NgModule({
+  declarations: [
+    StructuresComponent,
+    StructuresViewComponent,
+    StructureDetailsComponent,
+    OStructureComponent,
+    ScStructureComponent,
+    GStructureComponent,
+    PStructureComponent,
+    AStructureComponent,
+    CoStructureComponent,
+    StructureCreateComponent,
+
+  ],
+  imports: [
+    CommonModule,
+    StructuresRoutingModule,
+   // DropdownMenusModule,
+    NgbModule,
+    //NgbDropdownModule,
+    NgxPaginationModule,
+    FormsModule,
+    MatSelectModule,
+    ReactiveFormsModule,
+    NgMultiSelectDropDownModule,
+    InlineSVGModule
+  ]
+})
+export class StructuresModule { }

@@ -5,9 +5,15 @@ namespace CleanArchitecture.Application.Common.Interfaces;
 
 public interface IApplicationDbContext
 {
-    DbSet<TodoList> TodoLists { get; }
-
-    DbSet<TodoItem> TodoItems { get; }
+    DbSet<Structure> Structures { get; }
+    DbSet<ContratObjectif> ContratObjectifs { get; }
+    DbSet<Project> Projects { get; }
+    DbSet<TypeProject> TypeProjects { get; }
+    DbSet<Statut> Statuts { get; }
+    DbSet<ActionP> ActionPs { get; }
+    DbSet<Evaluation> Evaluations { get; }
+    
+    DbSet<Gestionnaire> Gestionnaires { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }
