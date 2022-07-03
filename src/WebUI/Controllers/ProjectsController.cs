@@ -28,7 +28,7 @@ public class ProjectsController : ApiControllerBase
     {
         return await Mediator.Send(command);
     }
-    /*
+    
     [HttpPut("{id}")]
     public async Task<ActionResult> Update(int id, UpdateProjectCommand command)
     {
@@ -41,7 +41,7 @@ public class ProjectsController : ApiControllerBase
 
         return NoContent();
     }
-*/
+
     [HttpDelete("{id}")]
     public async Task<ActionResult> Delete(int id)
     {

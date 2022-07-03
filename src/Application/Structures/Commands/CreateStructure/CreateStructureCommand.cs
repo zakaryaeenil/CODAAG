@@ -40,11 +40,9 @@ public class CreateStructureCommandHandler : IRequestHandler<CreateStructureComm
             {
                 Title = request.Title,
                 Note = request.Comment,
-                // CodeStructure = request.Title +"-"+ request.startD.Year,
                 StartDate = request.startD,
                 EndDate = request.endD,
                 ParentStructure = sp,
-              //  ContratObjectifs = new List<ContratObjectif>()
             };
             entity.CodeStructure = entity.Title +"-"+ entity.StartDate.Year;
             _context.Structures.Add(entity); 
@@ -53,11 +51,10 @@ public class CreateStructureCommandHandler : IRequestHandler<CreateStructureComm
                 foreach (var c in request.Contrats)
                 {
                     
-                    var contrat = _context.ContratObjectifs.SingleOrDefault(x => x.Id == c);
+                    var contrat = _context.ContratObjectifs.Include(s => s.Structures).SingleOrDefault(x => x.Id == c);
                     if (contrat != null )
                     {
                         contrat.Structures.Add(entity);
-                        entity.ContratObjectifs.Add(contrat);
                     }
                 }
             }

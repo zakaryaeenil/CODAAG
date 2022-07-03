@@ -1,10 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import {EvaluationsViewComponent} from "../evaluations/evaluations-view/evaluations-view.component";
-import {EvaluationCreateComponent} from "../evaluations/evaluation-create/evaluation-create.component";
-import {EvaluationDetailsComponent} from "../evaluations/evaluation-details/evaluation-details.component";
 import {ContratCreateComponent} from "./contrat-create/contrat-create.component";
 import {ContratViewComponent} from "./contrat-view/contrat-view.component";
+import {ContratUpdateComponent} from "./contrat-update/contrat-update.component";
 
 const routes: Routes = [
   {
@@ -14,6 +12,10 @@ const routes: Routes = [
   {
     path: 'create',
     component: ContratCreateComponent,
+  },
+  {
+    path: 'update/:id',
+    component: ContratUpdateComponent,
   },
 
   { path: '', redirectTo: 'all', pathMatch: 'full' },

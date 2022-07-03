@@ -29,21 +29,7 @@ public class DeleteStructureCommandHandler : IRequestHandler<DeleteStructureComm
         {
             throw new NotFoundException(nameof(Structure), request.Id);
         }
-        entity.ParentStructure = null;
-        while (entity.StructureChildren != null)
-        {
-            foreach (var child in entity.StructureChildren)
-            {
-                child.ParentStructure = null;
-                _context.Structures.RemoveRange(child.StructureChildren);
-
-            } 
-        }
-        _context.Structures.RemoveRange(entity.StructureChildren);
         _context.Structures.Remove(entity);
-
-        // entity.DomainEvents.Add(new TodoItemDeletedEvent(entity));
-
         await _context.SaveChangesAsync(cancellationToken);
 
         return Unit.Value;

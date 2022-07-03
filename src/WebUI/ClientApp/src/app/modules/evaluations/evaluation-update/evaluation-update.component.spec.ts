@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PEvaluationComponent } from './p-evaluation.component';
+import { EvaluationUpdateComponent } from './evaluation-update.component';
 
-describe('PEvaluationComponent', () => {
-  let component: PEvaluationComponent;
-  let fixture: ComponentFixture<PEvaluationComponent>;
+describe('EvaluationUpdateComponent', () => {
+  let component: EvaluationUpdateComponent;
+  let fixture: ComponentFixture<EvaluationUpdateComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PEvaluationComponent ]
+      declarations: [ EvaluationUpdateComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PEvaluationComponent);
+    fixture = TestBed.createComponent(EvaluationUpdateComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

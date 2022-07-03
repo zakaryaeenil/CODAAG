@@ -19,6 +19,8 @@ import { CoStructureComponent } from './structure-details/co-structure/co-struct
 import { StructureCreateComponent } from './structure-create/structure-create.component';
 import {MatSelectModule} from "@angular/material/select";
 import {NgMultiSelectDropDownModule} from "ng-multiselect-dropdown";
+import { StructureUpdateComponent } from './structure-update/structure-update.component';
+import {MatSortModule} from "@angular/material/sort";
 
 
 
@@ -34,20 +36,22 @@ import {NgMultiSelectDropDownModule} from "ng-multiselect-dropdown";
     AStructureComponent,
     CoStructureComponent,
     StructureCreateComponent,
+    StructureUpdateComponent,
 
   ],
-  imports: [
-    CommonModule,
-    StructuresRoutingModule,
-   // DropdownMenusModule,
-    NgbModule,
-    //NgbDropdownModule,
-    NgxPaginationModule,
-    FormsModule,
-    MatSelectModule,
-    ReactiveFormsModule,
-    NgMultiSelectDropDownModule,
-    InlineSVGModule
-  ]
+    imports: [
+        CommonModule,
+        StructuresRoutingModule,
+        // DropdownMenusModule,
+        NgbModule,
+        //NgbDropdownModule,
+        NgxPaginationModule,
+        FormsModule,
+        MatSelectModule,
+        ReactiveFormsModule,
+        NgMultiSelectDropDownModule,
+        InlineSVGModule,
+        MatSortModule
+    ]
 })
 export class StructuresModule { }

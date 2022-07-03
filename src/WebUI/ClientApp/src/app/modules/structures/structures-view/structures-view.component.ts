@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {StructuresClient, StructuresVm} from "../../../web-api-client";
 import {FormControl, FormGroup} from "@angular/forms";
+import {ModalDismissReasons, NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {Router} from "@angular/router";
+import {ToastrService} from "ngx-toastr";
+import {Sort} from "@angular/material/sort";
 
 @Component({
   selector: 'app-structures-view',
@@ -11,24 +15,23 @@ export class StructuresViewComponent implements OnInit {
 
   vm : StructuresVm;
   c : any = 0;
-
+  closeResult : string = ''
   // pagination
   page: number = 1;
   count: number = 0;
   tableSize: number = 7;
   tableSizes: any = [3, 6, 9, 12];
 
-  dateRange = new FormGroup({
-    start: new FormControl(),
-    end: new FormControl()
-  });
 
-  constructor(private listsStructures : StructuresClient) {
+
+  constructor(private listsStructures : StructuresClient,
+              private router : Router,
+              private modalService: NgbModal,
+              private toastr : ToastrService) {
     listsStructures.get().subscribe(
       result => {
-        console.log(result);
         this.vm = result;
-       // this.c = result.structureDtos?.length;
+        this.sortedData = this.vm.structureDtos?.slice();
       },
       error => console.error(error)
     );
@@ -37,6 +40,41 @@ export class StructuresViewComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  open(content : any, videoId : any) {
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+      if (result === 'yes') {
+        this.deleteHero(videoId);
+      }
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
+  }
+
+  deleteHero(id : number) {
+    this.listsStructures.delete(id).subscribe(result =>{
+        this.toastr.success("Structure deleted success ","Good Job!", {timeOut: 3000})
+        window.location.reload();
+      },
+      err =>{
+        this.toastr.error(err,"Error")
+      })
+  }
+
+
+  goToUpdate(id  : any){
+    this.router.navigate(['structures/update',id])
+  }
 
   onTableDataChange(event: any) {
     this.page = event;
@@ -47,5 +85,28 @@ export class StructuresViewComponent implements OnInit {
     this.page = 1;
   }
 
+  sortedData : any;
+  sortData(sort: Sort) {
+    const data = this.vm.structureDtos?.slice();
+    if (!sort.active || sort.direction == '') {
+      this.sortedData = data;
+      return;
+    }
 
+    this.sortedData = data?.sort((a, b) => {
+      let isAsc = sort.direction == 'asc';
+      switch (sort.active) {
+        case 'title': return compare(a.title, b.title, isAsc);
+        case 'id': return compare(a.id, b.id, isAsc);
+        case 'startDate': return compare(a.startDate, b.startDate, isAsc);
+        case 'endDate': return compare(a.endDate, b.endDate, isAsc);
+        case 'note': return compare(a.note, b.note, isAsc);
+        case 'code': return compare(a.codeStructure, b.codeStructure, isAsc);
+        default: return 0;
+      }
+    });
+  }
+}
+function compare(a : any, b : any, isAsc : any) {
+  return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
 }

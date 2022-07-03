@@ -46,6 +46,7 @@ public class GetStructureByIdQueryHandler : IRequestHandler<GetStructureByIdQuer
                 return new StructureByIdVm
                 {
                     StructureDto = await  _context.Structures
+                        .Include(co => co.ContratObjectifs)
                         .Include(p =>p.ParentStructure)
                         .Include(s => s.StructureChildren)
                         .Include(p =>p.Projects)

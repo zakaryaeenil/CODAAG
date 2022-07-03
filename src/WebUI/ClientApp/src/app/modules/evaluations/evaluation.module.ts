@@ -11,32 +11,30 @@ import {NgbDropdownModule, NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {NgxPaginationModule} from "ngx-pagination";
 import {FormsModule} from "@angular/forms";
 import { EvaluationCreateComponent } from './evaluation-create/evaluation-create.component';
-import { EvaluationDetailsComponent } from './evaluation-details/evaluation-details.component';
-import { PEvaluationComponent } from './evaluation-details/p-evaluation/p-evaluation.component';
-import { AEvaluationComponent } from './evaluation-details/a-evaluation/a-evaluation.component';
+import { EvaluationUpdateComponent } from './evaluation-update/evaluation-update.component';
+import {MatSortModule} from "@angular/material/sort";
 
 @NgModule({
   declarations: [
     EvaluationsViewComponent,
     EvaluationComponent,
     EvaluationCreateComponent,
-    EvaluationDetailsComponent,
-    PEvaluationComponent,
-    AEvaluationComponent,
+    EvaluationUpdateComponent,
 
 
   ],
-  imports: [
-    CommonModule,
-    EvaluationRoutingModule,
-    DropdownMenusModule,
-    InlineSVGModule,
-    NgApexchartsModule,
-    NgbDropdownModule,
-    FormsModule,
-    NgxPaginationModule,
-    NgbModule
-  ],
+    imports: [
+        CommonModule,
+        EvaluationRoutingModule,
+        DropdownMenusModule,
+        InlineSVGModule,
+        NgApexchartsModule,
+        NgbDropdownModule,
+        FormsModule,
+        NgxPaginationModule,
+        NgbModule,
+        MatSortModule
+    ],
   exports: [
     EvaluationsViewComponent
   ],

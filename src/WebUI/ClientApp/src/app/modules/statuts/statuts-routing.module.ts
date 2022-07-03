@@ -1,10 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import {EvaluationsViewComponent} from "../evaluations/evaluations-view/evaluations-view.component";
-import {EvaluationCreateComponent} from "../evaluations/evaluation-create/evaluation-create.component";
-import {EvaluationDetailsComponent} from "../evaluations/evaluation-details/evaluation-details.component";
 import {StatutCreateComponent} from "./statut-create/statut-create.component";
 import {StatutsViewComponent} from "./statuts-view/statuts-view.component";
+import {StatutUpdateComponent} from "./statut-update/statut-update.component";
 
 const routes: Routes = [
 
@@ -16,7 +14,10 @@ const routes: Routes = [
     path: 'create',
     component: StatutCreateComponent,
   },
-
+  {
+    path: 'update/:id',
+    component: StatutUpdateComponent,
+  },
 
   { path: '', redirectTo: 'all', pathMatch: 'full' },
   { path: '**', redirectTo: 'all', pathMatch: 'full' },

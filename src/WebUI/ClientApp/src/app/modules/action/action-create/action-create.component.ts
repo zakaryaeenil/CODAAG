@@ -60,6 +60,9 @@ export class ActionCreateComponent implements OnInit {
 
     liststructure.get().subscribe(results =>{
       this.vmS = results
+      results.structureDtos?.forEach(x =>{
+        this.dropdownList.push({id : x.id, text :x.title})
+      })
     })
     listP.get().subscribe(results =>{
       this.vmP = results

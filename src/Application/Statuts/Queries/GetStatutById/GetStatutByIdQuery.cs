@@ -32,7 +32,7 @@ public class GetStatutByIdQueryHandler : IRequestHandler<GetStatutByIdQuery, Sta
                 .Include(e =>e.Evaluations)
                 .Include(co =>co.ContratObjectifs)
                 .Where(t => t.Id == request.ListId)
-                .ProjectTo<StatutDto>(_mapper.ConfigurationProvider)
+               // .ProjectTo<StatutDto>(_mapper.ConfigurationProvider)
                 .SingleAsync(cancellationToken: cancellationToken)
 
         };

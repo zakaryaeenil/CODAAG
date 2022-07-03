@@ -11,24 +11,28 @@ import {NgApexchartsModule} from "ng-apexcharts";
 import {NgbDropdownModule, NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {FormsModule} from "@angular/forms";
 import {NgxPaginationModule} from "ngx-pagination";
+import { ContratUpdateComponent } from './contrat-update/contrat-update.component';
+import {MatSortModule} from "@angular/material/sort";
 
 
 @NgModule({
   declarations: [
     ContratsComponent,
     ContratCreateComponent,
-    ContratViewComponent
+    ContratViewComponent,
+    ContratUpdateComponent
   ],
-  imports: [
-    CommonModule,
-    ContratsRoutingModule,
-    DropdownMenusModule,
-    InlineSVGModule,
-    NgApexchartsModule,
-    NgbDropdownModule,
-    FormsModule,
-    NgxPaginationModule,
-    NgbModule
-  ]
+    imports: [
+        CommonModule,
+        ContratsRoutingModule,
+        DropdownMenusModule,
+        InlineSVGModule,
+        NgApexchartsModule,
+        NgbDropdownModule,
+        FormsModule,
+        NgxPaginationModule,
+        NgbModule,
+        MatSortModule
+    ]
 })
 export class ContratsModule { }

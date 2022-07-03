@@ -34,7 +34,7 @@ public class GetEvaluationByIdQueryHandler : IRequestHandler<GetEvaluationByIdQu
                 .ThenInclude(pp => pp.Project)
                 .Include(a=>a.ActionPs)
                 .ThenInclude(aa => aa.ActionP)
-                .ProjectTo<EvaluationDto>(_mapper.ConfigurationProvider)
+                //.ProjectTo<EvaluationDto>(_mapper.ConfigurationProvider)
                 .SingleAsync(cancellationToken: cancellationToken)
 
         };

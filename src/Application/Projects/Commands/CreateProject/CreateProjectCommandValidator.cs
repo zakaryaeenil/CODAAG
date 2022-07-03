@@ -14,7 +14,7 @@ public class CreateProjectCommandValidator : AbstractValidator<CreateProjectComm
 
         RuleFor(v => v.Title)
             .NotEmpty().WithMessage("Title is required.")
-            .MaximumLength(50).WithMessage("Title must not exceed 50 characters.");
+            .MaximumLength(200).WithMessage("Title must not exceed 50 characters.");
       
         RuleFor(m => m.StartDate)
             .NotEmpty().WithMessage("Start Date is Required");

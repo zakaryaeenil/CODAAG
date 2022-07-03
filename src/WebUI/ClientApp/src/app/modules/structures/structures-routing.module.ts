@@ -5,6 +5,7 @@ import {StructuresComponent} from "./structures.component";
 import {StructuresViewComponent} from "./structures-view/structures-view.component";
 import {StructureDetailsComponent} from "./structure-details/structure-details.component";
 import {StructureCreateComponent} from "./structure-create/structure-create.component";
+import {StructureUpdateComponent} from "./structure-update/structure-update.component";
 
 const routes: Routes = [
   {path: '',
@@ -21,6 +22,10 @@ const routes: Routes = [
       {
         path: 'create',
         component: StructureCreateComponent,
+      },
+      {
+        path: 'update/:id',
+        component: StructureUpdateComponent,
       },
 
       { path: '', redirectTo: 'all', pathMatch: 'full' },

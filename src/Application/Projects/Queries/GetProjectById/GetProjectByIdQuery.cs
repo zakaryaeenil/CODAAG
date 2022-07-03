@@ -30,6 +30,9 @@ public class GetProjectByIdQueryHandler : IRequestHandler<GetProjectByIdQuery, P
         Gestionnaire user = _context.Gestionnaires.Single(x => x.Id == 2);
 
         Project project = _context.Projects
+            .Include(p => p.TypeProject)
+            .Include(s => s.Statut)
+            .Include(co => co.ContratObjectifs)
             .Include(p => p.Structures)
             .ThenInclude(g =>g.Gestionnaires)
             .SingleOrDefault(x => x.Id == request.ListId) ?? throw new InvalidOperationException();

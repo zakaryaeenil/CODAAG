@@ -27,7 +27,7 @@ public class StructuresController: ApiControllerBase
     {
         return await Mediator.Send(command);
     } 
-    /*
+    
     [HttpPut("{id}")]
     public async Task<ActionResult> Update(int id, UpdateStructureCommand command)
     {
@@ -40,7 +40,7 @@ public class StructuresController: ApiControllerBase
 
         return NoContent();
     }
-*/
+
     [HttpDelete("{id}")]
     public async Task<ActionResult> Delete(int id)
     {

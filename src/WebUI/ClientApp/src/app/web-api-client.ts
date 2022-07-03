@@ -293,6 +293,7 @@ export interface IContratObjectifsClient {
     get(): Observable<ContratObjectifsVm>;
     create(command: CreateContratObjectifCommand): Observable<number>;
     get2(id: number): Observable<ContratObjectifByIdVm>;
+    update(id: number, command: UpdateContratObjectifCommand): Observable<FileResponse>;
     delete(id: number): Observable<FileResponse>;
 }
 
@@ -460,6 +461,59 @@ export class ContratObjectifsClient implements IContratObjectifsClient {
         return _observableOf<ContratObjectifByIdVm>(<any>null);
     }
 
+    update(id: number, command: UpdateContratObjectifCommand) : Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/ContratObjectifs/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/octet-stream"
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdate(<any>response_);
+                } catch (e) {
+                    return <Observable<FileResponse>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileResponse>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processUpdate(response: HttpResponseBase): Observable<FileResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileResponse>(<any>null);
+    }
+
     delete(id: number) : Observable<FileResponse> {
         let url_ = this.baseUrl + "/api/ContratObjectifs/{id}";
         if (id === undefined || id === null)
@@ -514,6 +568,7 @@ export interface IEvaluationsClient {
     get(): Observable<EvaluationsVm>;
     create(command: CreateEvaluationCommand): Observable<number>;
     get2(id: number): Observable<EvaluationByIdVm>;
+    update(id: number, command: UpdateEvaluationCommand): Observable<FileResponse>;
     delete(id: number): Observable<FileResponse>;
 }
 
@@ -681,6 +736,59 @@ export class EvaluationsClient implements IEvaluationsClient {
         return _observableOf<EvaluationByIdVm>(<any>null);
     }
 
+    update(id: number, command: UpdateEvaluationCommand) : Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/Evaluations/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/octet-stream"
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdate(<any>response_);
+                } catch (e) {
+                    return <Observable<FileResponse>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileResponse>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processUpdate(response: HttpResponseBase): Observable<FileResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileResponse>(<any>null);
+    }
+
     delete(id: number) : Observable<FileResponse> {
         let url_ = this.baseUrl + "/api/Evaluations/{id}";
         if (id === undefined || id === null)
@@ -735,6 +843,7 @@ export interface IProjectsClient {
     get(): Observable<ProjectsVm>;
     create(command: CreateProjectCommand): Observable<number>;
     get2(id: number): Observable<ProjectByIdVm>;
+    update(id: number, command: UpdateProjectCommand): Observable<FileResponse>;
     delete(id: number): Observable<FileResponse>;
 }
 
@@ -902,6 +1011,59 @@ export class ProjectsClient implements IProjectsClient {
         return _observableOf<ProjectByIdVm>(<any>null);
     }
 
+    update(id: number, command: UpdateProjectCommand) : Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/Projects/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/octet-stream"
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdate(<any>response_);
+                } catch (e) {
+                    return <Observable<FileResponse>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileResponse>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processUpdate(response: HttpResponseBase): Observable<FileResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileResponse>(<any>null);
+    }
+
     delete(id: number) : Observable<FileResponse> {
         let url_ = this.baseUrl + "/api/Projects/{id}";
         if (id === undefined || id === null)
@@ -956,6 +1118,7 @@ export interface IStatutsClient {
     get(): Observable<StatutsVm>;
     create(command: CreateStatutCommand): Observable<number>;
     get2(id: number): Observable<StatutByIdVm>;
+    update(id: number, command: UpdateStatutCommand): Observable<FileResponse>;
     delete(id: number): Observable<FileResponse>;
 }
 
@@ -1123,6 +1286,59 @@ export class StatutsClient implements IStatutsClient {
         return _observableOf<StatutByIdVm>(<any>null);
     }
 
+    update(id: number, command: UpdateStatutCommand) : Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/Statuts/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/octet-stream"
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdate(<any>response_);
+                } catch (e) {
+                    return <Observable<FileResponse>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileResponse>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processUpdate(response: HttpResponseBase): Observable<FileResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileResponse>(<any>null);
+    }
+
     delete(id: number) : Observable<FileResponse> {
         let url_ = this.baseUrl + "/api/Statuts/{id}";
         if (id === undefined || id === null)
@@ -1177,6 +1393,7 @@ export interface IStructuresClient {
     get(): Observable<StructuresVm>;
     create(command: CreateStructureCommand): Observable<number>;
     get2(id: number): Observable<StructureByIdVm>;
+    update(id: number, command: UpdateStructureCommand): Observable<FileResponse>;
     delete(id: number): Observable<FileResponse>;
 }
 
@@ -1342,6 +1559,59 @@ export class StructuresClient implements IStructuresClient {
             }));
         }
         return _observableOf<StructureByIdVm>(<any>null);
+    }
+
+    update(id: number, command: UpdateStructureCommand) : Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/Structures/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/octet-stream"
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdate(<any>response_);
+                } catch (e) {
+                    return <Observable<FileResponse>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileResponse>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processUpdate(response: HttpResponseBase): Observable<FileResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileResponse>(<any>null);
     }
 
     delete(id: number) : Observable<FileResponse> {
@@ -2672,7 +2942,6 @@ export class CreateActionPCommand implements ICreateActionPCommand {
     budgPrv?: number | undefined;
     statutId?: number | undefined;
     projectId?: number | undefined;
-    projectTypeId?: number | undefined;
     structures?: number[];
 
     constructor(data?: ICreateActionPCommand) {
@@ -2697,7 +2966,6 @@ export class CreateActionPCommand implements ICreateActionPCommand {
             this.budgPrv = _data["budgPrv"];
             this.statutId = _data["statutId"];
             this.projectId = _data["projectId"];
-            this.projectTypeId = _data["projectTypeId"];
             if (Array.isArray(_data["structures"])) {
                 this.structures = [] as any;
                 for (let item of _data["structures"])
@@ -2726,7 +2994,6 @@ export class CreateActionPCommand implements ICreateActionPCommand {
         data["budgPrv"] = this.budgPrv;
         data["statutId"] = this.statutId;
         data["projectId"] = this.projectId;
-        data["projectTypeId"] = this.projectTypeId;
         if (Array.isArray(this.structures)) {
             data["structures"] = [];
             for (let item of this.structures)
@@ -2748,13 +3015,23 @@ export interface ICreateActionPCommand {
     budgPrv?: number | undefined;
     statutId?: number | undefined;
     projectId?: number | undefined;
-    projectTypeId?: number | undefined;
     structures?: number[];
 }
 
 export class UpdateActionPCommand implements IUpdateActionPCommand {
     id?: number;
-    title?: string | undefined;
+    title?: string;
+    note?: string | undefined;
+    tauxR?: number | undefined;
+    budgR?: number | undefined;
+    startDatePrv?: Date;
+    endDatePrv?: Date;
+    startDate?: Date;
+    endDate?: Date;
+    budgPrv?: number | undefined;
+    statutId?: number | undefined;
+    projectId?: number | undefined;
+    structures?: number[];
 
     constructor(data?: IUpdateActionPCommand) {
         if (data) {
@@ -2769,6 +3046,21 @@ export class UpdateActionPCommand implements IUpdateActionPCommand {
         if (_data) {
             this.id = _data["id"];
             this.title = _data["title"];
+            this.note = _data["note"];
+            this.tauxR = _data["tauxR"];
+            this.budgR = _data["budgR"];
+            this.startDatePrv = _data["startDatePrv"] ? new Date(_data["startDatePrv"].toString()) : <any>undefined;
+            this.endDatePrv = _data["endDatePrv"] ? new Date(_data["endDatePrv"].toString()) : <any>undefined;
+            this.startDate = _data["startDate"] ? new Date(_data["startDate"].toString()) : <any>undefined;
+            this.endDate = _data["endDate"] ? new Date(_data["endDate"].toString()) : <any>undefined;
+            this.budgPrv = _data["budgPrv"];
+            this.statutId = _data["statutId"];
+            this.projectId = _data["projectId"];
+            if (Array.isArray(_data["structures"])) {
+                this.structures = [] as any;
+                for (let item of _data["structures"])
+                    this.structures!.push(item);
+            }
         }
     }
 
@@ -2783,13 +3075,39 @@ export class UpdateActionPCommand implements IUpdateActionPCommand {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
         data["title"] = this.title;
+        data["note"] = this.note;
+        data["tauxR"] = this.tauxR;
+        data["budgR"] = this.budgR;
+        data["startDatePrv"] = this.startDatePrv ? this.startDatePrv.toISOString() : <any>undefined;
+        data["endDatePrv"] = this.endDatePrv ? this.endDatePrv.toISOString() : <any>undefined;
+        data["startDate"] = this.startDate ? this.startDate.toISOString() : <any>undefined;
+        data["endDate"] = this.endDate ? this.endDate.toISOString() : <any>undefined;
+        data["budgPrv"] = this.budgPrv;
+        data["statutId"] = this.statutId;
+        data["projectId"] = this.projectId;
+        if (Array.isArray(this.structures)) {
+            data["structures"] = [];
+            for (let item of this.structures)
+                data["structures"].push(item);
+        }
         return data; 
     }
 }
 
 export interface IUpdateActionPCommand {
     id?: number;
-    title?: string | undefined;
+    title?: string;
+    note?: string | undefined;
+    tauxR?: number | undefined;
+    budgR?: number | undefined;
+    startDatePrv?: Date;
+    endDatePrv?: Date;
+    startDate?: Date;
+    endDate?: Date;
+    budgPrv?: number | undefined;
+    statutId?: number | undefined;
+    projectId?: number | undefined;
+    structures?: number[];
 }
 
 export class ContratObjectifsVm implements IContratObjectifsVm {
@@ -2928,6 +3246,66 @@ export interface ICreateContratObjectifCommand {
     statut?: number | undefined;
 }
 
+export class UpdateContratObjectifCommand implements IUpdateContratObjectifCommand {
+    id?: number;
+    title?: string | undefined;
+    comment?: string | undefined;
+    startD?: Date;
+    endD?: Date;
+    isActive?: boolean;
+    statut?: number | undefined;
+
+    constructor(data?: IUpdateContratObjectifCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.title = _data["title"];
+            this.comment = _data["comment"];
+            this.startD = _data["startD"] ? new Date(_data["startD"].toString()) : <any>undefined;
+            this.endD = _data["endD"] ? new Date(_data["endD"].toString()) : <any>undefined;
+            this.isActive = _data["isActive"];
+            this.statut = _data["statut"];
+        }
+    }
+
+    static fromJS(data: any): UpdateContratObjectifCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new UpdateContratObjectifCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["title"] = this.title;
+        data["comment"] = this.comment;
+        data["startD"] = this.startD ? this.startD.toISOString() : <any>undefined;
+        data["endD"] = this.endD ? this.endD.toISOString() : <any>undefined;
+        data["isActive"] = this.isActive;
+        data["statut"] = this.statut;
+        return data; 
+    }
+}
+
+export interface IUpdateContratObjectifCommand {
+    id?: number;
+    title?: string | undefined;
+    comment?: string | undefined;
+    startD?: Date;
+    endD?: Date;
+    isActive?: boolean;
+    statut?: number | undefined;
+}
+
 export class EvaluationsVm implements IEvaluationsVm {
     evaluationDtos?: Evaluation[];
 
@@ -2973,7 +3351,7 @@ export interface IEvaluationsVm {
 }
 
 export class EvaluationByIdVm implements IEvaluationByIdVm {
-    evaluationDto?: EvaluationDto;
+    evaluationDto?: Evaluation;
 
     constructor(data?: IEvaluationByIdVm) {
         if (data) {
@@ -2986,7 +3364,7 @@ export class EvaluationByIdVm implements IEvaluationByIdVm {
 
     init(_data?: any) {
         if (_data) {
-            this.evaluationDto = _data["evaluationDto"] ? EvaluationDto.fromJS(_data["evaluationDto"]) : <any>undefined;
+            this.evaluationDto = _data["evaluationDto"] ? Evaluation.fromJS(_data["evaluationDto"]) : <any>undefined;
         }
     }
 
@@ -3005,863 +3383,7 @@ export class EvaluationByIdVm implements IEvaluationByIdVm {
 }
 
 export interface IEvaluationByIdVm {
-    evaluationDto?: EvaluationDto;
-}
-
-export class EvaluationDto implements IEvaluationDto {
-    id?: number;
-    title?: string;
-    note?: string;
-    startDate?: Date;
-    endDate?: Date;
-    statutId?: number;
-    statut?: StatutDto;
-    projects?: EvaluationProjectDto[];
-    actionPs?: EvaluationActionPDto[];
-
-    constructor(data?: IEvaluationDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.title = _data["title"];
-            this.note = _data["note"];
-            this.startDate = _data["startDate"] ? new Date(_data["startDate"].toString()) : <any>undefined;
-            this.endDate = _data["endDate"] ? new Date(_data["endDate"].toString()) : <any>undefined;
-            this.statutId = _data["statutId"];
-            this.statut = _data["statut"] ? StatutDto.fromJS(_data["statut"]) : <any>undefined;
-            if (Array.isArray(_data["projects"])) {
-                this.projects = [] as any;
-                for (let item of _data["projects"])
-                    this.projects!.push(EvaluationProjectDto.fromJS(item));
-            }
-            if (Array.isArray(_data["actionPs"])) {
-                this.actionPs = [] as any;
-                for (let item of _data["actionPs"])
-                    this.actionPs!.push(EvaluationActionPDto.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): EvaluationDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new EvaluationDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["title"] = this.title;
-        data["note"] = this.note;
-        data["startDate"] = this.startDate ? this.startDate.toISOString() : <any>undefined;
-        data["endDate"] = this.endDate ? this.endDate.toISOString() : <any>undefined;
-        data["statutId"] = this.statutId;
-        data["statut"] = this.statut ? this.statut.toJSON() : <any>undefined;
-        if (Array.isArray(this.projects)) {
-            data["projects"] = [];
-            for (let item of this.projects)
-                data["projects"].push(item.toJSON());
-        }
-        if (Array.isArray(this.actionPs)) {
-            data["actionPs"] = [];
-            for (let item of this.actionPs)
-                data["actionPs"].push(item.toJSON());
-        }
-        return data; 
-    }
-}
-
-export interface IEvaluationDto {
-    id?: number;
-    title?: string;
-    note?: string;
-    startDate?: Date;
-    endDate?: Date;
-    statutId?: number;
-    statut?: StatutDto;
-    projects?: EvaluationProjectDto[];
-    actionPs?: EvaluationActionPDto[];
-}
-
-export class StatutDto implements IStatutDto {
-    id?: number;
-    title?: string;
-    note?: string;
-    contratObjectifs?: ContratObjectifDto[];
-    actionPs?: ActionPDto[];
-    projects?: ProjectDto[];
-    evaluations?: EvaluationDto[];
-
-    constructor(data?: IStatutDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.title = _data["title"];
-            this.note = _data["note"];
-            if (Array.isArray(_data["contratObjectifs"])) {
-                this.contratObjectifs = [] as any;
-                for (let item of _data["contratObjectifs"])
-                    this.contratObjectifs!.push(ContratObjectifDto.fromJS(item));
-            }
-            if (Array.isArray(_data["actionPs"])) {
-                this.actionPs = [] as any;
-                for (let item of _data["actionPs"])
-                    this.actionPs!.push(ActionPDto.fromJS(item));
-            }
-            if (Array.isArray(_data["projects"])) {
-                this.projects = [] as any;
-                for (let item of _data["projects"])
-                    this.projects!.push(ProjectDto.fromJS(item));
-            }
-            if (Array.isArray(_data["evaluations"])) {
-                this.evaluations = [] as any;
-                for (let item of _data["evaluations"])
-                    this.evaluations!.push(EvaluationDto.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): StatutDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new StatutDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["title"] = this.title;
-        data["note"] = this.note;
-        if (Array.isArray(this.contratObjectifs)) {
-            data["contratObjectifs"] = [];
-            for (let item of this.contratObjectifs)
-                data["contratObjectifs"].push(item.toJSON());
-        }
-        if (Array.isArray(this.actionPs)) {
-            data["actionPs"] = [];
-            for (let item of this.actionPs)
-                data["actionPs"].push(item.toJSON());
-        }
-        if (Array.isArray(this.projects)) {
-            data["projects"] = [];
-            for (let item of this.projects)
-                data["projects"].push(item.toJSON());
-        }
-        if (Array.isArray(this.evaluations)) {
-            data["evaluations"] = [];
-            for (let item of this.evaluations)
-                data["evaluations"].push(item.toJSON());
-        }
-        return data; 
-    }
-}
-
-export interface IStatutDto {
-    id?: number;
-    title?: string;
-    note?: string;
-    contratObjectifs?: ContratObjectifDto[];
-    actionPs?: ActionPDto[];
-    projects?: ProjectDto[];
-    evaluations?: EvaluationDto[];
-}
-
-export class ContratObjectifDto implements IContratObjectifDto {
-    id?: number;
-    codeCO?: string;
-    title?: string;
-    note?: string | undefined;
-    startDate?: Date;
-    endDate?: Date;
-    isActive?: boolean;
-    statutId?: number | undefined;
-    statut?: StatutDto | undefined;
-    projects?: ProjectDto[];
-    structures?: StructureDto[];
-
-    constructor(data?: IContratObjectifDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.codeCO = _data["codeCO"];
-            this.title = _data["title"];
-            this.note = _data["note"];
-            this.startDate = _data["startDate"] ? new Date(_data["startDate"].toString()) : <any>undefined;
-            this.endDate = _data["endDate"] ? new Date(_data["endDate"].toString()) : <any>undefined;
-            this.isActive = _data["isActive"];
-            this.statutId = _data["statutId"];
-            this.statut = _data["statut"] ? StatutDto.fromJS(_data["statut"]) : <any>undefined;
-            if (Array.isArray(_data["projects"])) {
-                this.projects = [] as any;
-                for (let item of _data["projects"])
-                    this.projects!.push(ProjectDto.fromJS(item));
-            }
-            if (Array.isArray(_data["structures"])) {
-                this.structures = [] as any;
-                for (let item of _data["structures"])
-                    this.structures!.push(StructureDto.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): ContratObjectifDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new ContratObjectifDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["codeCO"] = this.codeCO;
-        data["title"] = this.title;
-        data["note"] = this.note;
-        data["startDate"] = this.startDate ? this.startDate.toISOString() : <any>undefined;
-        data["endDate"] = this.endDate ? this.endDate.toISOString() : <any>undefined;
-        data["isActive"] = this.isActive;
-        data["statutId"] = this.statutId;
-        data["statut"] = this.statut ? this.statut.toJSON() : <any>undefined;
-        if (Array.isArray(this.projects)) {
-            data["projects"] = [];
-            for (let item of this.projects)
-                data["projects"].push(item.toJSON());
-        }
-        if (Array.isArray(this.structures)) {
-            data["structures"] = [];
-            for (let item of this.structures)
-                data["structures"].push(item.toJSON());
-        }
-        return data; 
-    }
-}
-
-export interface IContratObjectifDto {
-    id?: number;
-    codeCO?: string;
-    title?: string;
-    note?: string | undefined;
-    startDate?: Date;
-    endDate?: Date;
-    isActive?: boolean;
-    statutId?: number | undefined;
-    statut?: StatutDto | undefined;
-    projects?: ProjectDto[];
-    structures?: StructureDto[];
-}
-
-export class ProjectDto implements IProjectDto {
-    id?: number;
-    codeProject?: string;
-    title?: string;
-    note?: string | undefined;
-    startDatePrv?: Date | undefined;
-    endDatePrv?: Date | undefined;
-    startDate?: Date | undefined;
-    endDate?: Date | undefined;
-    priority?: number | undefined;
-    tauxR?: number | undefined;
-    modeReel?: string | undefined;
-    isInitial?: boolean;
-    statutId?: number | undefined;
-    statut?: StatutDto | undefined;
-    typeProjectId?: number;
-    typeProject?: TypeProjectDto;
-    contratObjectifId?: number | undefined;
-    contratObjectif?: ContratObjectifDto | undefined;
-    actions?: ActionPDto[];
-    structures?: StructureDto[];
-    evaluations?: EvaluationProjectDto[];
-
-    constructor(data?: IProjectDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.codeProject = _data["codeProject"];
-            this.title = _data["title"];
-            this.note = _data["note"];
-            this.startDatePrv = _data["startDatePrv"] ? new Date(_data["startDatePrv"].toString()) : <any>undefined;
-            this.endDatePrv = _data["endDatePrv"] ? new Date(_data["endDatePrv"].toString()) : <any>undefined;
-            this.startDate = _data["startDate"] ? new Date(_data["startDate"].toString()) : <any>undefined;
-            this.endDate = _data["endDate"] ? new Date(_data["endDate"].toString()) : <any>undefined;
-            this.priority = _data["priority"];
-            this.tauxR = _data["tauxR"];
-            this.modeReel = _data["modeReel"];
-            this.isInitial = _data["isInitial"];
-            this.statutId = _data["statutId"];
-            this.statut = _data["statut"] ? StatutDto.fromJS(_data["statut"]) : <any>undefined;
-            this.typeProjectId = _data["typeProjectId"];
-            this.typeProject = _data["typeProject"] ? TypeProjectDto.fromJS(_data["typeProject"]) : <any>undefined;
-            this.contratObjectifId = _data["contratObjectifId"];
-            this.contratObjectif = _data["contratObjectif"] ? ContratObjectifDto.fromJS(_data["contratObjectif"]) : <any>undefined;
-            if (Array.isArray(_data["actions"])) {
-                this.actions = [] as any;
-                for (let item of _data["actions"])
-                    this.actions!.push(ActionPDto.fromJS(item));
-            }
-            if (Array.isArray(_data["structures"])) {
-                this.structures = [] as any;
-                for (let item of _data["structures"])
-                    this.structures!.push(StructureDto.fromJS(item));
-            }
-            if (Array.isArray(_data["evaluations"])) {
-                this.evaluations = [] as any;
-                for (let item of _data["evaluations"])
-                    this.evaluations!.push(EvaluationProjectDto.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): ProjectDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new ProjectDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["codeProject"] = this.codeProject;
-        data["title"] = this.title;
-        data["note"] = this.note;
-        data["startDatePrv"] = this.startDatePrv ? this.startDatePrv.toISOString() : <any>undefined;
-        data["endDatePrv"] = this.endDatePrv ? this.endDatePrv.toISOString() : <any>undefined;
-        data["startDate"] = this.startDate ? this.startDate.toISOString() : <any>undefined;
-        data["endDate"] = this.endDate ? this.endDate.toISOString() : <any>undefined;
-        data["priority"] = this.priority;
-        data["tauxR"] = this.tauxR;
-        data["modeReel"] = this.modeReel;
-        data["isInitial"] = this.isInitial;
-        data["statutId"] = this.statutId;
-        data["statut"] = this.statut ? this.statut.toJSON() : <any>undefined;
-        data["typeProjectId"] = this.typeProjectId;
-        data["typeProject"] = this.typeProject ? this.typeProject.toJSON() : <any>undefined;
-        data["contratObjectifId"] = this.contratObjectifId;
-        data["contratObjectif"] = this.contratObjectif ? this.contratObjectif.toJSON() : <any>undefined;
-        if (Array.isArray(this.actions)) {
-            data["actions"] = [];
-            for (let item of this.actions)
-                data["actions"].push(item.toJSON());
-        }
-        if (Array.isArray(this.structures)) {
-            data["structures"] = [];
-            for (let item of this.structures)
-                data["structures"].push(item.toJSON());
-        }
-        if (Array.isArray(this.evaluations)) {
-            data["evaluations"] = [];
-            for (let item of this.evaluations)
-                data["evaluations"].push(item.toJSON());
-        }
-        return data; 
-    }
-}
-
-export interface IProjectDto {
-    id?: number;
-    codeProject?: string;
-    title?: string;
-    note?: string | undefined;
-    startDatePrv?: Date | undefined;
-    endDatePrv?: Date | undefined;
-    startDate?: Date | undefined;
-    endDate?: Date | undefined;
-    priority?: number | undefined;
-    tauxR?: number | undefined;
-    modeReel?: string | undefined;
-    isInitial?: boolean;
-    statutId?: number | undefined;
-    statut?: StatutDto | undefined;
-    typeProjectId?: number;
-    typeProject?: TypeProjectDto;
-    contratObjectifId?: number | undefined;
-    contratObjectif?: ContratObjectifDto | undefined;
-    actions?: ActionPDto[];
-    structures?: StructureDto[];
-    evaluations?: EvaluationProjectDto[];
-}
-
-export class TypeProjectDto implements ITypeProjectDto {
-    id?: number;
-    codeTP?: string;
-    title?: string;
-    projects?: ProjectDto[];
-
-    constructor(data?: ITypeProjectDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.codeTP = _data["codeTP"];
-            this.title = _data["title"];
-            if (Array.isArray(_data["projects"])) {
-                this.projects = [] as any;
-                for (let item of _data["projects"])
-                    this.projects!.push(ProjectDto.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): TypeProjectDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new TypeProjectDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["codeTP"] = this.codeTP;
-        data["title"] = this.title;
-        if (Array.isArray(this.projects)) {
-            data["projects"] = [];
-            for (let item of this.projects)
-                data["projects"].push(item.toJSON());
-        }
-        return data; 
-    }
-}
-
-export interface ITypeProjectDto {
-    id?: number;
-    codeTP?: string;
-    title?: string;
-    projects?: ProjectDto[];
-}
-
-export class ActionPDto implements IActionPDto {
-    id?: number;
-    title?: string;
-    note?: string | undefined;
-    tauxR?: number | undefined;
-    budgR?: number | undefined;
-    startDatePrv?: Date | undefined;
-    endDatePrv?: Date | undefined;
-    startDate?: Date | undefined;
-    endDate?: Date | undefined;
-    budgPrv?: number | undefined;
-    statutId?: number | undefined;
-    statut?: StatutDto | undefined;
-    projectId?: number | undefined;
-    project?: ProjectDto | undefined;
-    structures?: StructureDto[];
-    evaluations?: EvaluationActionPDto[];
-
-    constructor(data?: IActionPDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.title = _data["title"];
-            this.note = _data["note"];
-            this.tauxR = _data["tauxR"];
-            this.budgR = _data["budgR"];
-            this.startDatePrv = _data["startDatePrv"] ? new Date(_data["startDatePrv"].toString()) : <any>undefined;
-            this.endDatePrv = _data["endDatePrv"] ? new Date(_data["endDatePrv"].toString()) : <any>undefined;
-            this.startDate = _data["startDate"] ? new Date(_data["startDate"].toString()) : <any>undefined;
-            this.endDate = _data["endDate"] ? new Date(_data["endDate"].toString()) : <any>undefined;
-            this.budgPrv = _data["budgPrv"];
-            this.statutId = _data["statutId"];
-            this.statut = _data["statut"] ? StatutDto.fromJS(_data["statut"]) : <any>undefined;
-            this.projectId = _data["projectId"];
-            this.project = _data["project"] ? ProjectDto.fromJS(_data["project"]) : <any>undefined;
-            if (Array.isArray(_data["structures"])) {
-                this.structures = [] as any;
-                for (let item of _data["structures"])
-                    this.structures!.push(StructureDto.fromJS(item));
-            }
-            if (Array.isArray(_data["evaluations"])) {
-                this.evaluations = [] as any;
-                for (let item of _data["evaluations"])
-                    this.evaluations!.push(EvaluationActionPDto.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): ActionPDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new ActionPDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["title"] = this.title;
-        data["note"] = this.note;
-        data["tauxR"] = this.tauxR;
-        data["budgR"] = this.budgR;
-        data["startDatePrv"] = this.startDatePrv ? this.startDatePrv.toISOString() : <any>undefined;
-        data["endDatePrv"] = this.endDatePrv ? this.endDatePrv.toISOString() : <any>undefined;
-        data["startDate"] = this.startDate ? this.startDate.toISOString() : <any>undefined;
-        data["endDate"] = this.endDate ? this.endDate.toISOString() : <any>undefined;
-        data["budgPrv"] = this.budgPrv;
-        data["statutId"] = this.statutId;
-        data["statut"] = this.statut ? this.statut.toJSON() : <any>undefined;
-        data["projectId"] = this.projectId;
-        data["project"] = this.project ? this.project.toJSON() : <any>undefined;
-        if (Array.isArray(this.structures)) {
-            data["structures"] = [];
-            for (let item of this.structures)
-                data["structures"].push(item.toJSON());
-        }
-        if (Array.isArray(this.evaluations)) {
-            data["evaluations"] = [];
-            for (let item of this.evaluations)
-                data["evaluations"].push(item.toJSON());
-        }
-        return data; 
-    }
-}
-
-export interface IActionPDto {
-    id?: number;
-    title?: string;
-    note?: string | undefined;
-    tauxR?: number | undefined;
-    budgR?: number | undefined;
-    startDatePrv?: Date | undefined;
-    endDatePrv?: Date | undefined;
-    startDate?: Date | undefined;
-    endDate?: Date | undefined;
-    budgPrv?: number | undefined;
-    statutId?: number | undefined;
-    statut?: StatutDto | undefined;
-    projectId?: number | undefined;
-    project?: ProjectDto | undefined;
-    structures?: StructureDto[];
-    evaluations?: EvaluationActionPDto[];
-}
-
-export class StructureDto implements IStructureDto {
-    id?: number;
-    codeStructure?: string;
-    title?: string;
-    note?: string;
-    startDate?: Date;
-    endDate?: Date;
-    parentStructure?: StructureDto | undefined;
-    gestionnaires?: GestionnaireDto[];
-    structureChildren?: StructureDto[];
-    projects?: ProjectDto[];
-    contratObjectifs?: ContratObjectifDto[];
-    actionPs?: ActionPDto[];
-
-    constructor(data?: IStructureDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.codeStructure = _data["codeStructure"];
-            this.title = _data["title"];
-            this.note = _data["note"];
-            this.startDate = _data["startDate"] ? new Date(_data["startDate"].toString()) : <any>undefined;
-            this.endDate = _data["endDate"] ? new Date(_data["endDate"].toString()) : <any>undefined;
-            this.parentStructure = _data["parentStructure"] ? StructureDto.fromJS(_data["parentStructure"]) : <any>undefined;
-            if (Array.isArray(_data["gestionnaires"])) {
-                this.gestionnaires = [] as any;
-                for (let item of _data["gestionnaires"])
-                    this.gestionnaires!.push(GestionnaireDto.fromJS(item));
-            }
-            if (Array.isArray(_data["structureChildren"])) {
-                this.structureChildren = [] as any;
-                for (let item of _data["structureChildren"])
-                    this.structureChildren!.push(StructureDto.fromJS(item));
-            }
-            if (Array.isArray(_data["projects"])) {
-                this.projects = [] as any;
-                for (let item of _data["projects"])
-                    this.projects!.push(ProjectDto.fromJS(item));
-            }
-            if (Array.isArray(_data["contratObjectifs"])) {
-                this.contratObjectifs = [] as any;
-                for (let item of _data["contratObjectifs"])
-                    this.contratObjectifs!.push(ContratObjectifDto.fromJS(item));
-            }
-            if (Array.isArray(_data["actionPs"])) {
-                this.actionPs = [] as any;
-                for (let item of _data["actionPs"])
-                    this.actionPs!.push(ActionPDto.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): StructureDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new StructureDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["codeStructure"] = this.codeStructure;
-        data["title"] = this.title;
-        data["note"] = this.note;
-        data["startDate"] = this.startDate ? this.startDate.toISOString() : <any>undefined;
-        data["endDate"] = this.endDate ? this.endDate.toISOString() : <any>undefined;
-        data["parentStructure"] = this.parentStructure ? this.parentStructure.toJSON() : <any>undefined;
-        if (Array.isArray(this.gestionnaires)) {
-            data["gestionnaires"] = [];
-            for (let item of this.gestionnaires)
-                data["gestionnaires"].push(item.toJSON());
-        }
-        if (Array.isArray(this.structureChildren)) {
-            data["structureChildren"] = [];
-            for (let item of this.structureChildren)
-                data["structureChildren"].push(item.toJSON());
-        }
-        if (Array.isArray(this.projects)) {
-            data["projects"] = [];
-            for (let item of this.projects)
-                data["projects"].push(item.toJSON());
-        }
-        if (Array.isArray(this.contratObjectifs)) {
-            data["contratObjectifs"] = [];
-            for (let item of this.contratObjectifs)
-                data["contratObjectifs"].push(item.toJSON());
-        }
-        if (Array.isArray(this.actionPs)) {
-            data["actionPs"] = [];
-            for (let item of this.actionPs)
-                data["actionPs"].push(item.toJSON());
-        }
-        return data; 
-    }
-}
-
-export interface IStructureDto {
-    id?: number;
-    codeStructure?: string;
-    title?: string;
-    note?: string;
-    startDate?: Date;
-    endDate?: Date;
-    parentStructure?: StructureDto | undefined;
-    gestionnaires?: GestionnaireDto[];
-    structureChildren?: StructureDto[];
-    projects?: ProjectDto[];
-    contratObjectifs?: ContratObjectifDto[];
-    actionPs?: ActionPDto[];
-}
-
-export class GestionnaireDto implements IGestionnaireDto {
-    id?: number;
-    nom?: string | undefined;
-    prenom?: string | undefined;
-    login?: string;
-    code?: string;
-    structure?: StructureDto | undefined;
-
-    constructor(data?: IGestionnaireDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.nom = _data["nom"];
-            this.prenom = _data["prenom"];
-            this.login = _data["login"];
-            this.code = _data["code"];
-            this.structure = _data["structure"] ? StructureDto.fromJS(_data["structure"]) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): GestionnaireDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new GestionnaireDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["nom"] = this.nom;
-        data["prenom"] = this.prenom;
-        data["login"] = this.login;
-        data["code"] = this.code;
-        data["structure"] = this.structure ? this.structure.toJSON() : <any>undefined;
-        return data; 
-    }
-}
-
-export interface IGestionnaireDto {
-    id?: number;
-    nom?: string | undefined;
-    prenom?: string | undefined;
-    login?: string;
-    code?: string;
-    structure?: StructureDto | undefined;
-}
-
-export class EvaluationActionPDto implements IEvaluationActionPDto {
-    evaluationId?: number;
-    evaluation?: EvaluationDto;
-    actionPId?: number;
-    actionP?: ActionPDto;
-    tauxR?: number | undefined;
-
-    constructor(data?: IEvaluationActionPDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.evaluationId = _data["evaluationId"];
-            this.evaluation = _data["evaluation"] ? EvaluationDto.fromJS(_data["evaluation"]) : <any>undefined;
-            this.actionPId = _data["actionPId"];
-            this.actionP = _data["actionP"] ? ActionPDto.fromJS(_data["actionP"]) : <any>undefined;
-            this.tauxR = _data["tauxR"];
-        }
-    }
-
-    static fromJS(data: any): EvaluationActionPDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new EvaluationActionPDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["evaluationId"] = this.evaluationId;
-        data["evaluation"] = this.evaluation ? this.evaluation.toJSON() : <any>undefined;
-        data["actionPId"] = this.actionPId;
-        data["actionP"] = this.actionP ? this.actionP.toJSON() : <any>undefined;
-        data["tauxR"] = this.tauxR;
-        return data; 
-    }
-}
-
-export interface IEvaluationActionPDto {
-    evaluationId?: number;
-    evaluation?: EvaluationDto;
-    actionPId?: number;
-    actionP?: ActionPDto;
-    tauxR?: number | undefined;
-}
-
-export class EvaluationProjectDto implements IEvaluationProjectDto {
-    evaluationId?: number;
-    evaluation?: EvaluationDto;
-    projectId?: number;
-    project?: ProjectDto;
-    tauxR?: number | undefined;
-
-    constructor(data?: IEvaluationProjectDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.evaluationId = _data["evaluationId"];
-            this.evaluation = _data["evaluation"] ? EvaluationDto.fromJS(_data["evaluation"]) : <any>undefined;
-            this.projectId = _data["projectId"];
-            this.project = _data["project"] ? ProjectDto.fromJS(_data["project"]) : <any>undefined;
-            this.tauxR = _data["tauxR"];
-        }
-    }
-
-    static fromJS(data: any): EvaluationProjectDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new EvaluationProjectDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["evaluationId"] = this.evaluationId;
-        data["evaluation"] = this.evaluation ? this.evaluation.toJSON() : <any>undefined;
-        data["projectId"] = this.projectId;
-        data["project"] = this.project ? this.project.toJSON() : <any>undefined;
-        data["tauxR"] = this.tauxR;
-        return data; 
-    }
-}
-
-export interface IEvaluationProjectDto {
-    evaluationId?: number;
-    evaluation?: EvaluationDto;
-    projectId?: number;
-    project?: ProjectDto;
-    tauxR?: number | undefined;
+    evaluationDto?: Evaluation;
 }
 
 export class CreateEvaluationCommand implements ICreateEvaluationCommand {
@@ -3909,6 +3431,62 @@ export class CreateEvaluationCommand implements ICreateEvaluationCommand {
 }
 
 export interface ICreateEvaluationCommand {
+    startD?: Date;
+    endD?: Date;
+    title?: string | undefined;
+    comment?: string | undefined;
+    statut?: number | undefined;
+}
+
+export class UpdateEvaluationCommand implements IUpdateEvaluationCommand {
+    id?: number;
+    startD?: Date;
+    endD?: Date;
+    title?: string | undefined;
+    comment?: string | undefined;
+    statut?: number | undefined;
+
+    constructor(data?: IUpdateEvaluationCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.startD = _data["startD"] ? new Date(_data["startD"].toString()) : <any>undefined;
+            this.endD = _data["endD"] ? new Date(_data["endD"].toString()) : <any>undefined;
+            this.title = _data["title"];
+            this.comment = _data["comment"];
+            this.statut = _data["statut"];
+        }
+    }
+
+    static fromJS(data: any): UpdateEvaluationCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new UpdateEvaluationCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["startD"] = this.startD ? this.startD.toISOString() : <any>undefined;
+        data["endD"] = this.endD ? this.endD.toISOString() : <any>undefined;
+        data["title"] = this.title;
+        data["comment"] = this.comment;
+        data["statut"] = this.statut;
+        return data; 
+    }
+}
+
+export interface IUpdateEvaluationCommand {
+    id?: number;
     startD?: Date;
     endD?: Date;
     title?: string | undefined;
@@ -4100,6 +3678,114 @@ export interface ICreateProjectCommand {
     structures?: number[];
 }
 
+export class UpdateProjectCommand implements IUpdateProjectCommand {
+    id?: number;
+    title?: string | undefined;
+    note?: string | undefined;
+    startDatePrv?: Date | undefined;
+    endDatePrv?: Date | undefined;
+    startDate?: Date | undefined;
+    endDate?: Date | undefined;
+    priority?: PriorityLevel;
+    tauxR?: number | undefined;
+    modeReel?: string | undefined;
+    isInitial?: boolean;
+    statut?: number | undefined;
+    typeProjectId?: number | undefined;
+    contratObjectifs?: number[];
+    structures?: number[];
+
+    constructor(data?: IUpdateProjectCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.title = _data["title"];
+            this.note = _data["note"];
+            this.startDatePrv = _data["startDatePrv"] ? new Date(_data["startDatePrv"].toString()) : <any>undefined;
+            this.endDatePrv = _data["endDatePrv"] ? new Date(_data["endDatePrv"].toString()) : <any>undefined;
+            this.startDate = _data["startDate"] ? new Date(_data["startDate"].toString()) : <any>undefined;
+            this.endDate = _data["endDate"] ? new Date(_data["endDate"].toString()) : <any>undefined;
+            this.priority = _data["priority"];
+            this.tauxR = _data["tauxR"];
+            this.modeReel = _data["modeReel"];
+            this.isInitial = _data["isInitial"];
+            this.statut = _data["statut"];
+            this.typeProjectId = _data["typeProjectId"];
+            if (Array.isArray(_data["contratObjectifs"])) {
+                this.contratObjectifs = [] as any;
+                for (let item of _data["contratObjectifs"])
+                    this.contratObjectifs!.push(item);
+            }
+            if (Array.isArray(_data["structures"])) {
+                this.structures = [] as any;
+                for (let item of _data["structures"])
+                    this.structures!.push(item);
+            }
+        }
+    }
+
+    static fromJS(data: any): UpdateProjectCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new UpdateProjectCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["title"] = this.title;
+        data["note"] = this.note;
+        data["startDatePrv"] = this.startDatePrv ? this.startDatePrv.toISOString() : <any>undefined;
+        data["endDatePrv"] = this.endDatePrv ? this.endDatePrv.toISOString() : <any>undefined;
+        data["startDate"] = this.startDate ? this.startDate.toISOString() : <any>undefined;
+        data["endDate"] = this.endDate ? this.endDate.toISOString() : <any>undefined;
+        data["priority"] = this.priority;
+        data["tauxR"] = this.tauxR;
+        data["modeReel"] = this.modeReel;
+        data["isInitial"] = this.isInitial;
+        data["statut"] = this.statut;
+        data["typeProjectId"] = this.typeProjectId;
+        if (Array.isArray(this.contratObjectifs)) {
+            data["contratObjectifs"] = [];
+            for (let item of this.contratObjectifs)
+                data["contratObjectifs"].push(item);
+        }
+        if (Array.isArray(this.structures)) {
+            data["structures"] = [];
+            for (let item of this.structures)
+                data["structures"].push(item);
+        }
+        return data; 
+    }
+}
+
+export interface IUpdateProjectCommand {
+    id?: number;
+    title?: string | undefined;
+    note?: string | undefined;
+    startDatePrv?: Date | undefined;
+    endDatePrv?: Date | undefined;
+    startDate?: Date | undefined;
+    endDate?: Date | undefined;
+    priority?: PriorityLevel;
+    tauxR?: number | undefined;
+    modeReel?: string | undefined;
+    isInitial?: boolean;
+    statut?: number | undefined;
+    typeProjectId?: number | undefined;
+    contratObjectifs?: number[];
+    structures?: number[];
+}
+
 export class StatutsVm implements IStatutsVm {
     statutDtos?: Statut[];
 
@@ -4145,7 +3831,7 @@ export interface IStatutsVm {
 }
 
 export class StatutByIdVm implements IStatutByIdVm {
-    statutDto?: StatutDto;
+    statutDto?: Statut;
 
     constructor(data?: IStatutByIdVm) {
         if (data) {
@@ -4158,7 +3844,7 @@ export class StatutByIdVm implements IStatutByIdVm {
 
     init(_data?: any) {
         if (_data) {
-            this.statutDto = _data["statutDto"] ? StatutDto.fromJS(_data["statutDto"]) : <any>undefined;
+            this.statutDto = _data["statutDto"] ? Statut.fromJS(_data["statutDto"]) : <any>undefined;
         }
     }
 
@@ -4177,7 +3863,7 @@ export class StatutByIdVm implements IStatutByIdVm {
 }
 
 export interface IStatutByIdVm {
-    statutDto?: StatutDto;
+    statutDto?: Statut;
 }
 
 export class CreateStatutCommand implements ICreateStatutCommand {
@@ -4219,6 +3905,54 @@ export class CreateStatutCommand implements ICreateStatutCommand {
 }
 
 export interface ICreateStatutCommand {
+    title?: string | undefined;
+    comment?: string | undefined;
+    color?: ColorStatut;
+}
+
+export class UpdateStatutCommand implements IUpdateStatutCommand {
+    id?: number;
+    title?: string | undefined;
+    comment?: string | undefined;
+    color?: ColorStatut;
+
+    constructor(data?: IUpdateStatutCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.title = _data["title"];
+            this.comment = _data["comment"];
+            this.color = _data["color"];
+        }
+    }
+
+    static fromJS(data: any): UpdateStatutCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new UpdateStatutCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["title"] = this.title;
+        data["comment"] = this.comment;
+        data["color"] = this.color;
+        return data; 
+    }
+}
+
+export interface IUpdateStatutCommand {
+    id?: number;
     title?: string | undefined;
     comment?: string | undefined;
     color?: ColorStatut;
@@ -4368,6 +4102,74 @@ export interface ICreateStructureCommand {
     contrats?: number[];
 }
 
+export class UpdateStructureCommand implements IUpdateStructureCommand {
+    id?: number;
+    startD?: Date;
+    endD?: Date;
+    parent?: number | undefined;
+    title?: string | undefined;
+    comment?: string | undefined;
+    contrats?: number[];
+
+    constructor(data?: IUpdateStructureCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.startD = _data["startD"] ? new Date(_data["startD"].toString()) : <any>undefined;
+            this.endD = _data["endD"] ? new Date(_data["endD"].toString()) : <any>undefined;
+            this.parent = _data["parent"];
+            this.title = _data["title"];
+            this.comment = _data["comment"];
+            if (Array.isArray(_data["contrats"])) {
+                this.contrats = [] as any;
+                for (let item of _data["contrats"])
+                    this.contrats!.push(item);
+            }
+        }
+    }
+
+    static fromJS(data: any): UpdateStructureCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new UpdateStructureCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["startD"] = this.startD ? this.startD.toISOString() : <any>undefined;
+        data["endD"] = this.endD ? this.endD.toISOString() : <any>undefined;
+        data["parent"] = this.parent;
+        data["title"] = this.title;
+        data["comment"] = this.comment;
+        if (Array.isArray(this.contrats)) {
+            data["contrats"] = [];
+            for (let item of this.contrats)
+                data["contrats"].push(item);
+        }
+        return data; 
+    }
+}
+
+export interface IUpdateStructureCommand {
+    id?: number;
+    startD?: Date;
+    endD?: Date;
+    parent?: number | undefined;
+    title?: string | undefined;
+    comment?: string | undefined;
+    contrats?: number[];
+}
+
 export class TypeProjectsVm implements ITypeProjectsVm {
     typeProjectDtos?: TypeProject[];
 
@@ -4413,7 +4215,7 @@ export interface ITypeProjectsVm {
 }
 
 export class TypeProjectByIdVm implements ITypeProjectByIdVm {
-    typeProjectDto?: TypeProjectDto;
+    typeProjectDto?: TypeProject;
 
     constructor(data?: ITypeProjectByIdVm) {
         if (data) {
@@ -4426,7 +4228,7 @@ export class TypeProjectByIdVm implements ITypeProjectByIdVm {
 
     init(_data?: any) {
         if (_data) {
-            this.typeProjectDto = _data["typeProjectDto"] ? TypeProjectDto.fromJS(_data["typeProjectDto"]) : <any>undefined;
+            this.typeProjectDto = _data["typeProjectDto"] ? TypeProject.fromJS(_data["typeProjectDto"]) : <any>undefined;
         }
     }
 
@@ -4445,7 +4247,7 @@ export class TypeProjectByIdVm implements ITypeProjectByIdVm {
 }
 
 export interface ITypeProjectByIdVm {
-    typeProjectDto?: TypeProjectDto;
+    typeProjectDto?: TypeProject;
 }
 
 export class CreateTypeProjectCommand implements ICreateTypeProjectCommand {

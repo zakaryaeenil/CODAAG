@@ -31,7 +31,7 @@ public class GetActionPByIdQueryHandler : IRequestHandler<GetActionPByIdQuery, A
             ActionPDto = await _context.ActionPs
                 .Where(t => t.Id == request.ListId)
                 .Include(s =>s.Statut)
-               // .ProjectTo<ActionPDto>(_mapper.ConfigurationProvider)
+                .Include(s => s.Structures)
                 .SingleAsync(cancellationToken: cancellationToken)
 
         };

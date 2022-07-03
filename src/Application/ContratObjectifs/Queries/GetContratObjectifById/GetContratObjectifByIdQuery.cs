@@ -28,7 +28,7 @@ public class GetContratObjectifByIdQueryHandler : IRequestHandler<GetContratObje
     {
         return new ContratObjectifByIdVm
         {
-          ContratObjectifDto    = await _context.ContratObjectifs 
+          ContratObjectifDto    = await _context.ContratObjectifs
                 .Where(t => t.Id == request.ListId)
                 .SingleAsync(cancellationToken: cancellationToken)
 

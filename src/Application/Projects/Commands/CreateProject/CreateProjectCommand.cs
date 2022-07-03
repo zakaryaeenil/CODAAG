@@ -76,11 +76,10 @@ public class CreateProjectCommandHandler : IRequestHandler<CreateProjectCommand,
         {
             foreach (var c in request.ContratObjectifs)
             {
-                var contrat = _context.ContratObjectifs.SingleOrDefault(x => x.Id == c);
+                var contrat = _context.ContratObjectifs.Include(p =>p.Projects).SingleOrDefault(x => x.Id == c);
                 if (contrat != null)
                 {
                     contrat.Projects.Add(entity);
-                    entity.ContratObjectifs.Add(contrat);
                 }
             }
         }
@@ -88,16 +87,15 @@ public class CreateProjectCommandHandler : IRequestHandler<CreateProjectCommand,
         {
             foreach (var ss in request.Structures)
             {
-                var structure = _context.Structures.SingleOrDefault(x => x.Id == ss);
+                var structure = _context.Structures.Include(p =>p.Projects).SingleOrDefault(x => x.Id == ss);
                 if (structure != null)
                 {
                     structure.Projects.Add(entity);
-                    entity.Structures.Add(structure);
                 }
             }
         }
+        
         await _context.SaveChangesAsync(cancellationToken);
-
         return entity.Id;
     }
 }

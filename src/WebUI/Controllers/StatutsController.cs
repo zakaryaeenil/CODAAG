@@ -26,7 +26,7 @@ public class StatutsController: ApiControllerBase
         
             return await Mediator.Send(command);
     }
-    /*
+    
     [HttpPut("{id}")]
     public async Task<ActionResult> Update(int id, UpdateStatutCommand command)
     {
@@ -39,7 +39,7 @@ public class StatutsController: ApiControllerBase
 
         return NoContent();
     }
-*/
+
     [HttpDelete("{id}")]
     public async Task<ActionResult> Delete(int id)
     {

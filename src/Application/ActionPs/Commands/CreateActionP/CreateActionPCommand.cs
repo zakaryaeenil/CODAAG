@@ -20,9 +20,7 @@ public class CreateActionPCommand: IRequest<int>
     public int? StatutId { get; init; }
 
     public int? ProjectId { get; init; }
-   
-    public int? ProjectTypeId { get; init; }
-
+    
     public ICollection<int> Structures { get; init; }
 
 }
@@ -45,10 +43,7 @@ public class CreateActionPCommandHandler : IRequestHandler<CreateActionPCommand,
         var p = _context.Projects
             .AsNoTracking()
             .SingleOrDefault(x => x.Id == request.ProjectId);
-        var tp = _context.TypeProjects
-            .AsNoTracking()
-            .SingleOrDefault(x => x.Id == request.ProjectTypeId);
-        
+
         var entity = new ActionP()
         {
             Title = request.Title,
@@ -69,11 +64,11 @@ public class CreateActionPCommandHandler : IRequestHandler<CreateActionPCommand,
             foreach (var c in request.Structures)
             {
 
-                var structure = _context.Structures.SingleOrDefault(x => x.Id == c);
+                var structure = _context.Structures.Include(a =>a.ActionPs).SingleOrDefault(x => x.Id == c);
                 if (structure != null)
                 {
                     structure.ActionPs.Add(entity);
-                    entity.Structures.Add(structure);
+                  //  entity.Structures.Add(structure);
                 }
             }
         }

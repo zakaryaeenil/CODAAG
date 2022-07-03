@@ -245,6 +245,49 @@
           }
         }
       },
+      "put": {
+        "tags": [
+          "ContratObjectifs"
+        ],
+        "operationId": "ContratObjectifs_Update",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateContratObjectifCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      },
       "delete": {
         "tags": [
           "ContratObjectifs"
@@ -353,6 +396,49 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/EvaluationByIdVm"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Evaluations"
+        ],
+        "operationId": "Evaluations_Update",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateEvaluationCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -473,6 +559,49 @@
           }
         }
       },
+      "put": {
+        "tags": [
+          "Projects"
+        ],
+        "operationId": "Projects_Update",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProjectCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      },
       "delete": {
         "tags": [
           "Projects"
@@ -587,6 +716,49 @@
           }
         }
       },
+      "put": {
+        "tags": [
+          "Statuts"
+        ],
+        "operationId": "Statuts_Update",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateStatutCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      },
       "delete": {
         "tags": [
           "Statuts"
@@ -695,6 +867,49 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/StructureByIdVm"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Structures"
+        ],
+        "operationId": "Structures_Update",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateStructureCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -1602,11 +1817,6 @@
             "format": "int32",
             "nullable": true
           },
-          "projectTypeId": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
           "structures": {
             "type": "array",
             "items": {
@@ -1625,8 +1835,59 @@
             "format": "int32"
           },
           "title": {
+            "type": "string"
+          },
+          "note": {
             "type": "string",
             "nullable": true
+          },
+          "tauxR": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "budgR": {
+            "type": "number",
+            "format": "float",
+            "nullable": true
+          },
+          "startDatePrv": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endDatePrv": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "budgPrv": {
+            "type": "number",
+            "format": "float",
+            "nullable": true
+          },
+          "statutId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "projectId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "structures": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
           }
         }
       },
@@ -1681,6 +1942,40 @@
           }
         }
       },
+      "UpdateContratObjectifCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "startD": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endD": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "statut": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        }
+      },
       "EvaluationsVm": {
         "type": "object",
         "additionalProperties": false,
@@ -1698,513 +1993,7 @@
         "additionalProperties": false,
         "properties": {
           "evaluationDto": {
-            "$ref": "#/components/schemas/EvaluationDto"
-          }
-        }
-      },
-      "EvaluationDto": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "title": {
-            "type": "string"
-          },
-          "note": {
-            "type": "string"
-          },
-          "startDate": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "endDate": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "statutId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "statut": {
-            "$ref": "#/components/schemas/StatutDto"
-          },
-          "projects": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/EvaluationProjectDto"
-            }
-          },
-          "actionPs": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/EvaluationActionPDto"
-            }
-          }
-        }
-      },
-      "StatutDto": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "title": {
-            "type": "string"
-          },
-          "note": {
-            "type": "string"
-          },
-          "contratObjectifs": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ContratObjectifDto"
-            }
-          },
-          "actionPs": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ActionPDto"
-            }
-          },
-          "projects": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ProjectDto"
-            }
-          },
-          "evaluations": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/EvaluationDto"
-            }
-          }
-        }
-      },
-      "ContratObjectifDto": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "codeCO": {
-            "type": "string"
-          },
-          "title": {
-            "type": "string"
-          },
-          "note": {
-            "type": "string",
-            "nullable": true
-          },
-          "startDate": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "endDate": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "isActive": {
-            "type": "boolean"
-          },
-          "statutId": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "statut": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/StatutDto"
-              }
-            ]
-          },
-          "projects": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ProjectDto"
-            }
-          },
-          "structures": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/StructureDto"
-            }
-          }
-        }
-      },
-      "ProjectDto": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "codeProject": {
-            "type": "string"
-          },
-          "title": {
-            "type": "string"
-          },
-          "note": {
-            "type": "string",
-            "nullable": true
-          },
-          "startDatePrv": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "endDatePrv": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "startDate": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "endDate": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "priority": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "tauxR": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "modeReel": {
-            "type": "string",
-            "nullable": true
-          },
-          "isInitial": {
-            "type": "boolean"
-          },
-          "statutId": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "statut": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/StatutDto"
-              }
-            ]
-          },
-          "typeProjectId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "typeProject": {
-            "$ref": "#/components/schemas/TypeProjectDto"
-          },
-          "contratObjectifId": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "contratObjectif": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/ContratObjectifDto"
-              }
-            ]
-          },
-          "actions": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ActionPDto"
-            }
-          },
-          "structures": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/StructureDto"
-            }
-          },
-          "evaluations": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/EvaluationProjectDto"
-            }
-          }
-        }
-      },
-      "TypeProjectDto": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "codeTP": {
-            "type": "string"
-          },
-          "title": {
-            "type": "string"
-          },
-          "projects": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ProjectDto"
-            }
-          }
-        }
-      },
-      "ActionPDto": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "title": {
-            "type": "string"
-          },
-          "note": {
-            "type": "string",
-            "nullable": true
-          },
-          "tauxR": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "budgR": {
-            "type": "number",
-            "format": "float",
-            "nullable": true
-          },
-          "startDatePrv": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "endDatePrv": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "startDate": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "endDate": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "budgPrv": {
-            "type": "number",
-            "format": "float",
-            "nullable": true
-          },
-          "statutId": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "statut": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/StatutDto"
-              }
-            ]
-          },
-          "projectId": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "project": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/ProjectDto"
-              }
-            ]
-          },
-          "structures": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/StructureDto"
-            }
-          },
-          "evaluations": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/EvaluationActionPDto"
-            }
-          }
-        }
-      },
-      "StructureDto": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "codeStructure": {
-            "type": "string"
-          },
-          "title": {
-            "type": "string"
-          },
-          "note": {
-            "type": "string"
-          },
-          "startDate": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "endDate": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "parentStructure": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/StructureDto"
-              }
-            ]
-          },
-          "gestionnaires": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/GestionnaireDto"
-            }
-          },
-          "structureChildren": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/StructureDto"
-            }
-          },
-          "projects": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ProjectDto"
-            }
-          },
-          "contratObjectifs": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ContratObjectifDto"
-            }
-          },
-          "actionPs": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ActionPDto"
-            }
-          }
-        }
-      },
-      "GestionnaireDto": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "nom": {
-            "type": "string",
-            "nullable": true
-          },
-          "prenom": {
-            "type": "string",
-            "nullable": true
-          },
-          "login": {
-            "type": "string"
-          },
-          "code": {
-            "type": "string"
-          },
-          "structure": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/StructureDto"
-              }
-            ]
-          }
-        }
-      },
-      "EvaluationActionPDto": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "evaluationId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "evaluation": {
-            "$ref": "#/components/schemas/EvaluationDto"
-          },
-          "actionPId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "actionP": {
-            "$ref": "#/components/schemas/ActionPDto"
-          },
-          "tauxR": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          }
-        }
-      },
-      "EvaluationProjectDto": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "evaluationId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "evaluation": {
-            "$ref": "#/components/schemas/EvaluationDto"
-          },
-          "projectId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "project": {
-            "$ref": "#/components/schemas/ProjectDto"
-          },
-          "tauxR": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
+            "$ref": "#/components/schemas/Evaluation"
           }
         }
       },
@@ -2212,6 +2001,37 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
+          "startD": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endD": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "statut": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateEvaluationCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
           "startD": {
             "type": "string",
             "format": "date-time"
@@ -2329,6 +2149,83 @@
           }
         }
       },
+      "UpdateProjectCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "note": {
+            "type": "string",
+            "nullable": true
+          },
+          "startDatePrv": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "endDatePrv": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "priority": {
+            "$ref": "#/components/schemas/PriorityLevel"
+          },
+          "tauxR": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "modeReel": {
+            "type": "string",
+            "nullable": true
+          },
+          "isInitial": {
+            "type": "boolean"
+          },
+          "statut": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "typeProjectId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "contratObjectifs": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          "structures": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        }
+      },
       "StatutsVm": {
         "type": "object",
         "additionalProperties": false,
@@ -2346,7 +2243,7 @@
         "additionalProperties": false,
         "properties": {
           "statutDto": {
-            "$ref": "#/components/schemas/StatutDto"
+            "$ref": "#/components/schemas/Statut"
           }
         }
       },
@@ -2354,6 +2251,27 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "color": {
+            "$ref": "#/components/schemas/ColorStatut"
+          }
+        }
+      },
+      "UpdateStatutCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
           "title": {
             "type": "string",
             "nullable": true
@@ -2422,6 +2340,44 @@
           }
         }
       },
+      "UpdateStructureCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "startD": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endD": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "parent": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "contrats": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        }
+      },
       "TypeProjectsVm": {
         "type": "object",
         "additionalProperties": false,
@@ -2439,7 +2395,7 @@
         "additionalProperties": false,
         "properties": {
           "typeProjectDto": {
-            "$ref": "#/components/schemas/TypeProjectDto"
+            "$ref": "#/components/schemas/TypeProject"
           }
         }
       },

@@ -56,7 +56,7 @@
     <!-- begin::Table container -->
     <div  class="table-responsive">
       <!-- begin::Table -->
-      <table
+      <table  matSort (matSortChange)="sortData($event)"
         class="table table-row-bordered table-row-gray-100 align-middle gs-0 gy-3"
       >
         <!-- begin::Table head -->
@@ -76,13 +76,13 @@
                 data-kt-check-target=".widget-13-check"
               />
             </div>
-          <th >ID</th>
-          <th >Title</th>
-          <th >Note</th>
-          <th >Taux </th>
-          <th >Statut</th>
-          <th >Start Date </th>
-          <th >End Date</th>
+          <th mat-sort-header="id" >ID</th>
+          <th mat-sort-header="title">Title</th>
+          <th mat-sort-header="note">Note</th>
+          <th mat-sort-header="taux">Taux </th>
+          <th mat-sort-header="statut">Statut</th>
+          <th mat-sort-header="startDate">Start Date </th>
+          <th mat-sort-header="endDate">End Date</th>
           <th class="min-w-100px text-end">__________</th>
         </tr>
         </thead>
@@ -91,7 +91,7 @@
 
         <tbody>
 
-        <tr *ngFor="let action of  vm.actionPDtos | paginate
+        <tr *ngFor="let action of  sortedData | paginate
               : {
                   itemsPerPage: tableSize,
                   currentPage: page,
@@ -198,8 +198,8 @@
                       ngbDropdownToggle>Actions</button>
               <div ngbDropdownMenu="gfg">
                 <button ngbDropdownItem>View</button>
-                <button ngbDropdownItem>Update</button>
-                <button ngbDropdownItem>Delete</button>
+                <button ngbDropdownItem (click)="gotoUpdate(action.id)">Update</button>
+                <button ngbDropdownItem (click)="open(content,action.id)">Delete</button>
               </div>
             </div>
           </td>
@@ -224,3 +224,18 @@
   <!-- begin::Body -->
 
 </div>
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Confirmation</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>Are you sure to delete this?</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="d('Cross click')">Cancel</button>
+    <button type="button" class="btn btn-outline-dark" (click)="c('yes')">Yes</button>
+  </div>
+</ng-template>

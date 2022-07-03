@@ -13,6 +13,8 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { ProjectCreateComponent } from './project-create/project-create.component';
 import {NgMultiSelectDropDownModule} from "ng-multiselect-dropdown";
 import {MatSelectModule} from "@angular/material/select";
+import { ProjectUpdateComponent } from './project-update/project-update.component';
+import {MatSortModule} from "@angular/material/sort";
 
 
 
@@ -21,20 +23,22 @@ import {MatSelectModule} from "@angular/material/select";
     ProjectsComponent,
     ProjectsViewComponent,
     ProjectCreateComponent,
+    ProjectUpdateComponent,
 
   ],
-  imports: [
-    CommonModule,
-    ProjectsRoutingModule,
-    // DropdownMenusModule,
-    NgbModule,
-    // NgbDropdownModule,
-    NgxPaginationModule,
-    FormsModule,
-    MatSelectModule,
-    ReactiveFormsModule,
-    NgMultiSelectDropDownModule,
-    InlineSVGModule,
-  ]
+    imports: [
+        CommonModule,
+        ProjectsRoutingModule,
+        // DropdownMenusModule,
+        NgbModule,
+        // NgbDropdownModule,
+        NgxPaginationModule,
+        FormsModule,
+        MatSelectModule,
+        ReactiveFormsModule,
+        NgMultiSelectDropDownModule,
+        InlineSVGModule,
+        MatSortModule,
+    ]
 })
 export class ProjectsModule { }

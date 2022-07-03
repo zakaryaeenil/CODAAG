@@ -7,12 +7,14 @@ import {TypeProjectsComponent} from "./type-projects.component";
 import {DropdownMenusModule} from "../../_metronic/partials";
 import {InlineSVGModule} from "ng-inline-svg-2";
 import {NgApexchartsModule} from "ng-apexcharts";
-import {NgbDropdownModule} from "@ng-bootstrap/ng-bootstrap";
+import {NgbDatepickerModule, NgbDropdownModule} from "@ng-bootstrap/ng-bootstrap";
 import {NgxPaginationModule} from "ngx-pagination";
 import {FormsModule} from "@angular/forms";
 import { TypeProjectCreateComponent } from './type-project-create/type-project-create.component';
 import { TypeProjectUpdateComponent } from './type-project-update/type-project-update.component';
-
+import {MatSortModule} from "@angular/material/sort";
+import { ExampleDatatableComponent } from './example-datatable/example-datatable.component';
+import {AgGridModule} from "ag-grid-angular";
 
 
 @NgModule({
@@ -20,7 +22,8 @@ import { TypeProjectUpdateComponent } from './type-project-update/type-project-u
     TypeProjectsViewComponent,
     TypeProjectsComponent,
     TypeProjectCreateComponent,
-    TypeProjectUpdateComponent
+    TypeProjectUpdateComponent,
+    ExampleDatatableComponent
   ],
     imports: [
         CommonModule,
@@ -29,8 +32,11 @@ import { TypeProjectUpdateComponent } from './type-project-update/type-project-u
         InlineSVGModule,
         NgApexchartsModule,
         NgbDropdownModule,
-      FormsModule,
-      NgxPaginationModule
+        FormsModule,
+        NgxPaginationModule,
+        NgbDatepickerModule,
+        MatSortModule,
+        AgGridModule
     ]
 })
 export class TypeProjectsModule { }

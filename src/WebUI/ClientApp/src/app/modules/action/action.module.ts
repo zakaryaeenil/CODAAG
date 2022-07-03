@@ -9,13 +9,16 @@ import {NgxPaginationModule} from "ngx-pagination";
 import {NgMultiSelectDropDownModule} from "ng-multiselect-dropdown";
 import {FormsModule} from "@angular/forms";
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
+import { ActionUpdateComponent } from './action-update/action-update.component';
+import {MatSortModule} from "@angular/material/sort";
 
 
 @NgModule({
   declarations: [
     ActionComponent,
     ActionCreateComponent,
-    ActionViewComponent
+    ActionViewComponent,
+    ActionUpdateComponent
   ],
     imports: [
         CommonModule,
@@ -23,7 +26,8 @@ import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
         NgxPaginationModule,
         NgMultiSelectDropDownModule,
         FormsModule,
-        NgbModule
+        NgbModule,
+        MatSortModule
     ]
 })
 export class ActionModule { }

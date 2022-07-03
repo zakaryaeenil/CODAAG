@@ -26,7 +26,7 @@ public class ContratObjectifsController: ApiControllerBase
     {
         return await Mediator.Send(command);
     }
-  /*  [HttpPut("{id}")]
+   [HttpPut("{id}")]
     public async Task<ActionResult> Update(int id, UpdateContratObjectifCommand command)
     {
         if (id != command.Id)
@@ -38,7 +38,7 @@ public class ContratObjectifsController: ApiControllerBase
 
         return NoContent();
     }
-*/
+
     [HttpDelete("{id}")]
     public async Task<ActionResult> Delete(int id)
     {

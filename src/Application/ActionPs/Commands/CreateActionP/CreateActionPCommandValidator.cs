@@ -4,7 +4,7 @@ using FluentValidation;
 
 namespace CleanArchitecture.Application.ActionPs.Commands.CreateActionP;
 
-public class CreateActionPCommandValidator: AbstractValidator<CreateActionPCommand>
+public class CreateActionPCommandValidator : AbstractValidator<CreateActionPCommand>
 {
     private readonly IApplicationDbContext _context;
 
@@ -14,7 +14,7 @@ public class CreateActionPCommandValidator: AbstractValidator<CreateActionPComma
 
         RuleFor(v => v.Title)
             .NotEmpty().WithMessage("Title is required.")
-            .MaximumLength(50).WithMessage("Title must not exceed 50 characters.");
+            .MaximumLength(200).WithMessage("Title must not exceed 50 characters.");
         
         RuleFor(m => m.StartDate)
             .NotEmpty().WithMessage("Start Date is Required");
@@ -39,9 +39,6 @@ public class CreateActionPCommandValidator: AbstractValidator<CreateActionPComma
        
         RuleFor(m => m.StatutId)
             .NotNull().WithMessage("Statut is Required");
-        
-        RuleFor(m => m.ProjectTypeId)
-            .NotNull().WithMessage("Type Project  is Required");
         
     }
     

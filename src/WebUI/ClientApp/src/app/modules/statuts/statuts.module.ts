@@ -13,13 +13,16 @@ import {FormsModule} from "@angular/forms";
 import {NgxPaginationModule} from "ngx-pagination";
 import {ToastrModule} from "ngx-toastr";
 import {AccountModule} from "../account/account.module";
+import { StatutUpdateComponent } from './statut-update/statut-update.component';
+import {MatSortModule} from "@angular/material/sort";
 
 
 @NgModule({
   declarations: [
     StatutCreateComponent,
     StatutsComponent,
-    StatutsViewComponent
+    StatutsViewComponent,
+    StatutUpdateComponent
   ],
     imports: [
         CommonModule,
@@ -32,7 +35,8 @@ import {AccountModule} from "../account/account.module";
         NgxPaginationModule,
         NgbModule,
         ToastrModule,
-       // AccountModule
+        MatSortModule,
+        // AccountModule
     ]
 })
 export class StatutsModule { }

@@ -1,0 +1,309 @@
+<form *ngIf="project" #projectUpdateForm="ngForm"  class="form d-flex flex-column flex-lg-row" >
+
+  <!--begin::Aside column-->
+  <div class="d-flex flex-column gap-7 gap-lg-10 w-100 w-lg-300px mb-7 me-lg-10">
+
+    <!--begin::Order details-->
+    <div class="card card-flush py-4">
+      <!--begin::Card header-->
+      <div class="card-header">
+        <div class="card-title">
+          <h2>Statut & Type Project</h2>
+        </div>
+      </div>
+      <!--end::Card header-->
+      <!--begin::Card body-->
+      <div class="card-body pt-0">
+        <div class="d-flex flex-column gap-10">
+          <!--begin::Input group-->
+          <div class="fv-row">
+            <!--begin::Label-->
+            <label class="required form-label">Staut</label>
+            <!--end::Label-->
+            <!--begin::Input group-->
+            <div *ngIf="vmStatut.statutDtos" class="fv-row">
+              <!--begin::Select2-->
+              <select [(ngModel)]="project.statutId" class="form-select mb-2" data-control="select2" data-hide-search="true" data-placeholder="Select an option" name="statut" >
+                <option  *ngFor="let c of vmStatut.statutDtos" [ngValue]="c.id" >{{c.title}}</option>
+              </select>
+              <!--end::Select2-->
+              <!--begin::Description-->
+              <div class="text-muted fs-7">Set the Contrat Objectifs. The defeult value means he have no Contarct.</div>
+              <!--end::Description-->
+            </div>
+            <!--end::Input group-->
+          </div>
+          <!--end::Input group-->
+          <!--begin::Input group-->
+          <div class="fv-row">
+            <!--begin::Label-->
+            <label class="required form-label">Type Project</label>
+            <!--end::Label-->
+            <!--begin::Input group-->
+            <div *ngIf="vmTypeProjects.typeProjectDtos" class=" fv-row">
+              <!--begin::Select2-->
+              <select [(ngModel)]="project.typeProjectId" class="form-select mb-2" data-control="select2" data-hide-search="true" data-placeholder="Select an option" name="statut" >
+                <option  *ngFor="let t of vmTypeProjects.typeProjectDtos" [ngValue]="t.id" >{{t.title}}</option>
+              </select>
+              <!--end::Select2-->
+              <!--begin::Description-->
+              <div class="text-muted fs-7">Set the Contrat Objectifs. The defeult value means he have no Contarct.</div>
+              <!--end::Description-->
+            </div>
+            <!--end::Input group-->
+          </div>
+          <!--end::Input group-->
+          <!--begin::Input group-->
+          <div  class=" fv-row">
+            <!--begin::Label-->
+            <label class="form-label">Project is Initial ?</label>
+            <!--end::Label-->
+            <!--begin::Select2-->
+            <select [(ngModel)]="project.isInitial" class="form-select mb-2" data-control="select2" data-hide-search="true" data-placeholder="Select an option" name="contratObjectifs" >
+              <option  [ngValue]="true" > Yes</option>
+              <option   [ngValue]="false" >No</option>
+            </select>
+            <!--end::Select2-->
+            <!--begin::Description-->
+            <div class="text-muted fs-7">Set the value. The defeult value means he is initial.</div>
+            <!--end::Description-->
+          </div>
+          <!--end::Input group-->
+          <!--begin::Input group-->
+          <div class="fv-row">
+            <!--begin::Label-->
+            <label class="form-label">Taux de Realisation</label>
+            <!--end::Label-->
+            <!--begin::Input-->
+            <input [(ngModel)]="project.tauxR" type="number" name="tauxR" class="form-control mb-2" placeholder="{{project.tauxR}}" value="" />
+            <!--end::Input-->
+            <!--begin::Description-->
+            <div class="text-muted fs-7"> The default value means Taux de realisation = 0 .</div>
+            <!--end::Description-->
+          </div>
+          <!--end::Input group-->
+        </div>
+      </div>
+      <!--end::Card header-->
+    </div>
+    <!--end::Order details-->
+
+    <!--begin::Order details-->
+    <div class="card card-flush py-4">
+      <!--begin::Card header-->
+      <div class="card-header">
+        <div class="card-title">
+          <h2>Project Date</h2>
+        </div>
+      </div>
+      <!--end::Card header-->
+      <!--begin::Card body-->
+      <div class="card-body pt-0">
+        <div class="d-flex flex-column gap-10">
+          <!--begin::Input group-->
+          <div class="fv-row">
+            <!--begin::Label-->
+            <label class="required form-label">Start Date</label>
+            <!--end::Label-->
+            <!--begin::Editor-->
+            <input [(ngModel)]="project.startDate" name="startDate" type="date" placeholder="Select a date" class="form-control mb-2"  />
+            <!--end::Editor-->
+            <!--begin::Description-->
+            <div class="text-muted fs-7">Set the start date of the Project to process.</div>
+            <!--end::Description-->
+          </div>
+          <!--end::Input group-->
+          <!--begin::Input group-->
+          <div class="fv-row">
+            <!--begin::Label-->
+            <label class="required form-label">End Date</label>
+            <!--end::Label-->
+            <!--begin::Editor-->
+            <input [(ngModel)]="project.endDate" name="endDate"  type="date"  placeholder="Select a date" class="form-control mb-2"  />
+            <!--end::Editor-->
+            <!--begin::Description-->
+            <div class="text-muted fs-7">Set the end date of the Project to process.</div>
+            <!--end::Description-->
+          </div>
+          <!--end::Input group-->
+        </div>
+      </div>
+      <!--end::Card header-->
+    </div>
+    <!--end::Order details-->
+
+    <!--begin::Order details-->
+    <div class="card card-flush py-4">
+      <!--begin::Card header-->
+      <div class="card-header">
+        <div class="card-title">
+          <h2>Project Date Preview</h2>
+        </div>
+      </div>
+      <!--end::Card header-->
+      <!--begin::Card body-->
+      <div class="card-body pt-0">
+        <div class="d-flex flex-column gap-10">
+          <!--begin::Input group-->
+          <div class="fv-row">
+            <!--begin::Label-->
+            <label class="required form-label">Start Date Prv</label>
+            <!--end::Label-->
+            <!--begin::Editor-->
+            <input [(ngModel)]="project.startDatePrv" name="startDate" type="date" placeholder="Select a date" class="form-control mb-2"  />
+            <!--end::Editor-->
+            <!--begin::Description-->
+            <div class="text-muted fs-7">Set the start date preview of the Project to process.</div>
+            <!--end::Description-->
+          </div>
+          <!--end::Input group-->
+          <!--begin::Input group-->
+          <div class="fv-row">
+            <!--begin::Label-->
+            <label class="required form-label">End Date Prv</label>
+            <!--end::Label-->
+            <!--begin::Editor-->
+            <input [(ngModel)]="project.endDatePrv" name="endDate"  type="date"  placeholder="Select a date" class="form-control mb-2"  />
+            <!--end::Editor-->
+            <!--begin::Description-->
+            <div class="text-muted fs-7">Set the end date preview of the order to process.</div>
+            <!--end::Description-->
+          </div>
+          <!--end::Input group-->
+        </div>
+      </div>
+      <!--end::Card header-->
+    </div>
+    <!--end::Order details-->
+
+  </div>
+  <!--end::Aside column-->
+
+
+  <!--begin::Main column-->
+  <div class="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
+    <!--begin::General options-->
+    <div class="card card-flush py-4">
+      <!--begin::Card header-->
+      <div class="card-header">
+        <div class="card-title">
+          <h2>General</h2>
+        </div>
+      </div>
+      <!--end::Card header-->
+      <!--begin::Card body-->
+      <div class="card-body pt-0">
+
+        <!--begin::Input group-->
+        <div class="mb-10 fv-row">
+          <!--begin::Label-->
+          <label class="required form-label">Project Name</label>
+          <!--end::Label-->
+          <!--begin::Input-->
+          <input [(ngModel)]="project.title" type="text" name="title" class="form-control mb-2" placeholder="{{project.title}}" value="" />
+          <!--end::Input-->
+          <!--begin::Description-->
+          <div class="text-muted fs-7">A Project name is required and recommended to be unique.</div>
+          <!--end::Description-->
+        </div>
+        <!--end::Input group-->
+        <!--begin::Input group-->
+        <div class="mb-10 fv-row">
+          <!--begin::Label-->
+          <label class="required form-label">Project Mode</label>
+          <!--end::Label-->
+          <!--begin::Input-->
+          <input [(ngModel)]="project.modeReel" type="text" name="modeReel" class="form-control mb-2" placeholder="{{project.modeReel}}" value="" />
+          <!--end::Input-->
+          <!--begin::Description-->
+          <div class="text-muted fs-7">A Project mode is required . for example interne,Externe or one of these </div>
+          <!--end::Description-->
+        </div>
+        <!--end::Input group-->
+
+        <!--begin::Input group-->
+        <div class="mb-10 fv-row">
+          <!--begin::Label-->
+          <label class="form-label">Comment</label>
+          <!--end::Label-->
+          <!--begin::Editor-->
+          <div >
+            <textarea [(ngModel)]="project.note" name="note" class="form-control mb-2" placeholder="{{project.note}}" ></textarea>
+          </div>
+          <!--end::Editor-->
+          <!--begin::Description-->
+          <div class="text-muted fs-7">Set a Comment to the Project for better visibility.</div>
+          <!--end::Description-->
+        </div>
+        <!--begin::Input group-->
+        <div *ngIf="StructureVm.structureDtos" class="mb-10 fv-row">
+          <!--begin::Label-->
+          <label class="form-label">Structures</label>
+          <!--end::Label-->
+          <div >
+            <!--begin::Select2-->
+            <ng-multiselect-dropdown
+              [placeholder]="'custom placeholder'"
+              [settings]="dropdownSettings"
+              [data]="dropdownList"
+              [(ngModel)]="selectedItems"
+              (onSelect)="onItemSelect($event)"
+              (onSelectAll)="onSelectAll($event)"
+              (onDeSelect)="deSelect($event)"
+              (onDeSelectAll)="deSelectAll($event)"
+              [ngModelOptions]="{standalone: true}"
+            >
+            </ng-multiselect-dropdown>
+            <!--end::Select2-->
+          </div>
+          <!--begin::Description-->
+          <div class="text-muted fs-7">Set the Contrat Objectifs. The defeult value means he have no Contarct.</div>
+          <!--end::Description-->
+        </div>
+        <!--end::Input group-->
+        <!--begin::Input group-->
+        <div *ngIf="contratsVm.contratObjectifDtos" class="mb-10 fv-row">
+          <!--begin::Label-->
+          <label class="form-label">Contrats</label>
+          <!--end::Label-->
+          <div >
+            <!--begin::Select2-->
+            <ng-multiselect-dropdown
+              [placeholder]="'custom placeholder'"
+              [settings]="dropdownSettings2"
+              [data]="dropdownList2"
+              [(ngModel)]="selectedItems2"
+              (onSelect)="onItemSelect2($event)"
+              (onSelectAll)="onSelectAll2($event)"
+              (onDeSelect)="deSelect2($event)"
+              (onDeSelectAll)="deSelectAll2($event)"
+              [ngModelOptions]="{standalone: true}"
+            >
+            </ng-multiselect-dropdown>
+            <!--end::Select2-->
+          </div>
+          <!--begin::Description-->
+          <div class="text-muted fs-7">Set the Contrat Objectifs. The defeult value means he have no Contarct.</div>
+          <!--end::Description-->
+        </div>
+        <!--end::Input group-->
+
+      </div>
+      <!--end::Card header-->
+    </div>
+    <!--end::General options-->
+    <div class="d-flex justify-content-end">
+      <!--begin::Button-->
+      <a href="../../demo1/dist/apps/ecommerce/catalog/products.html" id="kt_ecommerce_add_product_cancel" class="btn btn-light me-5">Cancel</a>
+      <!--end::Button-->
+      <!--begin::Button-->
+      <button type="submit" (click)="onSubmit()" >
+        <span class="indicator-label">Save Changes</span>
+        <span class="indicator-progress">Please wait...
+												<span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+      </button>
+      <!--end::Button-->
+    </div>
+  </div>
+  <!--end::Main column-->
+</form>

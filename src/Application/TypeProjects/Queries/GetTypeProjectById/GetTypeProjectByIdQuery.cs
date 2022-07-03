@@ -30,7 +30,7 @@ public class GetTypeProjectByIdQueryHandler : IRequestHandler<GetTypeProjectById
         {
             TypeProjectDto    = await _context.TypeProjects 
                 .Where(t => t.Id == request.ListId)
-                .ProjectTo<TypeProjectDto>(_mapper.ConfigurationProvider)
+                //.ProjectTo<TypeProjectDto>(_mapper.ConfigurationProvider)
                 .SingleAsync(cancellationToken: cancellationToken)
 
         };
