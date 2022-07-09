@@ -15,6 +15,7 @@ import {NgMultiSelectDropDownModule} from "ng-multiselect-dropdown";
 import {MatSelectModule} from "@angular/material/select";
 import { ProjectUpdateComponent } from './project-update/project-update.component';
 import {MatSortModule} from "@angular/material/sort";
+import {AgGridModule} from "ag-grid-angular";
 
 
 
@@ -39,6 +40,7 @@ import {MatSortModule} from "@angular/material/sort";
         NgMultiSelectDropDownModule,
         InlineSVGModule,
         MatSortModule,
+        AgGridModule,
     ]
 })
 export class ProjectsModule { }

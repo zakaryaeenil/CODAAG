@@ -11,6 +11,7 @@ import {FormsModule} from "@angular/forms";
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import { ActionUpdateComponent } from './action-update/action-update.component';
 import {MatSortModule} from "@angular/material/sort";
+import {AgGridModule} from "ag-grid-angular";
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import {MatSortModule} from "@angular/material/sort";
         NgMultiSelectDropDownModule,
         FormsModule,
         NgbModule,
-        MatSortModule
+        MatSortModule,
+        AgGridModule
     ]
 })
 export class ActionModule { }

@@ -13,6 +13,7 @@ import {FormsModule} from "@angular/forms";
 import {NgxPaginationModule} from "ngx-pagination";
 import { ContratUpdateComponent } from './contrat-update/contrat-update.component';
 import {MatSortModule} from "@angular/material/sort";
+import {AgGridModule} from "ag-grid-angular";
 
 
 @NgModule({
@@ -32,7 +33,8 @@ import {MatSortModule} from "@angular/material/sort";
         FormsModule,
         NgxPaginationModule,
         NgbModule,
-        MatSortModule
+        MatSortModule,
+        AgGridModule
     ]
 })
 export class ContratsModule { }

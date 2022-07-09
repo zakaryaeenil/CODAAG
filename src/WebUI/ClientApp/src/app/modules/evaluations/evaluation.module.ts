@@ -13,6 +13,7 @@ import {FormsModule} from "@angular/forms";
 import { EvaluationCreateComponent } from './evaluation-create/evaluation-create.component';
 import { EvaluationUpdateComponent } from './evaluation-update/evaluation-update.component';
 import {MatSortModule} from "@angular/material/sort";
+import {AgGridModule} from "ag-grid-angular";
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import {MatSortModule} from "@angular/material/sort";
         FormsModule,
         NgxPaginationModule,
         NgbModule,
-        MatSortModule
+        MatSortModule,
+        AgGridModule
     ],
   exports: [
     EvaluationsViewComponent

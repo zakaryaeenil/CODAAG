@@ -13,7 +13,6 @@ import {FormsModule} from "@angular/forms";
 import { TypeProjectCreateComponent } from './type-project-create/type-project-create.component';
 import { TypeProjectUpdateComponent } from './type-project-update/type-project-update.component';
 import {MatSortModule} from "@angular/material/sort";
-import { ExampleDatatableComponent } from './example-datatable/example-datatable.component';
 import {AgGridModule} from "ag-grid-angular";
 
 
@@ -23,7 +22,6 @@ import {AgGridModule} from "ag-grid-angular";
     TypeProjectsComponent,
     TypeProjectCreateComponent,
     TypeProjectUpdateComponent,
-    ExampleDatatableComponent
   ],
     imports: [
         CommonModule,

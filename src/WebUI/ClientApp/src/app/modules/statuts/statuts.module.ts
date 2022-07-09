@@ -15,6 +15,7 @@ import {ToastrModule} from "ngx-toastr";
 import {AccountModule} from "../account/account.module";
 import { StatutUpdateComponent } from './statut-update/statut-update.component';
 import {MatSortModule} from "@angular/material/sort";
+import {AgGridModule} from "ag-grid-angular";
 
 
 @NgModule({
@@ -36,6 +37,7 @@ import {MatSortModule} from "@angular/material/sort";
         NgbModule,
         ToastrModule,
         MatSortModule,
+        AgGridModule,
         // AccountModule
     ]
 })

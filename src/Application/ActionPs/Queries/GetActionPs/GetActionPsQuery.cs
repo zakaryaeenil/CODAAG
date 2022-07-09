@@ -28,6 +28,8 @@ public class GetActionPsQueryHandler : IRequestHandler<GetActionPsQuery, ActionP
         {
             ActionPDtos = await _context.ActionPs
                 .Include(s =>s.Statut)
+                .Include(p => p.Project)
+                .Include(st => st.Structures)
                 .AsNoTracking()
                 .ToListAsync(cancellationToken)
         };

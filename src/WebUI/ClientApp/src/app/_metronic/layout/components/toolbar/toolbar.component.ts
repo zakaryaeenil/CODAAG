@@ -6,7 +6,9 @@ import {
   ViewChild,
 } from '@angular/core';
 import { LayoutService } from '../../core/layout.service';
-import {ActivationStart, Router, RoutesRecognized} from "@angular/router";
+import {ActivatedRoute, ActivationStart, NavigationEnd, Router, RoutesRecognized} from "@angular/router";
+import {mergeMap, Observable} from "rxjs";
+import {filter, map} from "rxjs/operators";
 
 @Component({
   selector: 'app-toolbar',
@@ -21,11 +23,11 @@ export class ToolbarComponent implements OnInit, AfterViewInit {
   toolbarContainerCssClasses: string = '';
   pageTitleCssClasses: string = '';
 
-  private routeData : any;
 
-  constructor(private layout: LayoutService, private router: Router) {
 
+  constructor(private layout: LayoutService) {
   }
+
 
   ngOnInit(): void {
     this.toolbarContainerCssClasses =
@@ -35,12 +37,13 @@ export class ToolbarComponent implements OnInit, AfterViewInit {
   }
 
   onSubmit(){
-    this.router.events.subscribe(data => {
-      if (data instanceof ActivationStart) {
-        console.log(`Custom data`, data.snapshot.data);
-      }
-    });
+
   }
+
+
+
+
+
   ngAfterViewInit() {
     if (this.ktPageTitle) {
       for (const key in this.pageTitleAttributes) {

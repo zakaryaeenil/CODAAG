@@ -21,6 +21,7 @@ import {MatSelectModule} from "@angular/material/select";
 import {NgMultiSelectDropDownModule} from "ng-multiselect-dropdown";
 import { StructureUpdateComponent } from './structure-update/structure-update.component';
 import {MatSortModule} from "@angular/material/sort";
+import {AgGridModule} from "ag-grid-angular";
 
 
 
@@ -51,7 +52,8 @@ import {MatSortModule} from "@angular/material/sort";
         ReactiveFormsModule,
         NgMultiSelectDropDownModule,
         InlineSVGModule,
-        MatSortModule
+        MatSortModule,
+        AgGridModule
     ]
 })
 export class StructuresModule { }
