@@ -13,6 +13,7 @@ import {
 import {AgGridAngular} from "ag-grid-angular";
 import { Workbook } from 'exceljs';
 import * as fs from 'file-saver';
+import {ButtonRendererComponent} from "../renders/button-renderer.component";
 
 @Component({
   selector: 'app-type-projects-view',
@@ -23,7 +24,7 @@ export class TypeProjectsViewComponent implements OnInit {
 
   vm : TypeProjectsVm;
   closeResult : string = "";
-  colsExcelHeaders : string[]
+
 // Each Column Definition results in one Column.
   public columnDefs: ColDef[] = [
     {headerName: 'ID',  field: 'id' ,
@@ -33,10 +34,17 @@ export class TypeProjectsViewComponent implements OnInit {
     {headerName: 'Code',  field: 'codeTP'},
     {headerName: 'Title',  field: 'title'},
     {headerName: 'Note',  field: 'note'},
-    {headerName: 'Created',  field: 'created' ,filter: 'agDateColumnFilter', filterParams: filterParams}
-
+    {headerName: 'Created',  field: 'created' ,filter: 'agDateColumnFilter', filterParams: filterParams},
+    {
+      headerName: 'Actions',
+      cellRenderer: 'buttonRenderer',
+      cellRendererParams: {
+        onClick: this.onBtnClick1.bind(this),
+        label: 'Edit'
+      }
+    }
   ];
-
+  public frameworkComponents: any;
   public autoGroupColumnDef: ColDef = {
     headerName: 'Group',
     minWidth: 170,
@@ -69,6 +77,7 @@ export class TypeProjectsViewComponent implements OnInit {
   // For accessing the Grid's API
   @ViewChild(AgGridAngular) agGrid!: AgGridAngular;
 
+
   // Data that gets displayed in the grid
   public rowSelection = 'multiple';
   public rowGroupPanelShow = 'always';
@@ -82,6 +91,9 @@ export class TypeProjectsViewComponent implements OnInit {
               private modalService: NgbModal,
               private toastr : ToastrService,
   ){
+    this.frameworkComponents = {
+      buttonRenderer: ButtonRendererComponent,
+    }
     listsType.get().subscribe(
       result => {
         this.vm = result;
@@ -90,6 +102,11 @@ export class TypeProjectsViewComponent implements OnInit {
       error => console.error(error)
     );
 
+  }
+
+  onBtnClick1(e : any) {
+    console.log(e.rowData.id,'test')
+    this.router.navigate(['typesproject/update',e.rowData.id])
   }
 
   open(content : any) {
@@ -112,7 +129,7 @@ export class TypeProjectsViewComponent implements OnInit {
     }
   }
   onDeleteRow() {
-    var selectedData = this.agGrid.api.getSelectedRows();
+    let selectedData = this.agGrid.api.getSelectedRows();
     selectedData.forEach(x =>{
       this.listsType.delete(x.id).subscribe(result =>{
           this.toastr.success("Type(s) project deleted success ","Good Job!", {timeOut: 3000})

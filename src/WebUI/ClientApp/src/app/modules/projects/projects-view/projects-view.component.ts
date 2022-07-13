@@ -194,7 +194,7 @@ export class ProjectsViewComponent implements OnInit {
     let worksheet = workbook.addWorksheet('Projects');
 
     //Add Row and formatting
-    worksheet.mergeCells('A1', 'F4');
+    worksheet.mergeCells('A1', 'M4');
     let titleRow = worksheet.getCell('A1');
     titleRow.value = title;
     titleRow.font = {
@@ -224,11 +224,11 @@ export class ProjectsViewComponent implements OnInit {
 
     // Adding Data with Conditional Formatting
     this.rowData$!.forEach(d => {
-      worksheet.addRow([d.id,d.codeProject,d.title , d.note,d.tauxR,d.typeProject?.title,d.modeReel,d.structures?.forEach(x =>{d.title}),d.statut?.title ,d.startDate,d.endDate,d.startDatePrv,d.endDatePrv,d.statut?.title]);
+      worksheet.addRow([d.id,d.codeProject,d.title , d.note,d.tauxR,d.typeProject?.title,d.modeReel,d.structures?.length ,d.startDate,d.endDate,d.startDatePrv,d.endDatePrv,d.statut?.title]);
     });
     let rowsColorChange = worksheet.getRows(6,this.rowData$?.length!)
     rowsColorChange?.forEach(x => {
-      let a = x.getCell(14)
+      let a = x.getCell(13)
       switch (a.value){
         case 'NON ENTAME' :  a.fill =
           {

@@ -99,7 +99,7 @@ export class ActionCreateComponent implements OnInit {
     }).subscribe(
         result => {
 
-            this.toastr.success("Structure Created successfully !!", "Good Job!", {
+            this.toastr.success("Action Created successfully !!", "Good Job!", {
               timeOut: 3000
             })
             this.router.navigateByUrl('actions/all');

@@ -14,6 +14,7 @@ import { TypeProjectCreateComponent } from './type-project-create/type-project-c
 import { TypeProjectUpdateComponent } from './type-project-update/type-project-update.component';
 import {MatSortModule} from "@angular/material/sort";
 import {AgGridModule} from "ag-grid-angular";
+import {ButtonRendererComponent} from "./renders/button-renderer.component";
 
 
 @NgModule({
@@ -22,6 +23,7 @@ import {AgGridModule} from "ag-grid-angular";
     TypeProjectsComponent,
     TypeProjectCreateComponent,
     TypeProjectUpdateComponent,
+    ButtonRendererComponent
   ],
     imports: [
         CommonModule,
@@ -34,7 +36,7 @@ import {AgGridModule} from "ag-grid-angular";
         NgxPaginationModule,
         NgbDatepickerModule,
         MatSortModule,
-        AgGridModule
+        AgGridModule.withComponents([ButtonRendererComponent])
     ]
 })
 export class TypeProjectsModule { }

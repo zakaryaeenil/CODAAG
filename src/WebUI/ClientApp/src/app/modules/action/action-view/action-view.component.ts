@@ -3,7 +3,6 @@ import {ActionP, ActionPsClient, ActionPsVm, TypeProject} from "../../../web-api
 import {ModalDismissReasons, NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {Router} from "@angular/router";
 import {ToastrService} from "ngx-toastr";
-import {Sort} from "@angular/material/sort";
 import {
   CellClickedEvent,
   CheckboxSelectionCallbackParams,
@@ -12,6 +11,8 @@ import {
   HeaderCheckboxSelectionCallbackParams
 } from "ag-grid-community";
 import {AgGridAngular} from "ag-grid-angular";
+import * as fs from "file-saver";
+import {Workbook} from "exceljs";
 
 @Component({
   selector: 'app-action-view',
@@ -182,7 +183,146 @@ export class ActionViewComponent implements OnInit {
   clearSelection(): void {
     this.agGrid.api.deselectAll();
   }
+  export() {
 
+    const title = 'Actions';
+    let d = new Date();
+    let date = d.getDate() + '-' + d.getMonth() + '-' + d.getFullYear();
+
+    let workbook = new Workbook();
+    let worksheet = workbook.addWorksheet('Actions');
+
+    //Add Row and formatting
+    worksheet.mergeCells('A1', 'M4');
+    let titleRow = worksheet.getCell('A1');
+    titleRow.value = title;
+    titleRow.font = {
+      name: 'Calibri',
+      size: 16,
+      underline: 'single',
+      bold: true,
+      color: { argb: '0085A3' },
+    };
+    titleRow.alignment = { vertical: 'middle', horizontal: 'center' };
+
+    let headerRow = worksheet.addRow(['ID','Title' , 'Note','Taux de realisation','Budget','Budget Preview','Project','Structures','Start Date','End Date','Start Date Preview','End Date Preview','Statut'],'n');
+
+    headerRow.eachCell((cell, number) => {
+      cell.fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: '4167B8' },
+        bgColor: { argb: '' },
+      };
+      cell.font = {
+        bold: true,
+        color: { argb: 'FFFFFF' },
+        size: 15,
+      };
+    });
+
+    // Adding Data with Conditional Formatting
+    this.rowData$!.forEach(d => {
+      worksheet.addRow([d.id,d.title , d.note,d.tauxR,d.budgR,d.budgPrv,d.project?.codeProject,d.structures?.length ,d.startDate,d.endDate,d.startDatePrv,d.endDatePrv,d.statut?.title]);
+    });
+    let rowsColorChange = worksheet.getRows(6,this.rowData$?.length!)
+    rowsColorChange?.forEach(x => {
+      let a = x.getCell(13)
+      switch (a.value){
+        case 'NON ENTAME' :  a.fill =
+          {
+            type: 'pattern',
+            pattern: 'gray125',
+            bgColor: { argb: 'FF0000' }
+          };
+          a.font = {
+            color: { argb: 'FFFFFF' },
+          };
+          break;
+
+        case 'EN COURS' :  a.fill =
+          {
+            type: 'pattern',
+            pattern: 'gray125',
+            bgColor: { argb: '0000FF' }
+          };
+          a.font = {
+            color: { argb: 'FFFFFF' },
+          };
+          break;
+
+        case 'ANNULE' :  a.fill =
+          {
+            type: 'pattern',
+            pattern: 'gray125',
+            bgColor: { argb: '0B0000' }
+          };
+          a.font = {
+            color: { argb: 'FFFFFF' },
+          };
+          break;
+
+        case 'EN RETARD' :  a.fill =
+          {
+            type: 'pattern',
+            pattern: 'gray125',
+            bgColor: { argb: 'FF8000' }
+          };
+          a.font = {
+            color: { argb: 'FFFFFF' },
+          };
+          break;
+
+
+        case 'ACHEVE' :  a.fill =
+          {
+            type: 'pattern',
+            pattern: 'gray125',
+            bgColor: { argb: '009900' }
+          };
+          a.font = {
+            color: { argb: 'FFFFFF' },
+          };
+          break;
+      }
+
+    })
+    worksheet.addRow([]);
+
+    worksheet.columns.forEach(function (column, i) {
+      var maxLength = 0;
+      column["eachCell"]!({ includeEmpty: true }, function (cell) {
+        var columnLength = cell.value ? cell.value.toString().length : 10;
+        if (columnLength > maxLength ) {
+          maxLength = columnLength;
+        }
+      });
+      column.width = maxLength < 10 ? 10 : maxLength;
+    });
+
+    //Footer Row
+    let footerRow = worksheet.addRow([
+      'Actions table genereted  at ' + date,
+    ]);
+    footerRow.alignment = { vertical: 'middle', horizontal: 'center' };
+    footerRow.getCell(1).fill = {
+      type: 'pattern',
+      pattern: 'solid',
+      fgColor: { argb: 'FFB050' },
+    };
+
+
+    //Merge Cells
+    worksheet.mergeCells(`A${footerRow.number}:M${footerRow.number}`);
+
+    //Generate & Save Excel File
+    workbook.xlsx.writeBuffer().then((data) => {
+      let blob = new Blob([data], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      });
+      fs.saveAs(blob, title + '.xlsx');
+    });
+  }
 }
 
 

@@ -11,6 +11,18 @@
   >
     Clear Selection
   </button>
+  <button
+    (click)="export()"
+    style="margin-bottom: 5px; font-weight: bold;"
+  >
+    Export As Excel
+  </button>
+  <button
+    (click)="open(content)"
+    style="margin-bottom: 5px; font-weight: bold;"
+  >
+    Delete Row(s)
+  </button>
 </div>
 <!-- begin::Table -->
 <ag-grid-angular *ngIf="vm.actionPDtos"
@@ -33,3 +45,18 @@
                  (cellClicked)="onCellClicked($event)"
 ></ag-grid-angular>
 <!-- end::Table -->
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Confirmation</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>Are you sure to delete this?</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="d('Cross click')">Cancel</button>
+    <button type="button" class="btn btn-outline-dark" (click)="c('yes')">Yes</button>
+  </div>
+</ng-template>
