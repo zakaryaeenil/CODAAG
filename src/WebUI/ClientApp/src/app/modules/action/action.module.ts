@@ -12,6 +12,8 @@ import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import { ActionUpdateComponent } from './action-update/action-update.component';
 import {MatSortModule} from "@angular/material/sort";
 import {AgGridModule} from "ag-grid-angular";
+import {ActionButtonRenderComponent} from "./ActionRenders/action-button-render.component";
+import {InlineSVGModule} from "ng-inline-svg-2";
 
 
 @NgModule({
@@ -19,7 +21,8 @@ import {AgGridModule} from "ag-grid-angular";
     ActionComponent,
     ActionCreateComponent,
     ActionViewComponent,
-    ActionUpdateComponent
+    ActionUpdateComponent,
+    ActionButtonRenderComponent
   ],
     imports: [
         CommonModule,
@@ -29,7 +32,8 @@ import {AgGridModule} from "ag-grid-angular";
         FormsModule,
         NgbModule,
         MatSortModule,
-        AgGridModule
+        AgGridModule.withComponents([ActionButtonRenderComponent]),
+        InlineSVGModule
     ]
 })
 export class ActionModule { }

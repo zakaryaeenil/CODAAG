@@ -1,5 +1,8 @@
-import {Component, Input} from '@angular/core';
-import {StructureByIdVm} from "../../../../web-api-client";
+import {Component, Input, ViewChild} from '@angular/core';
+import {ContratObjectif, Gestionnaire, Structure, StructureByIdVm, StructuresClient} from "../../../../web-api-client";
+import {ColDef, GridReadyEvent} from "ag-grid-community";
+import {AgGridAngular} from "ag-grid-angular";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-g-structure',
@@ -7,19 +10,55 @@ import {StructureByIdVm} from "../../../../web-api-client";
   styleUrls: ['./g-structure.component.scss']
 })
 export class GStructureComponent  {
-  @Input() receivedValueg: StructureByIdVm ;
-  page: number = 1;
-  count: number = 0;
-  tableSize: number = 7;
-  tableSizes: any = [3, 6, 9, 12];
+  @Input()  str_gTable : Structure | undefined;
 
-//Pagination
-  onTableDataChange(event: any) {
-    this.page = event;
+  vm : StructureByIdVm;
+  public columnDefs: ColDef[] = [
+    {headerName: 'ID', field: 'id', filter: 'agNumberColumnFilter'},
+    {headerName: 'Nom', field: 'nom'},
+    {headerName: 'Prenom', field: 'prenom'},
+    {headerName: 'Login', field: 'login'},
+    {headerName: 'Code', field: 'code'},
+  ];
+// DefaultColDef sets props common to all Columns
+  public defaultColDef: ColDef = {
+    editable: false,
+    sortable: true,
+    resizable: true,
+    filter: true,
+    flex: 1,
+    minWidth: 100,
+  };
 
+  // For accessing the Grid's API
+  @ViewChild(AgGridAngular) agGrid!: AgGridAngular;
+
+
+  // public sideBar: SideBarDef | string | string[] | boolean | null = 'columns';
+  public rowData$ !: Gestionnaire[] | undefined ;
+
+  constructor(private listsStructures : StructuresClient, private router : ActivatedRoute){
+    listsStructures.get2(router.snapshot.params['id']).subscribe(
+      result => {
+        this.vm = result;
+        this.rowData$ = result.structureDto?.gestionnaires
+        console.log(this.rowData$,"sub rows")
+        console.log(this.vm.structureDto,"sub struc")
+      },
+      error => console.error(error)
+    );
   }
-  onTableSizeChange(event: any): void {
-    this.tableSize = event.target.value;
-    this.page = 1;
+
+  // Example load data from sever
+  onGridReady(params: GridReadyEvent) {
+    console.log(this.rowData$,"rows")
+    this.rowData$ = this.vm.structureDto?.gestionnaires!
+    this.agGrid.api = params.api;
   }
+
+  // Export Excel
+  onBtnExport() {
+    this.agGrid.api.exportDataAsCsv();
+  }
+
 }

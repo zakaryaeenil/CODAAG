@@ -29,55 +29,47 @@ public class GetProjectsQueryHandler : IRequestHandler<GetProjectsQuery, Project
             .Single(x => x.Id == 2);
 
         Structure structure =  _context.Structures
-                
-            .Include(p => p.ParentStructure)
-            .Include(sc => sc.StructureChildren)
+            .Include(p =>p.ParentStructure)
+            .Include(s => s.StructureChildren)
             .Include(p => p.Projects)
-            .ThenInclude(s =>s.Statut )
-            .Include(p => p.Projects)
-            .ThenInclude(s =>s.TypeProject)
-            .Single(x => x.Id == user.Id);
+            .Single(x => x.Id == user.StructureId) ?? throw new InvalidOperationException();
+         
+        ICollection<Structure> listAll = new List<Structure>();
+        listAll.Add(structure);
+        
+        ICollection<Structure> structures = GetChildren<Structure>(structure, listAll);
 
         ICollection<Project> projects = new List<Project>();
-        
-        foreach (var p in structure.Projects)
+
+        foreach (var st in structures)
         {
-            projects.Add(p);
+            foreach (var p in st.Projects)
+            {
+                projects.Add(p);
+            }
         }
-        GetChildren<Project>(structure, projects);
-        
-        
+
         return new ProjectsVm
         {
             ProjectDtos = projects
         };
     }
-    private ICollection<Project> GetChildren<TProject>(Structure k ,ICollection<Project> list)
+    private ICollection<Structure> GetChildren<TStructure>(Structure k ,ICollection<Structure> list)
     {
         
         Structure? t = _context.Structures
             .Include(p => p.ParentStructure)
             .Include(p => p.StructureChildren)
             .Include(p => p.Projects)
-            .ThenInclude(s =>s.Statut)
-            .Include(p => p.Projects)
-            .ThenInclude(s =>s.TypeProject)
             .SingleOrDefault(x => x.Id == k.Id);
-        
         if (t == null)
         {
             return list;
         }
         foreach (Structure child in t.StructureChildren)
         {
-            if (child.Projects != null)
-            {
-                foreach (Project p in child.Projects)
-                {
-                    list.Add(p);
-                }
-            }
-            GetChildren<Project>(child, list);
+            list.Add(child);
+            GetChildren<Structure>(child,list);
         }
         return list;
     }

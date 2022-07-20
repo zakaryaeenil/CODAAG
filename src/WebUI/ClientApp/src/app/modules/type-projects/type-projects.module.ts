@@ -15,6 +15,9 @@ import { TypeProjectUpdateComponent } from './type-project-update/type-project-u
 import {MatSortModule} from "@angular/material/sort";
 import {AgGridModule} from "ag-grid-angular";
 import {ButtonRendererComponent} from "./renders/button-renderer.component";
+import { TypeProjectDetailsComponent } from './type-project-details/type-project-details.component';
+import { TpOverviewViewComponent } from './type-project-details/tp-overview-view/tp-overview-view.component';
+import { TpProjectsComponent } from './type-project-details/tp-projects/tp-projects.component';
 
 
 @NgModule({
@@ -23,7 +26,11 @@ import {ButtonRendererComponent} from "./renders/button-renderer.component";
     TypeProjectsComponent,
     TypeProjectCreateComponent,
     TypeProjectUpdateComponent,
-    ButtonRendererComponent
+    ButtonRendererComponent,
+    TypeProjectDetailsComponent,
+    TpOverviewViewComponent,
+    TpProjectsComponent,
+
   ],
     imports: [
         CommonModule,

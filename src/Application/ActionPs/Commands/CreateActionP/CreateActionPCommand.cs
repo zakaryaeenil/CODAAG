@@ -68,7 +68,7 @@ public class CreateActionPCommandHandler : IRequestHandler<CreateActionPCommand,
                 if (structure != null)
                 {
                     structure.ActionPs.Add(entity);
-                  //  entity.Structures.Add(structure);
+                    //  entity.Structures.Add(structure);
                 }
             }
         }

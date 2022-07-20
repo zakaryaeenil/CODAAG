@@ -16,6 +16,7 @@ import {MatSelectModule} from "@angular/material/select";
 import { ProjectUpdateComponent } from './project-update/project-update.component';
 import {MatSortModule} from "@angular/material/sort";
 import {AgGridModule} from "ag-grid-angular";
+import {ProjectButtonRenderComponent} from "./ProjectRenders/project-button-render.component";
 
 
 
@@ -25,7 +26,7 @@ import {AgGridModule} from "ag-grid-angular";
     ProjectsViewComponent,
     ProjectCreateComponent,
     ProjectUpdateComponent,
-
+    ProjectButtonRenderComponent
   ],
     imports: [
         CommonModule,
@@ -40,7 +41,7 @@ import {AgGridModule} from "ag-grid-angular";
         NgMultiSelectDropDownModule,
         InlineSVGModule,
         MatSortModule,
-        AgGridModule,
+        AgGridModule.withComponents([ProjectButtonRenderComponent]),
     ]
 })
 export class ProjectsModule { }

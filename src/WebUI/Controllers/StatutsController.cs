@@ -1,8 +1,10 @@
+using CleanArchitecture.Application.Dto.Helpers.StatutModel;
 using CleanArchitecture.Application.Statuts.Commands.CreateStatut;
 using CleanArchitecture.Application.Statuts.Commands.DeleteStatut;
 using CleanArchitecture.Application.Statuts.Commands.UpdateStatut;
 using CleanArchitecture.Application.Statuts.Queries.GetStatutById;
 using CleanArchitecture.Application.Statuts.Queries.GetStatuts;
+using CleanArchitecture.Application.Statuts.Queries.GetStatutStatOverViewById;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CleanArchitecture.WebUI.Controllers;
@@ -47,4 +49,11 @@ public class StatutsController: ApiControllerBase
 
         return NoContent();
     }
+    
+    [HttpGet("stat/{id}")]
+    public async  Task<ActionResult<StatutStatByIdVm>> GetStat(int id)
+    {
+        return await Mediator.Send(new GetStatutStatByIdQuery() { ListId = id });
+    }
+ 
 }

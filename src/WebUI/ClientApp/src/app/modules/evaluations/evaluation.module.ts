@@ -14,6 +14,7 @@ import { EvaluationCreateComponent } from './evaluation-create/evaluation-create
 import { EvaluationUpdateComponent } from './evaluation-update/evaluation-update.component';
 import {MatSortModule} from "@angular/material/sort";
 import {AgGridModule} from "ag-grid-angular";
+import {EvaluationButtonRenderComponent} from "./EvaluationRenders/evaluation-button-render.component";
 
 @NgModule({
   declarations: [
@@ -21,7 +22,7 @@ import {AgGridModule} from "ag-grid-angular";
     EvaluationComponent,
     EvaluationCreateComponent,
     EvaluationUpdateComponent,
-
+    EvaluationButtonRenderComponent
 
   ],
     imports: [
@@ -35,7 +36,7 @@ import {AgGridModule} from "ag-grid-angular";
         NgxPaginationModule,
         NgbModule,
         MatSortModule,
-        AgGridModule
+        AgGridModule.withComponents([EvaluationButtonRenderComponent])
     ],
   exports: [
     EvaluationsViewComponent

@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import {StatutCreateComponent} from "./statut-create/statut-create.component";
 import {StatutsViewComponent} from "./statuts-view/statuts-view.component";
 import {StatutUpdateComponent} from "./statut-update/statut-update.component";
+import {StatutDetailsComponent} from "./statut-details/statut-details.component";
 
 const routes: Routes = [
 
@@ -17,6 +18,10 @@ const routes: Routes = [
   {
     path: 'update/:id',
     component: StatutUpdateComponent,
+  },
+  {
+    path: 'details/:id',
+    component: StatutDetailsComponent,
   },
 
   { path: '', redirectTo: 'all', pathMatch: 'full' },

@@ -4,6 +4,7 @@ import {TypeProjectsComponent} from "./type-projects.component";
 import {TypeProjectsViewComponent} from "./type-projects-view/type-projects-view.component";
 import {TypeProjectCreateComponent} from "./type-project-create/type-project-create.component";
 import {TypeProjectUpdateComponent} from "./type-project-update/type-project-update.component";
+import {TypeProjectDetailsComponent} from "./type-project-details/type-project-details.component";
 
 const routes: Routes = [
   {path: '',
@@ -21,7 +22,10 @@ const routes: Routes = [
         path: 'update/:id',
         component: TypeProjectUpdateComponent,
       },
-
+      {
+        path: 'details/:id',
+        component: TypeProjectDetailsComponent,
+      },
 
       { path: '', redirectTo: 'all', pathMatch: 'full' },
       { path: '**', redirectTo: 'all', pathMatch: 'full' },

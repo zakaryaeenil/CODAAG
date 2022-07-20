@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import {EvaluationByIdVm, EvaluationsClient, StructureByIdVm, StructuresClient} from "../../../web-api-client";
-import {ActivatedRoute} from "@angular/router";
+import {
+  EvaluationByIdVm,
+  EvaluationsClient,
+  Structure,
+  StructureByIdVm,
+  StructuresClient
+} from "../../../web-api-client";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-structure-details',
@@ -8,7 +14,8 @@ import {ActivatedRoute} from "@angular/router";
   styleUrls: ['./structure-details.component.scss']
 })
 export class StructureDetailsComponent   {
-  vm : StructureByIdVm
+  getedata : StructureByIdVm
+  vm : Structure | undefined
   p:boolean = false;
   a:boolean = false;
   o: boolean =true;
@@ -16,17 +23,19 @@ export class StructureDetailsComponent   {
   g : boolean = false;
   co : boolean = false;
 
-constructor(private structure : StructuresClient,private route: ActivatedRoute) {
+constructor(private structure : StructuresClient,private router: Router, private route: ActivatedRoute) {
   structure.get2(this.route.snapshot.params['id']).subscribe(
     result => {
-      this.vm = result;
-      console.log(this.vm)
+      this.getedata = result
+      this.vm = result.structureDto
     },
     error => console.error(error)
   );
 
 }
-
+  goToUpdate(){
+    this.router.navigate(['structures/update', this.getedata.structureDto?.id])
+  }
 showhideA(){
   this.co = false;
   this.p = false;

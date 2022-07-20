@@ -2,6 +2,7 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Dto;
+using CleanArchitecture.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -30,5 +31,24 @@ public class GetTypeProjectsQueryHandler : IRequestHandler<GetTypeProjectsQuery,
                 .AsNoTracking()
                 .ToListAsync(cancellationToken)
         };
+    }
+    
+    private ICollection<Structure> GetChildren<TStructure>(Structure k ,ICollection<Structure> list)
+    {
+        
+        Structure? t = _context.Structures
+            .Include(p => p.ParentStructure)
+            .Include(p => p.StructureChildren)
+            .SingleOrDefault(x => x.Id == k.Id);
+        if (t == null)
+        {
+            return list;
+        }
+        foreach (Structure child in t.StructureChildren)
+        {
+            list.Add(child);
+            GetChildren<Structure>(child,list);
+        }
+        return list;
     }
 }

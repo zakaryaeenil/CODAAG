@@ -58,11 +58,7 @@ public class GetStructureByIdQueryHandler : IRequestHandler<GetStructureByIdQuer
             }
             
         }
-         
-              
-                
-            
-            
+        
         return new StructureByIdVm {}; 
     }
    

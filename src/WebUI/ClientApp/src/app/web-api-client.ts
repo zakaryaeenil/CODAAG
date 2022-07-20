@@ -1120,6 +1120,7 @@ export interface IStatutsClient {
     get2(id: number): Observable<StatutByIdVm>;
     update(id: number, command: UpdateStatutCommand): Observable<FileResponse>;
     delete(id: number): Observable<FileResponse>;
+    getStat(id: number): Observable<StatutStatByIdVm>;
 }
 
 @Injectable({
@@ -1386,6 +1387,57 @@ export class StatutsClient implements IStatutsClient {
             }));
         }
         return _observableOf<FileResponse>(<any>null);
+    }
+
+    getStat(id: number) : Observable<StatutStatByIdVm> {
+        let url_ = this.baseUrl + "/api/Statuts/stat/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetStat(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetStat(<any>response_);
+                } catch (e) {
+                    return <Observable<StatutStatByIdVm>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<StatutStatByIdVm>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetStat(response: HttpResponseBase): Observable<StatutStatByIdVm> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = StatutStatByIdVm.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<StatutStatByIdVm>(<any>null);
     }
 }
 
@@ -1670,6 +1722,7 @@ export interface ITypeProjectsClient {
     get2(id: number): Observable<TypeProjectByIdVm>;
     update(id: number, command: UpdateTypeProjectCommand): Observable<FileResponse>;
     delete(id: number): Observable<FileResponse>;
+    getStat(id: number): Observable<TypeProjectsStatVm>;
 }
 
 @Injectable({
@@ -1936,6 +1989,57 @@ export class TypeProjectsClient implements ITypeProjectsClient {
             }));
         }
         return _observableOf<FileResponse>(<any>null);
+    }
+
+    getStat(id: number) : Observable<TypeProjectsStatVm> {
+        let url_ = this.baseUrl + "/api/TypeProjects/stat/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetStat(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetStat(<any>response_);
+                } catch (e) {
+                    return <Observable<TypeProjectsStatVm>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<TypeProjectsStatVm>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetStat(response: HttpResponseBase): Observable<TypeProjectsStatVm> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = TypeProjectsStatVm.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<TypeProjectsStatVm>(<any>null);
     }
 }
 
@@ -3958,6 +4062,106 @@ export interface IUpdateStatutCommand {
     color?: ColorStatut;
 }
 
+export class StatutStatByIdVm implements IStatutStatByIdVm {
+    statutStat?: StatutStat;
+
+    constructor(data?: IStatutStatByIdVm) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.statutStat = _data["statutStat"] ? StatutStat.fromJS(_data["statutStat"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): StatutStatByIdVm {
+        data = typeof data === 'object' ? data : {};
+        let result = new StatutStatByIdVm();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["statutStat"] = this.statutStat ? this.statutStat.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IStatutStatByIdVm {
+    statutStat?: StatutStat;
+}
+
+export class StatutStat implements IStatutStat {
+    evaluationsCount?: number;
+    diffEvaluationsCount?: number;
+    projectsCount?: number;
+    diffProjectsCount?: number;
+    actionPsCount?: number;
+    diffActionPsCount?: number;
+    contratsCount?: number;
+    diffContratsCount?: number;
+
+    constructor(data?: IStatutStat) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.evaluationsCount = _data["evaluationsCount"];
+            this.diffEvaluationsCount = _data["diffEvaluationsCount"];
+            this.projectsCount = _data["projectsCount"];
+            this.diffProjectsCount = _data["diffProjectsCount"];
+            this.actionPsCount = _data["actionPsCount"];
+            this.diffActionPsCount = _data["diffActionPsCount"];
+            this.contratsCount = _data["contratsCount"];
+            this.diffContratsCount = _data["diffContratsCount"];
+        }
+    }
+
+    static fromJS(data: any): StatutStat {
+        data = typeof data === 'object' ? data : {};
+        let result = new StatutStat();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["evaluationsCount"] = this.evaluationsCount;
+        data["diffEvaluationsCount"] = this.diffEvaluationsCount;
+        data["projectsCount"] = this.projectsCount;
+        data["diffProjectsCount"] = this.diffProjectsCount;
+        data["actionPsCount"] = this.actionPsCount;
+        data["diffActionPsCount"] = this.diffActionPsCount;
+        data["contratsCount"] = this.contratsCount;
+        data["diffContratsCount"] = this.diffContratsCount;
+        return data; 
+    }
+}
+
+export interface IStatutStat {
+    evaluationsCount?: number;
+    diffEvaluationsCount?: number;
+    projectsCount?: number;
+    diffProjectsCount?: number;
+    actionPsCount?: number;
+    diffActionPsCount?: number;
+    contratsCount?: number;
+    diffContratsCount?: number;
+}
+
 export class StructuresVm implements IStructuresVm {
     structureDtos?: Structure[];
 
@@ -4340,6 +4544,82 @@ export interface IUpdateTypeProjectCommand {
     title?: string | undefined;
     codeTP?: string | undefined;
     comment?: string | undefined;
+}
+
+export class TypeProjectsStatVm implements ITypeProjectsStatVm {
+    typeProjectDto?: TypeProjectStat;
+
+    constructor(data?: ITypeProjectsStatVm) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.typeProjectDto = _data["typeProjectDto"] ? TypeProjectStat.fromJS(_data["typeProjectDto"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): TypeProjectsStatVm {
+        data = typeof data === 'object' ? data : {};
+        let result = new TypeProjectsStatVm();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["typeProjectDto"] = this.typeProjectDto ? this.typeProjectDto.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface ITypeProjectsStatVm {
+    typeProjectDto?: TypeProjectStat;
+}
+
+export class TypeProjectStat implements ITypeProjectStat {
+    typePCount?: number;
+    diffETypePCount?: number;
+
+    constructor(data?: ITypeProjectStat) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.typePCount = _data["typePCount"];
+            this.diffETypePCount = _data["diffETypePCount"];
+        }
+    }
+
+    static fromJS(data: any): TypeProjectStat {
+        data = typeof data === 'object' ? data : {};
+        let result = new TypeProjectStat();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["typePCount"] = this.typePCount;
+        data["diffETypePCount"] = this.diffETypePCount;
+        return data; 
+    }
+}
+
+export interface ITypeProjectStat {
+    typePCount?: number;
+    diffETypePCount?: number;
 }
 
 export interface FileResponse {

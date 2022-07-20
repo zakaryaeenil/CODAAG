@@ -16,7 +16,7 @@ const routes: Routes = [
         component: StructuresViewComponent,
       },
       {
-        path: ':id/details',
+        path: 'details/:id',
         component: StructureDetailsComponent,
       },
       {

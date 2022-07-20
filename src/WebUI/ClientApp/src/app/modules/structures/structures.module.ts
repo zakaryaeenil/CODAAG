@@ -22,6 +22,9 @@ import {NgMultiSelectDropDownModule} from "ng-multiselect-dropdown";
 import { StructureUpdateComponent } from './structure-update/structure-update.component';
 import {MatSortModule} from "@angular/material/sort";
 import {AgGridModule} from "ag-grid-angular";
+import {StatutsButtonRenderComponent} from "../statuts/StatutsRenders/statuts-button-render.component";
+import {StructureButtonRenderComponent} from "./StructuresRenders/structure-button-render.component";
+import {NgApexchartsModule} from "ng-apexcharts";
 
 
 
@@ -38,7 +41,7 @@ import {AgGridModule} from "ag-grid-angular";
     CoStructureComponent,
     StructureCreateComponent,
     StructureUpdateComponent,
-
+    StructureButtonRenderComponent
   ],
     imports: [
         CommonModule,
@@ -53,7 +56,8 @@ import {AgGridModule} from "ag-grid-angular";
         NgMultiSelectDropDownModule,
         InlineSVGModule,
         MatSortModule,
-        AgGridModule
+        AgGridModule.withComponents([StructureButtonRenderComponent]),
+        NgApexchartsModule,
     ]
 })
 export class StructuresModule { }

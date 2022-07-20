@@ -13,6 +13,8 @@ import {
 import {AgGridAngular} from "ag-grid-angular";
 import { Workbook } from 'exceljs';
 import * as fs from 'file-saver';
+import {EvaluationButtonRenderComponent} from "../../evaluations/EvaluationRenders/evaluation-button-render.component";
+import {ContratButtonRenderComponent} from "../ContratRenders/contrat-button-render.component";
 
 @Component({
   selector: 'app-contrat-view',
@@ -22,7 +24,8 @@ import * as fs from 'file-saver';
 export class ContratViewComponent implements OnInit {
   vm : ContratObjectifsVm;
   closeResult : string = ""
-
+  show : boolean = false;
+  countSelected : number = 0;
 // Each Column Definition results in one Column.
   public columnDefs: ColDef[] = [
     {headerName: 'ID',  field: 'id',
@@ -32,8 +35,8 @@ export class ContratViewComponent implements OnInit {
     {headerName: 'Code Contrat',  field: 'codeCO'},
     {headerName: 'Title',  field: 'title'},
     {headerName: 'Note',  field: 'note'},
-    {headerName: 'Start Date',  field: 'startDate' ,filter: 'agDateColumnFilter', filterParams: filterParams,},
-    {headerName: 'End Date',  field: 'endDate' ,filter: 'agDateColumnFilter', filterParams: filterParams,},
+    {headerName: 'Start Date',  field: 'startDate' ,filter: 'agDateColumnFilter', filterParams: filterParams},
+    {headerName: 'End Date',  field: 'endDate' ,filter: 'agDateColumnFilter', filterParams: filterParams},
     {headerName: 'Is Active',  field: 'isActive',
       cellStyle: params => {
         if (params.value === true) {
@@ -70,9 +73,17 @@ export class ContratViewComponent implements OnInit {
         }
         return null;
       }},
+    {
+      headerName: 'Actions',
+      cellRenderer: 'buttonRenderer',
+      cellRendererParams: {
+        onClick: this.onBtnClick1.bind(this)
+      },
+      minWidth : 200
+    }
   ];
 
-
+  public frameworkComponents : any
   public autoGroupColumnDef: ColDef = {
     headerName: 'Group',
     minWidth: 170,
@@ -119,6 +130,10 @@ export class ContratViewComponent implements OnInit {
               private router : Router,
               private modalService: NgbModal,
               private toastr : ToastrService) {
+    this.frameworkComponents = {
+      buttonRenderer: ContratButtonRenderComponent,
+    }
+    this.show = false
     listsContrat.get().subscribe(
       result => {
         this.vm = result;
@@ -130,6 +145,15 @@ export class ContratViewComponent implements OnInit {
 
 
   ngOnInit(): void {
+  }
+  onBtnClick1(e : any) {
+    console.log(e.per)
+    if (e.per == 1) {
+      this.router.navigate(['contrats/update', e.rowData.id])
+    }else if (e.per == 2){
+      this.router.navigate(['contrats/details',e.rowData.id])
+    }
+
   }
   open(content : any) {
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
@@ -183,16 +207,22 @@ export class ContratViewComponent implements OnInit {
     this.agGrid.api = params.api;
   }
 
-  // Example of consuming Grid Event
-  onCellClicked( e: CellClickedEvent): void {
-    console.log('cellClicked', e);
-  }
 
   // Example using Grid's API
   clearSelection(): void {
     this.agGrid.api.deselectAll();
   }
+  onSelectionChanged(event : any) {
 
+    if (this.agGrid.api.getSelectedRows().length == 0){
+      this.show = false
+      this.countSelected = this.agGrid.api.getSelectedRows().length
+    }
+    else {
+      this.countSelected = this.agGrid.api.getSelectedRows().length
+      this.show = true
+    }
+  }
   export() {
 
     const title = 'Contrats';

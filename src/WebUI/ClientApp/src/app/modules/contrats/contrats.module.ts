@@ -14,6 +14,11 @@ import {NgxPaginationModule} from "ngx-pagination";
 import { ContratUpdateComponent } from './contrat-update/contrat-update.component';
 import {MatSortModule} from "@angular/material/sort";
 import {AgGridModule} from "ag-grid-angular";
+import {ContratButtonRenderComponent} from "./ContratRenders/contrat-button-render.component";
+import { ContratDetailsComponent } from './contrat-details/contrat-details.component';
+import { CoProjectsComponent } from './contrat-details/co-projects/co-projects.component';
+import { CoActionsComponent } from './contrat-details/co-actions/co-actions.component';
+import { CoOverViewComponent } from './contrat-details/co-over-view/co-over-view.component';
 
 
 @NgModule({
@@ -21,7 +26,12 @@ import {AgGridModule} from "ag-grid-angular";
     ContratsComponent,
     ContratCreateComponent,
     ContratViewComponent,
-    ContratUpdateComponent
+    ContratUpdateComponent,
+    ContratButtonRenderComponent,
+    ContratDetailsComponent,
+    CoProjectsComponent,
+    CoActionsComponent,
+    CoOverViewComponent
   ],
     imports: [
         CommonModule,
@@ -34,7 +44,7 @@ import {AgGridModule} from "ag-grid-angular";
         NgxPaginationModule,
         NgbModule,
         MatSortModule,
-        AgGridModule
+        AgGridModule.withComponents([ContratButtonRenderComponent])
     ]
 })
 export class ContratsModule { }

@@ -13,6 +13,7 @@ import {AgGridAngular} from "ag-grid-angular";
 import {ModalDismissReasons, NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import * as fs from "file-saver";
 import {Workbook} from "exceljs";
+import {EvaluationButtonRenderComponent} from "../EvaluationRenders/evaluation-button-render.component";
 
 
 
@@ -25,6 +26,8 @@ export class EvaluationsViewComponent implements OnInit {
 
   vm : EvaluationsVm;
   closeResult : string = ""
+  show : boolean = false;
+  countSelected : number = 0;
  // Each Column Definition results in one Column.
   public columnDefs: ColDef[] = [
     {headerName: 'ID',  field: 'id',
@@ -59,9 +62,17 @@ export class EvaluationsViewComponent implements OnInit {
         }
         return null;
       }},
+    {
+      headerName: 'Actions',
+      cellRenderer: 'buttonRenderer',
+      cellRendererParams: {
+        onClick: this.onBtnClick1.bind(this)
+      },
+      minWidth : 200
+    }
   ];
 
-
+  public frameworkComponents: any;
   // DefaultColDef sets props common to all Columns
   public autoGroupColumnDef: ColDef = {
     headerName: 'Group',
@@ -110,6 +121,10 @@ export class EvaluationsViewComponent implements OnInit {
               private router : Router,
               private modalService: NgbModal,
               private toastr : ToastrService) {
+    this.frameworkComponents = {
+      buttonRenderer: EvaluationButtonRenderComponent,
+    }
+    this.show = false
     listsEvaluation.get().subscribe(
       result => {
         this.vm = result;
@@ -119,7 +134,12 @@ export class EvaluationsViewComponent implements OnInit {
       error => console.error(error)
     );
   }
-
+  onBtnClick1(e : any) {
+    if (e.per == 1) {
+      this.router.navigate(['evaluations/update', e.rowData.id])
+    }
+    //this.router.navigate(['typesproject/update',e.rowData.id])
+  }
 
   open(content : any) {
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
@@ -161,7 +181,6 @@ export class EvaluationsViewComponent implements OnInit {
     })
   }
 
-
   // Export Excel
   onBtnExport() {
     this.agGrid.api.exportDataAsCsv();
@@ -184,7 +203,17 @@ export class EvaluationsViewComponent implements OnInit {
   clearSelection(): void {
     this.agGrid.api.deselectAll();
   }
+  onSelectionChanged(event : any) {
 
+    if (this.agGrid.api.getSelectedRows().length == 0){
+      this.show = false
+      this.countSelected = this.agGrid.api.getSelectedRows().length
+    }
+    else {
+      this.countSelected = this.agGrid.api.getSelectedRows().length
+      this.show = true
+    }
+  }
   export() {
 
     const title = 'Evaluations';

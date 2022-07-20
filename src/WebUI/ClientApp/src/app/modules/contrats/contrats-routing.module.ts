@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import {ContratCreateComponent} from "./contrat-create/contrat-create.component";
 import {ContratViewComponent} from "./contrat-view/contrat-view.component";
 import {ContratUpdateComponent} from "./contrat-update/contrat-update.component";
+import {ContratDetailsComponent} from "./contrat-details/contrat-details.component";
 
 const routes: Routes = [
   {
@@ -16,6 +17,10 @@ const routes: Routes = [
   {
     path: 'update/:id',
     component: ContratUpdateComponent,
+  },
+  {
+    path: 'details/:id',
+    component: ContratDetailsComponent,
   },
 
   { path: '', redirectTo: 'all', pathMatch: 'full' },

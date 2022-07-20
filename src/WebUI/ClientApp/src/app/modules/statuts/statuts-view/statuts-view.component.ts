@@ -13,6 +13,7 @@ import {
 import {AgGridAngular} from "ag-grid-angular";
 import { Workbook } from 'exceljs';
 import * as fs from 'file-saver';
+import {ButtonRendererComponent} from "../../type-projects/renders/button-renderer.component";
 
 @Component({
   selector: 'app-statuts-view',
@@ -23,6 +24,9 @@ export class StatutsViewComponent implements OnInit {
 
   vm: StatutsVm;
   closeResult : string = ""
+  show : boolean = false
+  countSelected : number = 0;
+
 // Each Column Definition results in one Column.
   public columnDefs: ColDef[] = [
     {headerName: 'ID', field: 'id',
@@ -56,10 +60,18 @@ export class StatutsViewComponent implements OnInit {
         return null;
       }
     },
-    {headerName: 'Created', field: 'created' ,filter: 'agDateColumnFilter', filterParams: filterParams}
+    {headerName: 'Created', field: 'created' ,filter: 'agDateColumnFilter', filterParams: filterParams},
+    {
+      headerName: 'Actions',
+      cellRenderer: 'buttonRenderer',
+      cellRendererParams: {
+        onClick: this.onBtnClick1.bind(this)
+      },
+      minWidth : 200
+    }
   ];
 
-
+  public frameworkComponents: any;
   public autoGroupColumnDef: ColDef = {
     headerName: 'Group',
     minWidth: 170,
@@ -105,6 +117,10 @@ export class StatutsViewComponent implements OnInit {
               private router: Router,
               private modalService: NgbModal,
               private toastr: ToastrService) {
+    this.frameworkComponents = {
+      buttonRenderer: ButtonRendererComponent,
+    }
+    this.show = false
     listsStatut.get().subscribe(
       result => {
         this.vm = result;
@@ -117,8 +133,15 @@ export class StatutsViewComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
-  open(content : any) {
+  onBtnClick1(e : any) {
+    if (e.per == 1) {
+      this.router.navigate(['statuts/update', e.rowData.id])
+    }
+    else if (e.per == 2){
+      this.router.navigate(['statuts/details',e.rowData.id])
+    }
+  }
+    open(content : any) {
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
       if (result === 'yes') {
@@ -176,7 +199,17 @@ export class StatutsViewComponent implements OnInit {
     this.agGrid.api.deselectAll();
 
   }
+  onSelectionChanged(event : any) {
 
+    if (this.agGrid.api.getSelectedRows().length == 0){
+      this.show = false
+      this.countSelected = this.agGrid.api.getSelectedRows().length
+    }
+    else {
+      this.countSelected = this.agGrid.api.getSelectedRows().length
+      this.show = true
+    }
+  }
   export() {
 
     const title = 'Statuts';

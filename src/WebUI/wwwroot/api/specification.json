@@ -791,6 +791,38 @@
         }
       }
     },
+    "/api/Statuts/stat/{id}": {
+      "get": {
+        "tags": [
+          "Statuts"
+        ],
+        "operationId": "Statuts_GetStat",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatutStatByIdVm"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Structures": {
       "get": {
         "tags": [
@@ -1098,6 +1130,38 @@
                 "schema": {
                   "type": "string",
                   "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/TypeProjects/stat/{id}": {
+      "get": {
+        "tags": [
+          "TypeProjects"
+        ],
+        "operationId": "TypeProjects_GetStat",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TypeProjectsStatVm"
                 }
               }
             }
@@ -2285,6 +2349,53 @@
           }
         }
       },
+      "StatutStatByIdVm": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "statutStat": {
+            "$ref": "#/components/schemas/StatutStat"
+          }
+        }
+      },
+      "StatutStat": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "evaluationsCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "diffEvaluationsCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "projectsCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "diffProjectsCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "actionPsCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "diffActionPsCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "contratsCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "diffContratsCount": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
       "StructuresVm": {
         "type": "object",
         "additionalProperties": false,
@@ -2436,6 +2547,29 @@
           "comment": {
             "type": "string",
             "nullable": true
+          }
+        }
+      },
+      "TypeProjectsStatVm": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "typeProjectDto": {
+            "$ref": "#/components/schemas/TypeProjectStat"
+          }
+        }
+      },
+      "TypeProjectStat": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "typePCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "diffETypePCount": {
+            "type": "integer",
+            "format": "int32"
           }
         }
       }

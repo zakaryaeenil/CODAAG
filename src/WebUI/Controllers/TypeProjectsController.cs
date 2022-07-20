@@ -1,6 +1,7 @@
 using CleanArchitecture.Application.TypeProjects.Commands.CreateTypeProject;
 using CleanArchitecture.Application.TypeProjects.Commands.DeleteTypeProject;
 using CleanArchitecture.Application.TypeProjects.Commands.UpdateTypeProject;
+using CleanArchitecture.Application.TypeProjects.Queries.GetTpStatOverViewById;
 using CleanArchitecture.Application.TypeProjects.Queries.GetTypeProjectById;
 using CleanArchitecture.Application.TypeProjects.Queries.GetTypeProjects;
 using Microsoft.AspNetCore.Mvc;
@@ -48,5 +49,12 @@ public class TypeProjectsController : ApiControllerBase
        await Mediator.Send(new DeleteTypeProjectCommand { Id = id });
 
        return NoContent();
+   }
+   
+   
+   [HttpGet("stat/{id}")]
+   public async  Task<ActionResult<TypeProjectsStatVm>> GetStat(int id)
+   {
+       return await Mediator.Send(new GetTypeProjectsStatQuery() { ListId = id });
    }
 }

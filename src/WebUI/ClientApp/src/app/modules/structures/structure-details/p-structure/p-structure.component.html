@@ -1,161 +1,32 @@
-<!--begin::Card-->
-<div *ngIf="receivedValuep.structureDto" class="card card-flush mb-6 mb-xl-9">
-  <!--begin::Card header-->
-  <div class="card-header mt-6">
-    <!--begin::Card title-->
-    <div class="card-title flex-column">
-      <h2 class="mb-1">Projects for this {{receivedValuep.structureDto.title}}</h2>
-      <div class="fs-6 fw-bold text-muted">over {{receivedValuep.structureDto.projects?.length}} records</div>
-    </div>
-    <!--end::Card title-->
-    <!--begin::Card toolbar-->
-    <div class="card-toolbar">
-      <button type="button" class="btn btn-light-primary btn-sm" data-bs-toggle="modal" data-bs-target="#kt_modal_add_schedule">
-        <!--SVG file not found: media/icons/duotune/art/art008.svg-->
-        Add Schedule</button>
-    </div>
-    <!--end::Card toolbar-->
+<div class="d-flex justify-content-center align-items-center">
+  <div class="fw-bolder me-1">
+    <button type="button" (click)="onBtnExport()"  class="btn btn-secondary" ><span class="menu-icon">
+      <span
+        [inlineSVG]="'./assets/media/icons/duotune/files/fil003.svg'"
+        class="svg-icon svg-icon-2"
+      ></span>
+    </span>Export As CSV</button>
+    <button type="button"   class="btn btn-success"   ><span class="menu-icon">
+      <span
+        [inlineSVG]="'./assets/media/icons/duotune/files/fil003.svg'"
+        class="svg-icon svg-icon-2"
+      ></span>
+    </span>Export As Excel</button>
   </div>
-  <!--end::Card header-->
-  <!--begin::Card body-->
-  <div *ngIf="receivedValuep.structureDto.projects"  class="card-body p-9 pt-4">
-    <!-- begin::Table container -->
-    <div  class="table-responsive">
-      <!-- begin::Table -->
-      <table
-        class="table table-row-bordered table-row-gray-100 align-middle gs-0 gy-3"
-      >
-        <!-- begin::Table head -->
-        <thead>
-        <tr class="fw-bolder text-muted">
-          <th class="min-w-80px">ID</th>
-          <th class="min-w-100px">Code</th>
-          <th class="min-w-120px">Title</th>
-          <th class="min-w-140px">Note</th>
-          <th class="min-w-120px">Start Date Prv</th>
-          <th class="min-w-120px">End Date Prv</th>
-          <th class="min-w-120px">Start Date </th>
-          <th class="min-w-120px">End Date </th>
-          <th class="min-w-80px">Taux R</th>
-          <th class="min-w-120px">Mode</th>
-        </tr>
-        </thead>
-        <!-- end::Table head -->
-        <!-- begin::Table body -->
-
-        <tbody>
-        <tr *ngFor="let project of  receivedValuep.structureDto.projects | paginate
-              : {
-                  itemsPerPage: tableSize,
-                  currentPage: page,
-                  totalItems: count
-                };
-          let i = index;">
-
-          <td>
-            <a href="#" class="text-dark fw-bolder text-hover-primary fs-6">
-              {{project.id}}
-            </a>
-          </td>
-          <td>
-            <a
-              href="#"
-              class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6"
-            >
-              {{project.codeProject}}
-            </a>
-
-          </td>
-          <td>
-            <a
-              href="#"
-              class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6"
-            >
-              {{project.title}}
-            </a>
-
-          </td>
-          <td>
-            <a
-              href="#"
-              class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6"
-            >
-              {{project.note}}
-            </a>
-
-          </td>
-          <td>
-            <a
-              href="#"
-              class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6"
-            >
-              {{project.startDatePrv |  date:'medium' }}
-            </a>
-
-          </td>
-          <td>
-            <a
-              href="#"
-              class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6"
-            >
-              {{project.endDatePrv |  date:'medium'}}
-            </a>
-
-          </td>
-          <td>
-            <a
-              href="#"
-              class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6"
-            >
-              {{project.startDate |  date:'medium'}}
-            </a>
-
-          </td>
-          <td>
-            <a
-              href="#"
-              class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6"
-            >
-              {{project.endDate |  date:'medium'}}
-            </a>
-
-          </td>
-          <td>
-            <a
-              href="#"
-              class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6"
-            >
-              {{project.tauxR}}%
-            </a>
-
-          </td>
-          <td>
-            <a
-              href="#"
-              class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6"
-            >
-              {{project.modeReel}}
-            </a>
-
-          </td>
-        </tr>
-        </tbody>
-        <!-- end::Table body -->
-      </table>
-      <!-- end::Table -->
-
-    </div>
-    <!-- end::Table container -->
-    <div class="d-flex justify-content-center">
-      <pagination-controls
-        previousLabel="Prev"
-        nextLabel="Next"
-        (pageChange)="onTableDataChange($event)"
-      >
-      </pagination-controls>
-    </div>
-  </div>
-  <!--end::Card body-->
 </div>
-<!--end::Card-->
+<br>
+<!-- begin::Table -->
+<!-- begin::Table -->
+<ag-grid-angular *ngIf="vm.structureDto"
+                 style="width: 100%; height: 50%"
+                 class="ag-theme-alpine"
+                 [columnDefs]="columnDefs"
+                 [defaultColDef]="defaultColDef"
+                 [rowData]="rowData$"
+                 [animateRows]="true"
+                 [paginationAutoPageSize]="true"
+                 [pagination]="true"
+                 (gridReady)="onGridReady($event)"
+></ag-grid-angular>
 
+<!-- end::Table -->

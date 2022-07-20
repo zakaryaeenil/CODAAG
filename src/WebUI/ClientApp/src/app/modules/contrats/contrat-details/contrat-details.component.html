@@ -1,0 +1,129 @@
+<!--begin::Layout-->
+<div class="d-flex flex-column flex-lg-row">
+
+
+  <!--begin::Sidebar-->
+  <div *ngIf="getedata.contratObjectifDto"  class="flex-column flex-lg-row-auto w-lg-250px w-xl-350px mb-10">
+    <!--begin::Card-->
+    <div class="card mb-5 mb-xl-8">
+      <!--begin::Card body-->
+      <div class="card-body">
+        <!--begin::Summary-->
+        <!--begin::User Info-->
+        <div class="d-flex flex-center flex-column py-5">
+          <!--begin::Name-->
+          <a  class="fs-3 text-gray-800 text-hover-primary fw-bolder mb-3">{{getedata.contratObjectifDto.title}}</a>
+          <!--end::Name-->
+          <!--begin::Position-->
+          <div class="mb-9">
+            <!--begin::Badge-->
+            <div class="badge badge-lg badge-light-primary d-inline">{{getedata.contratObjectifDto.statut?.title}}</div>
+            <!--begin::Badge-->
+          </div>
+          <!--end::Position-->
+          <!--begin::Info-->
+          <!--begin::Info heading-->
+          <div class="fw-bolder mb-3">Color
+            <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-html="true" data-bs-content="Number of support tickets assigned, closed and pending this week."></i></div>
+          <!--end::Info heading-->
+          <div class="d-flex flex-wrap flex-center">
+            <!--begin::Stats-->
+            <div class="border border-gray-300 border-dashed rounded py-3 px-3 mb-3">
+              <div class="fs-4 fw-bolder text-gray-700">
+                <span class="w-75px">{{getedata.contratObjectifDto.projects?.length}}</span>
+              </div>
+              <div class="fw-bold text-muted">Projects</div>
+            </div>
+            <!--end::Stats-->
+
+          </div>
+          <!--end::Info-->
+        </div>
+        <!--end::User Info-->
+
+        <!--end::Summary-->
+        <!--begin::Details toggle-->
+        <div class="d-flex flex-stack fs-4 py-3">
+          <div class="fw-bolder rotate collapsible" data-bs-toggle="collapse" href="#kt_user_view_details" role="button" aria-expanded="false" aria-controls="kt_user_view_details">Details
+            <span class="ms-2 rotate-180">
+                </span></div>
+          <span data-bs-toggle="tooltip" data-bs-trigger="hover" title="Edit customer details">
+														<a  class="btn btn-sm btn-light-primary" (click)="goToUpdate()">Edit</a>
+              </span>
+        </div>
+        <!--end::Details toggle-->
+        <div class="separator"></div>
+        <!--begin::Details content-->
+        <div  class="collapse show">
+          <div class="pb-5 fs-6">
+            <!--begin::Details item-->
+            <div class="fw-bolder mt-5">Contrat ID</div>
+            <div class="text-gray-600">{{getedata.contratObjectifDto.id}}</div>
+            <!--end::Details item-->
+            <!--begin::Details item-->
+            <div class="fw-bolder mt-5">Contrat Title</div>
+            <div class="text-gray-600">{{getedata.contratObjectifDto.title}}</div>
+            <!--end::Details item-->
+            <!--begin::Details item-->
+            <div class="fw-bolder mt-5">Contrat Note</div>
+            <div class="text-gray-600">{{getedata.contratObjectifDto.note}}</div>
+            <!--end::Details item-->
+            <!--begin::Details item-->
+            <div class="fw-bolder mt-5">Contrat Start Date</div>
+            <div class="text-gray-600">{{getedata.contratObjectifDto.startDate}}</div>
+            <!--end::Details item-->
+            <!--begin::Details item-->
+            <div class="fw-bolder mt-5">Contrat End Date</div>
+            <div class="text-gray-600">{{getedata.contratObjectifDto.endDate}}</div>
+            <!--end::Details item-->
+
+          </div>
+        </div>
+        <!--end::Details content-->
+      </div>
+      <!--end::Card body-->
+    </div>
+    <!--end::Card-->
+  </div>
+  <!--end::Sidebar-->
+
+
+  <!--begin::Content-->
+  <div class="flex-lg-row-fluid ms-lg-15">
+
+
+
+
+    <!--begin:::Tabs-->
+    <ul class="nav nav-custom nav-tabs nav-line-tabs nav-line-tabs-2x border-0 fs-4 fw-bold mb-8">
+      <!--begin:::Tab item-->
+      <li class="nav-item">
+        <a class="nav-link text-active-primary pb-4 " [ngClass]="{'active' : co_overview}" (click)="showOverView()">OverView</a>
+      </li>
+      <!--end:::Tab item-->
+      <!--begin:::Tab item-->
+      <li class="nav-item">
+        <a class="nav-link text-active-primary pb-4 " [ngClass]="{'active' : co_projects}" (click)="showProjects()">Projects</a>
+      </li>
+      <!--end:::Tab item-->
+      <!--begin:::Tab item-->
+      <li class="nav-item">
+        <a class="nav-link text-active-primary pb-4 " [ngClass]="{'active' : co_actions}" (click)="showActions()">Projects</a>
+      </li>
+      <!--end:::Tab item-->
+    </ul>
+    <!--end:::Tabs-->
+
+
+
+    <!--begin:::Tab content-->
+    <app-co-over-view *ngIf="co_overview && vm" ></app-co-over-view>
+    <app-co-projects *ngIf="co_projects && vm" [co_pTable]="vm"></app-co-projects>
+    <app-co-actions *ngIf="co_actions && vm" [co_aTable]="vm"></app-co-actions>
+    <!--end:::Tab content-->
+
+
+  </div>
+  <!--end::Content-->
+</div>
+<!--end::Layout-->
