@@ -3,6 +3,7 @@ using CleanArchitecture.Application.Evaluations.Commands.DeleteEvaluation;
 using CleanArchitecture.Application.Evaluations.Commands.UpdateEvaluation;
 using CleanArchitecture.Application.Evaluations.Queries.GetEvaluationById;
 using CleanArchitecture.Application.Evaluations.Queries.GetEvaluations;
+using CleanArchitecture.Application.Evaluations.Queries.GetEvaluationsStat;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CleanArchitecture.WebUI.Controllers;
@@ -48,4 +49,9 @@ public class EvaluationsController: ApiControllerBase
     }
     
 
+    [HttpGet("stat/{id}")]
+    public async  Task<ActionResult<GetEvaluationStatByIdVm>> GetStat(int id)
+    {
+        return await Mediator.Send(new GetEvaluationStatByIdQuery() { ListId = id });
+    }
 }

@@ -32,6 +32,8 @@ public class GetActionPByIdQueryHandler : IRequestHandler<GetActionPByIdQuery, A
                 .Where(t => t.Id == request.ListId)
                 .Include(s =>s.Statut)
                 .Include(s => s.Structures)
+                .Include(s => s.Evaluations)
+                .ThenInclude(ea => ea.Evaluation)
                 .SingleAsync(cancellationToken: cancellationToken)
 
         };

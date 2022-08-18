@@ -33,7 +33,6 @@ export class ProjectCreateComponent implements OnInit {
   comment : string="";
 
   priority : number = 0;
-  TauxR : number = 0;
   mode : string="";
   isInit : boolean = true;
 
@@ -116,7 +115,7 @@ export class ProjectCreateComponent implements OnInit {
       title : this.title,
       note : this.comment,
       priority : this.priority,
-      tauxR : this.TauxR,
+      tauxR : 0,
       modeReel : this.mode,
       startDate : this.startD,
       endDate : this.endD,

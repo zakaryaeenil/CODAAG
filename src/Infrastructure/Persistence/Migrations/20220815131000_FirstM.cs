@@ -10,6 +10,24 @@ namespace CleanArchitecture.Infrastructure.Persistence.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "ModelImports",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    model = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ModelImports", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Statuts",
                 columns: table => new
                 {
@@ -188,7 +206,7 @@ namespace CleanArchitecture.Infrastructure.Persistence.Migrations
                         column: x => x.StatutId,
                         principalTable: "Statuts",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Projects_TypeProjects_TypeProjectId",
                         column: x => x.TypeProjectId,
@@ -310,7 +328,7 @@ namespace CleanArchitecture.Infrastructure.Persistence.Migrations
                         column: x => x.ProjectId,
                         principalTable: "Projects",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -387,7 +405,7 @@ namespace CleanArchitecture.Infrastructure.Persistence.Migrations
                         column: x => x.EvaluationId,
                         principalTable: "Evaluations",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateIndex(
@@ -480,6 +498,9 @@ namespace CleanArchitecture.Infrastructure.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "Gestionnaires");
+
+            migrationBuilder.DropTable(
+                name: "ModelImports");
 
             migrationBuilder.DropTable(
                 name: "ProjectStructure");

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CleanArchitecture.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220621152646_FirstM")]
+    [Migration("20220815131000_FirstM")]
     partial class FirstM
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -302,6 +302,39 @@ namespace CleanArchitecture.Infrastructure.Persistence.Migrations
                     b.HasIndex("StructureId");
 
                     b.ToTable("Gestionnaires");
+                });
+
+            modelBuilder.Entity("CleanArchitecture.Domain.Entities.ModelImport", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("model")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ModelImports");
                 });
 
             modelBuilder.Entity("CleanArchitecture.Domain.Entities.Project", b =>

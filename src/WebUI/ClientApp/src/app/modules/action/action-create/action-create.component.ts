@@ -31,7 +31,6 @@ export class ActionCreateComponent implements OnInit {
   codeP : string="";
 
   budgPrv : number ;
-  TauxR : number = 0;
   budgR : number ;
 
   dropdownList : Array<{ id: number  | undefined; text: string  | undefined}> = [];
@@ -86,7 +85,7 @@ export class ActionCreateComponent implements OnInit {
     this.CreateAction.create(<CreateActionPCommand>{
       title : this.title,
       note : this.comment,
-      tauxR : this.TauxR,
+      tauxR : 0,
       budgR : this.budgR,
       startDate : this.startD,
       endDate : this.endD,

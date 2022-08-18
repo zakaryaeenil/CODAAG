@@ -20,6 +20,8 @@ export interface IActionPsClient {
     get2(id: number): Observable<ActionPByIdVm>;
     update(id: number, command: UpdateActionPCommand): Observable<FileResponse>;
     delete(id: number): Observable<FileResponse>;
+    getActionEval(): Observable<ActionPsWithEvalVm>;
+    createEvaluation(id: number | undefined, evalId: number | undefined, command: CreateActionPEvaluationCommand): Observable<string>;
 }
 
 @Injectable({
@@ -287,6 +289,114 @@ export class ActionPsClient implements IActionPsClient {
         }
         return _observableOf<FileResponse>(<any>null);
     }
+
+    getActionEval() : Observable<ActionPsWithEvalVm> {
+        let url_ = this.baseUrl + "/api/ActionPs/eval";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetActionEval(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetActionEval(<any>response_);
+                } catch (e) {
+                    return <Observable<ActionPsWithEvalVm>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ActionPsWithEvalVm>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetActionEval(response: HttpResponseBase): Observable<ActionPsWithEvalVm> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ActionPsWithEvalVm.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ActionPsWithEvalVm>(<any>null);
+    }
+
+    createEvaluation(id: number | undefined, evalId: number | undefined, command: CreateActionPEvaluationCommand) : Observable<string> {
+        let url_ = this.baseUrl + "/api/ActionPs/evaluation?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        if (evalId === null)
+            throw new Error("The parameter 'evalId' cannot be null.");
+        else if (evalId !== undefined)
+            url_ += "evalId=" + encodeURIComponent("" + evalId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateEvaluation(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateEvaluation(<any>response_);
+                } catch (e) {
+                    return <Observable<string>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<string>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCreateEvaluation(response: HttpResponseBase): Observable<string> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<string>(<any>null);
+    }
 }
 
 export interface IContratObjectifsClient {
@@ -295,6 +405,7 @@ export interface IContratObjectifsClient {
     get2(id: number): Observable<ContratObjectifByIdVm>;
     update(id: number, command: UpdateContratObjectifCommand): Observable<FileResponse>;
     delete(id: number): Observable<FileResponse>;
+    getStat(id: number): Observable<ContratObjectifStatByIdVm>;
 }
 
 @Injectable({
@@ -562,6 +673,57 @@ export class ContratObjectifsClient implements IContratObjectifsClient {
         }
         return _observableOf<FileResponse>(<any>null);
     }
+
+    getStat(id: number) : Observable<ContratObjectifStatByIdVm> {
+        let url_ = this.baseUrl + "/api/ContratObjectifs/stat/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetStat(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetStat(<any>response_);
+                } catch (e) {
+                    return <Observable<ContratObjectifStatByIdVm>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ContratObjectifStatByIdVm>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetStat(response: HttpResponseBase): Observable<ContratObjectifStatByIdVm> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ContratObjectifStatByIdVm.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ContratObjectifStatByIdVm>(<any>null);
+    }
 }
 
 export interface IEvaluationsClient {
@@ -570,6 +732,7 @@ export interface IEvaluationsClient {
     get2(id: number): Observable<EvaluationByIdVm>;
     update(id: number, command: UpdateEvaluationCommand): Observable<FileResponse>;
     delete(id: number): Observable<FileResponse>;
+    getStat(id: number): Observable<GetEvaluationStatByIdVm>;
 }
 
 @Injectable({
@@ -837,6 +1000,128 @@ export class EvaluationsClient implements IEvaluationsClient {
         }
         return _observableOf<FileResponse>(<any>null);
     }
+
+    getStat(id: number) : Observable<GetEvaluationStatByIdVm> {
+        let url_ = this.baseUrl + "/api/Evaluations/stat/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetStat(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetStat(<any>response_);
+                } catch (e) {
+                    return <Observable<GetEvaluationStatByIdVm>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GetEvaluationStatByIdVm>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetStat(response: HttpResponseBase): Observable<GetEvaluationStatByIdVm> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetEvaluationStatByIdVm.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GetEvaluationStatByIdVm>(<any>null);
+    }
+}
+
+export interface IModelImportsClient {
+    create(file: FileParameter | null | undefined): Observable<boolean>;
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class ModelImportsClient implements IModelImportsClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    create(file: FileParameter | null | undefined) : Observable<boolean> {
+        let url_ = this.baseUrl + "/api/ModelImports";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = new FormData();
+        if (file !== null && file !== undefined)
+            content_.append("file", file.data, file.fileName ? file.fileName : "file");
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreate(<any>response_);
+                } catch (e) {
+                    return <Observable<boolean>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<boolean>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCreate(response: HttpResponseBase): Observable<boolean> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<boolean>(<any>null);
+    }
 }
 
 export interface IProjectsClient {
@@ -845,6 +1130,8 @@ export interface IProjectsClient {
     get2(id: number): Observable<ProjectByIdVm>;
     update(id: number, command: UpdateProjectCommand): Observable<FileResponse>;
     delete(id: number): Observable<FileResponse>;
+    getActionEval(): Observable<ProjectsWithEvalVm>;
+    createEvaluation(id: number | undefined, evalId: number | undefined, command: CreateProjectEvaluationCommand): Observable<string>;
 }
 
 @Injectable({
@@ -1111,6 +1398,114 @@ export class ProjectsClient implements IProjectsClient {
             }));
         }
         return _observableOf<FileResponse>(<any>null);
+    }
+
+    getActionEval() : Observable<ProjectsWithEvalVm> {
+        let url_ = this.baseUrl + "/api/Projects/eval";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetActionEval(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetActionEval(<any>response_);
+                } catch (e) {
+                    return <Observable<ProjectsWithEvalVm>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ProjectsWithEvalVm>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetActionEval(response: HttpResponseBase): Observable<ProjectsWithEvalVm> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ProjectsWithEvalVm.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ProjectsWithEvalVm>(<any>null);
+    }
+
+    createEvaluation(id: number | undefined, evalId: number | undefined, command: CreateProjectEvaluationCommand) : Observable<string> {
+        let url_ = this.baseUrl + "/api/Projects/evaluation?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        if (evalId === null)
+            throw new Error("The parameter 'evalId' cannot be null.");
+        else if (evalId !== undefined)
+            url_ += "evalId=" + encodeURIComponent("" + evalId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateEvaluation(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateEvaluation(<any>response_);
+                } catch (e) {
+                    return <Observable<string>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<string>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCreateEvaluation(response: HttpResponseBase): Observable<string> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<string>(<any>null);
     }
 }
 
@@ -3034,6 +3429,66 @@ export interface IActionPByIdVm {
     actionPDto?: ActionP;
 }
 
+export class ActionPsWithEvalVm implements IActionPsWithEvalVm {
+    actionPDtos?: ActionP[];
+    is?: boolean;
+    evaluationDtos?: Evaluation[];
+
+    constructor(data?: IActionPsWithEvalVm) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["actionPDtos"])) {
+                this.actionPDtos = [] as any;
+                for (let item of _data["actionPDtos"])
+                    this.actionPDtos!.push(ActionP.fromJS(item));
+            }
+            this.is = _data["is"];
+            if (Array.isArray(_data["evaluationDtos"])) {
+                this.evaluationDtos = [] as any;
+                for (let item of _data["evaluationDtos"])
+                    this.evaluationDtos!.push(Evaluation.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): ActionPsWithEvalVm {
+        data = typeof data === 'object' ? data : {};
+        let result = new ActionPsWithEvalVm();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.actionPDtos)) {
+            data["actionPDtos"] = [];
+            for (let item of this.actionPDtos)
+                data["actionPDtos"].push(item.toJSON());
+        }
+        data["is"] = this.is;
+        if (Array.isArray(this.evaluationDtos)) {
+            data["evaluationDtos"] = [];
+            for (let item of this.evaluationDtos)
+                data["evaluationDtos"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IActionPsWithEvalVm {
+    actionPDtos?: ActionP[];
+    is?: boolean;
+    evaluationDtos?: Evaluation[];
+}
+
 export class CreateActionPCommand implements ICreateActionPCommand {
     title?: string;
     note?: string | undefined;
@@ -3120,6 +3575,50 @@ export interface ICreateActionPCommand {
     statutId?: number | undefined;
     projectId?: number | undefined;
     structures?: number[];
+}
+
+export class CreateActionPEvaluationCommand implements ICreateActionPEvaluationCommand {
+    id?: number;
+    evalId?: number;
+    tauxR?: number;
+
+    constructor(data?: ICreateActionPEvaluationCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.evalId = _data["evalId"];
+            this.tauxR = _data["tauxR"];
+        }
+    }
+
+    static fromJS(data: any): CreateActionPEvaluationCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateActionPEvaluationCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["evalId"] = this.evalId;
+        data["tauxR"] = this.tauxR;
+        return data; 
+    }
+}
+
+export interface ICreateActionPEvaluationCommand {
+    id?: number;
+    evalId?: number;
+    tauxR?: number;
 }
 
 export class UpdateActionPCommand implements IUpdateActionPCommand {
@@ -3410,6 +3909,90 @@ export interface IUpdateContratObjectifCommand {
     statut?: number | undefined;
 }
 
+export class ContratObjectifStatByIdVm implements IContratObjectifStatByIdVm {
+    contratObjectifDto?: ContratObjectifStat;
+
+    constructor(data?: IContratObjectifStatByIdVm) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.contratObjectifDto = _data["contratObjectifDto"] ? ContratObjectifStat.fromJS(_data["contratObjectifDto"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): ContratObjectifStatByIdVm {
+        data = typeof data === 'object' ? data : {};
+        let result = new ContratObjectifStatByIdVm();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["contratObjectifDto"] = this.contratObjectifDto ? this.contratObjectifDto.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IContratObjectifStatByIdVm {
+    contratObjectifDto?: ContratObjectifStat;
+}
+
+export class ContratObjectifStat implements IContratObjectifStat {
+    projectsCount?: number;
+    diffProjectsCount?: number;
+    structuresCount?: number;
+    diffStructuresCount?: number;
+
+    constructor(data?: IContratObjectifStat) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.projectsCount = _data["projectsCount"];
+            this.diffProjectsCount = _data["diffProjectsCount"];
+            this.structuresCount = _data["structuresCount"];
+            this.diffStructuresCount = _data["diffStructuresCount"];
+        }
+    }
+
+    static fromJS(data: any): ContratObjectifStat {
+        data = typeof data === 'object' ? data : {};
+        let result = new ContratObjectifStat();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["projectsCount"] = this.projectsCount;
+        data["diffProjectsCount"] = this.diffProjectsCount;
+        data["structuresCount"] = this.structuresCount;
+        data["diffStructuresCount"] = this.diffStructuresCount;
+        return data; 
+    }
+}
+
+export interface IContratObjectifStat {
+    projectsCount?: number;
+    diffProjectsCount?: number;
+    structuresCount?: number;
+    diffStructuresCount?: number;
+}
+
 export class EvaluationsVm implements IEvaluationsVm {
     evaluationDtos?: Evaluation[];
 
@@ -3598,6 +4181,90 @@ export interface IUpdateEvaluationCommand {
     statut?: number | undefined;
 }
 
+export class GetEvaluationStatByIdVm implements IGetEvaluationStatByIdVm {
+    evaluationStat?: EvaluationStat;
+
+    constructor(data?: IGetEvaluationStatByIdVm) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.evaluationStat = _data["evaluationStat"] ? EvaluationStat.fromJS(_data["evaluationStat"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): GetEvaluationStatByIdVm {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetEvaluationStatByIdVm();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["evaluationStat"] = this.evaluationStat ? this.evaluationStat.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IGetEvaluationStatByIdVm {
+    evaluationStat?: EvaluationStat;
+}
+
+export class EvaluationStat implements IEvaluationStat {
+    projectsCount?: number;
+    diffProjectsCount?: number;
+    actionPsCount?: number;
+    diffActionPsCount?: number;
+
+    constructor(data?: IEvaluationStat) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.projectsCount = _data["projectsCount"];
+            this.diffProjectsCount = _data["diffProjectsCount"];
+            this.actionPsCount = _data["actionPsCount"];
+            this.diffActionPsCount = _data["diffActionPsCount"];
+        }
+    }
+
+    static fromJS(data: any): EvaluationStat {
+        data = typeof data === 'object' ? data : {};
+        let result = new EvaluationStat();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["projectsCount"] = this.projectsCount;
+        data["diffProjectsCount"] = this.diffProjectsCount;
+        data["actionPsCount"] = this.actionPsCount;
+        data["diffActionPsCount"] = this.diffActionPsCount;
+        return data; 
+    }
+}
+
+export interface IEvaluationStat {
+    projectsCount?: number;
+    diffProjectsCount?: number;
+    actionPsCount?: number;
+    diffActionPsCount?: number;
+}
+
 export class ProjectsVm implements IProjectsVm {
     projectDtos?: Project[];
 
@@ -3676,6 +4343,66 @@ export class ProjectByIdVm implements IProjectByIdVm {
 
 export interface IProjectByIdVm {
     projectDto?: Project;
+}
+
+export class ProjectsWithEvalVm implements IProjectsWithEvalVm {
+    projectsDtos?: Project[];
+    is?: boolean;
+    evaluationDtos?: Evaluation[];
+
+    constructor(data?: IProjectsWithEvalVm) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["projectsDtos"])) {
+                this.projectsDtos = [] as any;
+                for (let item of _data["projectsDtos"])
+                    this.projectsDtos!.push(Project.fromJS(item));
+            }
+            this.is = _data["is"];
+            if (Array.isArray(_data["evaluationDtos"])) {
+                this.evaluationDtos = [] as any;
+                for (let item of _data["evaluationDtos"])
+                    this.evaluationDtos!.push(Evaluation.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): ProjectsWithEvalVm {
+        data = typeof data === 'object' ? data : {};
+        let result = new ProjectsWithEvalVm();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.projectsDtos)) {
+            data["projectsDtos"] = [];
+            for (let item of this.projectsDtos)
+                data["projectsDtos"].push(item.toJSON());
+        }
+        data["is"] = this.is;
+        if (Array.isArray(this.evaluationDtos)) {
+            data["evaluationDtos"] = [];
+            for (let item of this.evaluationDtos)
+                data["evaluationDtos"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IProjectsWithEvalVm {
+    projectsDtos?: Project[];
+    is?: boolean;
+    evaluationDtos?: Evaluation[];
 }
 
 export class CreateProjectCommand implements ICreateProjectCommand {
@@ -3780,6 +4507,50 @@ export interface ICreateProjectCommand {
     typeProjectId?: number | undefined;
     contratObjectifs?: number[];
     structures?: number[];
+}
+
+export class CreateProjectEvaluationCommand implements ICreateProjectEvaluationCommand {
+    id?: number;
+    evalId?: number;
+    tauxR?: number;
+
+    constructor(data?: ICreateProjectEvaluationCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.evalId = _data["evalId"];
+            this.tauxR = _data["tauxR"];
+        }
+    }
+
+    static fromJS(data: any): CreateProjectEvaluationCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateProjectEvaluationCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["evalId"] = this.evalId;
+        data["tauxR"] = this.tauxR;
+        return data; 
+    }
+}
+
+export interface ICreateProjectEvaluationCommand {
+    id?: number;
+    evalId?: number;
+    tauxR?: number;
 }
 
 export class UpdateProjectCommand implements IUpdateProjectCommand {
@@ -4620,6 +5391,11 @@ export class TypeProjectStat implements ITypeProjectStat {
 export interface ITypeProjectStat {
     typePCount?: number;
     diffETypePCount?: number;
+}
+
+export interface FileParameter {
+    data: any;
+    fileName: string;
 }
 
 export interface FileResponse {

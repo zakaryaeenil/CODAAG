@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CleanArchitecture.Application.ContratObjectifs.Queries.GetContratObjectifById;
 
-public class GetContratObjectifByIdQuery: IRequest<ContratObjectifByIdVm>
+public class GetContratObjectifByIdQuery : IRequest<ContratObjectifByIdVm>
 {
     public int ListId { get; set; }
 }

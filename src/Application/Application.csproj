@@ -24,6 +24,7 @@
     <ItemGroup>
       <Folder Include="Gestionnaires\Commands" />
       <Folder Include="Gestionnaires\Queries\GetGestionnaireById" />
+      <Folder Include="ModelImports" />
     </ItemGroup>
 
 </Project>

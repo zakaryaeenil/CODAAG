@@ -1,11 +1,10 @@
+using CleanArchitecture.Application.ActionPs.Commands.CreateActionEvaluation;
 using CleanArchitecture.Application.ActionPs.Commands.CreateActionP;
 using CleanArchitecture.Application.ActionPs.Commands.DeleteActionP;
 using CleanArchitecture.Application.ActionPs.Commands.UpdateActionP;
 using CleanArchitecture.Application.ActionPs.Queries.GetActionPById;
 using CleanArchitecture.Application.ActionPs.Queries.GetActionPs;
-using CleanArchitecture.Application.Statuts.Queries.GetStatutById;
-using CleanArchitecture.Application.Statuts.Queries.GetStatuts;
-using MediatR;
+using CleanArchitecture.Application.ActionPs.Queries.GetActionPswithEval;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CleanArchitecture.WebUI.Controllers;
@@ -24,7 +23,12 @@ public class ActionPsController : ApiControllerBase
     {
         return await Mediator.Send(new GetActionPByIdQuery() { ListId = id });
     }
-    
+ 
+    [HttpGet("eval")]
+    public async  Task<ActionResult<ActionPsWithEvalVm>> GetActionEval()
+    {
+        return await Mediator.Send(new GetActionPsWhitEvalQuery() { });
+    } 
     
     [HttpPost]
     public async Task<ActionResult<int>> Create(CreateActionPCommand command)
@@ -32,6 +36,19 @@ public class ActionPsController : ApiControllerBase
         return await Mediator.Send(command);
     }
     
+    [HttpPost("evaluation")]
+    public async Task<ActionResult<string>> CreateEvaluation(int id ,int evalId, CreateActionPEvaluationCommand command)
+    {
+        if (id != command.Id || evalId != command.evalId)
+        {
+            return BadRequest();
+        }
+
+        await Mediator.Send(command);
+
+        return NoContent();
+    }
+
     
     [HttpPut("{id}")]
     public async Task<ActionResult> Update(int id, UpdateActionPCommand command)

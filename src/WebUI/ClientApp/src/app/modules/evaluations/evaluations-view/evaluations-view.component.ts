@@ -138,7 +138,10 @@ export class EvaluationsViewComponent implements OnInit {
     if (e.per == 1) {
       this.router.navigate(['evaluations/update', e.rowData.id])
     }
-    //this.router.navigate(['typesproject/update',e.rowData.id])
+    else if(e.per == 2){
+      this.router.navigate(['evaluations/details',e.rowData.id])
+    }
+
   }
 
   open(content : any) {

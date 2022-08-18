@@ -39,7 +39,7 @@ export class StructuresViewComponent implements OnInit {
     {headerName: 'Note', field: 'note'},
     {headerName: 'Start Date', field: 'startDate', filter: 'agDateColumnFilter', filterParams: filterParams,},
     {headerName: 'End Date', field: 'endDate', filter: 'agDateColumnFilter', filterParams: filterParams,},
-    {headerName: 'Gestionnaires', field: 'gestionnaires.length', filter: 'agNumberColumnFilter',
+    {headerName: 'Gestionnaires', field: 'gestionnaires',valueFormatter : (params) =>  this.currencyFormatter(params),
       cellStyle: {color : 'blue'}},
     {
       headerName: 'Actions',
@@ -269,6 +269,15 @@ export class StructuresViewComponent implements OnInit {
       });
       fs.saveAs(blob, title + '.xlsx');
     });
+  }
+  currencyFormatter(params : any)  {
+    //console.log(e , 'init')
+    let a = "";
+    params.data.gestionnaires.forEach((x : any)  => {
+      a+="  "
+      a += x.nom
+    })
+    return a;
   }
 }
 

@@ -32,6 +32,9 @@ public class GetProjectsQueryHandler : IRequestHandler<GetProjectsQuery, Project
             .Include(p =>p.ParentStructure)
             .Include(s => s.StructureChildren)
             .Include(p => p.Projects)
+            .ThenInclude(pp => pp.TypeProject)
+            .Include(p => p.Projects)
+            .ThenInclude(pp => pp.Statut) 
             .Single(x => x.Id == user.StructureId) ?? throw new InvalidOperationException();
          
         ICollection<Structure> listAll = new List<Structure>();
@@ -58,9 +61,12 @@ public class GetProjectsQueryHandler : IRequestHandler<GetProjectsQuery, Project
     {
         
         Structure? t = _context.Structures
-            .Include(p => p.ParentStructure)
-            .Include(p => p.StructureChildren)
+            .Include(p =>p.ParentStructure)
+            .Include(s => s.StructureChildren)
             .Include(p => p.Projects)
+            .ThenInclude(pp => pp.TypeProject)
+            .Include(p => p.Projects)
+            .ThenInclude(pp => pp.Statut)
             .SingleOrDefault(x => x.Id == k.Id);
         if (t == null)
         {

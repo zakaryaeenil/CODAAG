@@ -15,6 +15,10 @@ import { EvaluationUpdateComponent } from './evaluation-update/evaluation-update
 import {MatSortModule} from "@angular/material/sort";
 import {AgGridModule} from "ag-grid-angular";
 import {EvaluationButtonRenderComponent} from "./EvaluationRenders/evaluation-button-render.component";
+import { EvaluationDetailsComponent } from './evaluation-details/evaluation-details.component';
+import { EProjectsComponent } from './evaluation-details/e-projects/e-projects.component';
+import { EActionsComponent } from './evaluation-details/e-actions/e-actions.component';
+import { EOverViewViewComponent } from './evaluation-details/e-over-view-view/e-over-view-view.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +26,11 @@ import {EvaluationButtonRenderComponent} from "./EvaluationRenders/evaluation-bu
     EvaluationComponent,
     EvaluationCreateComponent,
     EvaluationUpdateComponent,
-    EvaluationButtonRenderComponent
+    EvaluationButtonRenderComponent,
+    EvaluationDetailsComponent,
+    EProjectsComponent,
+    EActionsComponent,
+    EOverViewViewComponent
 
   ],
     imports: [

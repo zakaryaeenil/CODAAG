@@ -14,6 +14,13 @@ import {MatSortModule} from "@angular/material/sort";
 import {AgGridModule} from "ag-grid-angular";
 import {ActionButtonRenderComponent} from "./ActionRenders/action-button-render.component";
 import {InlineSVGModule} from "ng-inline-svg-2";
+import {AEvaluationComponent} from "./action-details/a-evaluation/a-evaluation.component";
+import {AOverViewViewComponent} from "./action-details/a-over-view-view/a-over-view-view.component";
+import {AStructureComponent} from "./action-details/a-structure/a-structure.component";
+import {ActionDetailsComponent} from "./action-details/action-details.component";
+import {NgApexchartsModule} from "ng-apexcharts";
+import { EvalActionComponent } from './eval-action/eval-action.component';
+import {NumericEditorComponent} from "./ActionRenders/numeric-editor.component";
 
 
 @NgModule({
@@ -22,7 +29,13 @@ import {InlineSVGModule} from "ng-inline-svg-2";
     ActionCreateComponent,
     ActionViewComponent,
     ActionUpdateComponent,
-    ActionButtonRenderComponent
+    ActionButtonRenderComponent,
+    ActionDetailsComponent,
+    AEvaluationComponent,
+    AStructureComponent,
+    AOverViewViewComponent,
+    EvalActionComponent,
+    NumericEditorComponent
   ],
     imports: [
         CommonModule,
@@ -32,8 +45,9 @@ import {InlineSVGModule} from "ng-inline-svg-2";
         FormsModule,
         NgbModule,
         MatSortModule,
-        AgGridModule.withComponents([ActionButtonRenderComponent]),
-        InlineSVGModule
+        AgGridModule.withComponents([ActionButtonRenderComponent,NumericEditorComponent]),
+        InlineSVGModule,
+        NgApexchartsModule
     ]
 })
 export class ActionModule { }

@@ -1,0 +1,32 @@
+<div class="d-flex justify-content-center align-items-center">
+  <div class="fw-bolder me-1">
+    <button type="button" (click)="onBtnExport()"  class="btn btn-secondary" ><span class="menu-icon">
+      <span
+        [inlineSVG]="'./assets/media/icons/duotune/files/fil003.svg'"
+        class="svg-icon svg-icon-2"
+      ></span>
+    </span>Export As CSV</button>
+    <button type="button"   class="btn btn-success"   ><span class="menu-icon">
+      <span
+        [inlineSVG]="'./assets/media/icons/duotune/files/fil003.svg'"
+        class="svg-icon svg-icon-2"
+      ></span>
+    </span>Export As Excel</button>
+  </div>
+</div>
+<br>
+<!-- begin::Table -->
+<!-- begin::Table -->
+<ag-grid-angular *ngIf="vm.projectDto"
+                 style="width: 100%; height: 50%"
+                 class="ag-theme-alpine"
+                 [columnDefs]="columnDefs"
+                 [defaultColDef]="defaultColDef"
+                 [rowData]="rowData$"
+                 [animateRows]="true"
+                 [paginationAutoPageSize]="true"
+                 [pagination]="true"
+                 (gridReady)="onGridReady($event)"
+></ag-grid-angular>
+
+<!-- end::Table -->

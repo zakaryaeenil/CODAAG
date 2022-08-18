@@ -32,7 +32,7 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     public DbSet<ActionP> ActionPs => Set<ActionP>();
     public DbSet<Evaluation> Evaluations => Set<Evaluation>();
     public DbSet<Gestionnaire> Gestionnaires => Set<Gestionnaire>();
-
+    public DbSet<ModelImport> ModelImports => Set<ModelImport>();
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
     {

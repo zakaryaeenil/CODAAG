@@ -39,7 +39,7 @@ export class ProjectsViewComponent implements OnInit {
     {headerName: 'TauxR per %',  field: 'tauxR', filter: 'agNumberColumnFilter'},
     {headerName: 'Type Project',  field: 'typeProject.title'},
     {headerName: 'Mode',  field: 'modeReel'},
-    {headerName: 'Structures', field: 'structures.length', filter: 'agNumberColumnFilter', cellStyle: {color : 'blue'}},
+    {headerName: 'Structures', field: 'structures', valueFormatter : (params) =>  this.currencyFormatter(params), cellStyle: {color : 'blue'}},
     {headerName: 'Start Date',  field: 'startDate' ,filter: 'agDateColumnFilter', filterParams: filterParams,},
     {headerName: 'End Date',  field: 'endDate' ,filter: 'agDateColumnFilter', filterParams: filterParams,},
     {headerName: 'Start Date Prv',  field: 'startDatePrv' ,filter: 'agDateColumnFilter', filterParams: filterParams,},
@@ -143,6 +143,10 @@ export class ProjectsViewComponent implements OnInit {
     if (e.per == 1) {
       this.router.navigate(['projects/update', e.rowData.id])
     }
+    else if (e.per == 2) {
+      this.router.navigate(['projects/details',e.rowData.id])
+    }
+
     //this.router.navigate(['typesproject/update',e.rowData.id])
   }
   open(content : any) {
@@ -355,6 +359,15 @@ export class ProjectsViewComponent implements OnInit {
       });
       fs.saveAs(blob, title + '.xlsx');
     });
+  }
+  currencyFormatter(params : any)  {
+    //console.log(e , 'init')
+    let a = "";
+    params.data.structures.forEach((x : any)  => {
+      a+="  "
+      a += x.title
+    })
+    return a;
   }
 }
 let checkboxSelection = function (params: CheckboxSelectionCallbackParams) {

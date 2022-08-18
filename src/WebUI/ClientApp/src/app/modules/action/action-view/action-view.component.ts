@@ -39,7 +39,7 @@ export class ActionViewComponent implements OnInit {
     {headerName: 'Budget',  field: 'budgR', filter: 'agNumberColumnFilter'},
     {headerName: 'Budget Prv',  field: 'budgPrv', filter: 'agNumberColumnFilter'},
     {headerName: 'Project',  field: 'project.codeProject'},
-    {headerName: 'Structures', field: 'structures.length', filter: 'agNumberColumnFilter', cellStyle: {color : 'blue'}},
+    {headerName: 'Structures', field: 'structures', valueFormatter : (params) =>  this.currencyFormatter(params) , cellStyle: {color : 'blue'}},
     {headerName: 'Start Date',  field: 'startDate' ,filter: 'agDateColumnFilter', filterParams: filterParams,},
     {headerName: 'End Date',  field: 'endDate' ,filter: 'agDateColumnFilter', filterParams: filterParams,},
     {headerName: 'Start Date Prv',  field: 'startDatePrv' ,filter: 'agDateColumnFilter', filterParams: filterParams,},
@@ -142,6 +142,10 @@ export class ActionViewComponent implements OnInit {
     if (e.per == 1) {
       this.router.navigate(['actions/update', e.rowData.id])
     }
+    else if (e.per == 2) {
+      this.router.navigate(['actions/details',e.rowData.id])
+    }
+
     //this.router.navigate(['typesproject/update',e.rowData.id])
   }
   open(content : any) {
@@ -355,6 +359,15 @@ export class ActionViewComponent implements OnInit {
       });
       fs.saveAs(blob, title + '.xlsx');
     });
+  }
+  currencyFormatter(params : any)  {
+    //console.log(e , 'init')
+    let a = "";
+    params.data.structures.forEach((x : any)  => {
+      a+="  "
+      a += x.title
+    })
+    return a;
   }
 }
 

@@ -18,7 +18,7 @@ export class ContratDetailsComponent implements OnInit {
   vm : ContratObjectif | undefined;
   co_overview : boolean = true
   co_projects: boolean = false
-  co_actions : boolean = false
+  co_structures : boolean = false
   constructor(private contratlist : ContratObjectifsClient,private router : ActivatedRoute,private route : Router) {
     contratlist.get2(router.snapshot.params['id']).subscribe(res =>{
       this.getedata = res
@@ -34,19 +34,19 @@ export class ContratDetailsComponent implements OnInit {
   }
 
   showProjects(){
-    this.co_actions = false
+    this.co_structures = false
     this.co_projects = true
     this.co_overview = false
   }
   showOverView(){
     this.co_projects = false
-    this.co_actions = false
+    this.co_structures = false
     this.co_overview = true
   }
-  showActions(){
+  showStructures(){
     this.co_projects = false
     this.co_overview = false
-    this.co_actions = true
+    this.co_structures = true
 
   }
 

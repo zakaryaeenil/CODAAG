@@ -5,6 +5,7 @@ import {EvaluationsViewComponent} from "./evaluations-view/evaluations-view.comp
 import {EvaluationCreateComponent} from "./evaluation-create/evaluation-create.component";
 
 import {EvaluationUpdateComponent} from "./evaluation-update/evaluation-update.component";
+import {EvaluationDetailsComponent} from "./evaluation-details/evaluation-details.component";
 
 const routes: Routes = [
   {path: '',
@@ -21,6 +22,10 @@ const routes: Routes = [
     {
       path: 'update/:id',
       component: EvaluationUpdateComponent,
+    },
+    {
+      path: 'details/:id',
+      component: EvaluationDetailsComponent,
     },
 
   { path: '', redirectTo: 'all', pathMatch: 'full' },

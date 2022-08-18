@@ -141,7 +141,7 @@ export class StatutsViewComponent implements OnInit {
       this.router.navigate(['statuts/details',e.rowData.id])
     }
   }
-    open(content : any) {
+  open(content : any) {
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
       if (result === 'yes') {
@@ -197,7 +197,6 @@ export class StatutsViewComponent implements OnInit {
   // Example using Grid's API
   clearSelection(): void {
     this.agGrid.api.deselectAll();
-
   }
   onSelectionChanged(event : any) {
 

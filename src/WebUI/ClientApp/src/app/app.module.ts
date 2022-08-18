@@ -16,7 +16,6 @@ import { FakeAPIService } from './_fake';
 import {NgMultiSelectDropDownModule} from "ng-multiselect-dropdown";
 import {ToastrModule} from "ngx-toastr";
 
-
 // #fake-end#
 
 function appInitializer(authService: AuthService) {

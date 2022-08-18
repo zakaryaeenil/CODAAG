@@ -17,7 +17,7 @@ import {Workbook} from "exceljs";
 })
 export class CoActionsComponent {
 
-  @Input()  co_aTable : ContratObjectif | undefined;
+  @Input()  co_sTable : ContratObjectif | undefined;
 
   vm : ContratObjectifByIdVm;
   public columnDefs: ColDef[] = [
@@ -72,7 +72,7 @@ export class CoActionsComponent {
   }
   export() {
 
-    const title = 'Structures  for_'+this.co_aTable?.title ;
+    const title = 'Structures  for_'+this.co_sTable?.title ;
     let d = new Date();
     let date = d.getDate() + '-' + d.getMonth() + '-' + d.getFullYear();
 

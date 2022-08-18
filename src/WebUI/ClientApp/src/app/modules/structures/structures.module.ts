@@ -29,19 +29,23 @@ import {NgApexchartsModule} from "ng-apexcharts";
 
 
 @NgModule({
-  declarations: [
-    StructuresComponent,
-    StructuresViewComponent,
-    StructureDetailsComponent,
-    OStructureComponent,
-    ScStructureComponent,
-    GStructureComponent,
-    PStructureComponent,
+    declarations: [
+        StructuresComponent,
+        StructuresViewComponent,
+        StructureDetailsComponent,
+        OStructureComponent,
+        ScStructureComponent,
+        GStructureComponent,
+        PStructureComponent,
+        AStructureComponent,
+        CoStructureComponent,
+        StructureCreateComponent,
+        StructureUpdateComponent,
+        StructureButtonRenderComponent
+    ],
+  exports: [
     AStructureComponent,
-    CoStructureComponent,
-    StructureCreateComponent,
-    StructureUpdateComponent,
-    StructureButtonRenderComponent
+    PStructureComponent
   ],
     imports: [
         CommonModule,

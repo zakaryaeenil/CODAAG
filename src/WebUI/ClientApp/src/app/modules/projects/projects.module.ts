@@ -17,6 +17,14 @@ import { ProjectUpdateComponent } from './project-update/project-update.componen
 import {MatSortModule} from "@angular/material/sort";
 import {AgGridModule} from "ag-grid-angular";
 import {ProjectButtonRenderComponent} from "./ProjectRenders/project-button-render.component";
+import { ProjectDetailsComponent } from './project-details/project-details.component';
+import { POverViewViewComponent } from './project-details/p-over-view-view/p-over-view-view.component';
+import { PContratComponent } from './project-details/p-contrat/p-contrat.component';
+import { PActionComponent } from './project-details/p-action/p-action.component';
+import { PStructureComponent } from './project-details/p-structure/p-structure.component';
+import { PEvaluationComponent } from './project-details/p-evaluation/p-evaluation.component';
+import { EvalProjectComponent } from './eval-project/eval-project.component';
+import {ProjectNumericEditor} from "./ProjectRenders/project-numeric-editor";
 
 
 
@@ -26,7 +34,15 @@ import {ProjectButtonRenderComponent} from "./ProjectRenders/project-button-rend
     ProjectsViewComponent,
     ProjectCreateComponent,
     ProjectUpdateComponent,
-    ProjectButtonRenderComponent
+    ProjectButtonRenderComponent,
+    ProjectDetailsComponent,
+    POverViewViewComponent,
+    PContratComponent,
+    PActionComponent,
+    PStructureComponent,
+    PEvaluationComponent,
+    EvalProjectComponent,
+    ProjectNumericEditor
   ],
     imports: [
         CommonModule,
@@ -41,7 +57,8 @@ import {ProjectButtonRenderComponent} from "./ProjectRenders/project-button-rend
         NgMultiSelectDropDownModule,
         InlineSVGModule,
         MatSortModule,
-        AgGridModule.withComponents([ProjectButtonRenderComponent]),
+        AgGridModule.withComponents([ProjectButtonRenderComponent,ProjectNumericEditor]),
+        NgApexchartsModule,
     ]
 })
 export class ProjectsModule { }

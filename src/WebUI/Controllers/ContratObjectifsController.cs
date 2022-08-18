@@ -3,6 +3,7 @@ using CleanArchitecture.Application.ContratObjectifs.Commands.DeleteContratObjec
 using CleanArchitecture.Application.ContratObjectifs.Commands.UpdateContratObjectif;
 using CleanArchitecture.Application.ContratObjectifs.Queries.GetContratObjectifById;
 using CleanArchitecture.Application.ContratObjectifs.Queries.GetContratObjectifs;
+using CleanArchitecture.Application.ContratObjectifs.Queries.GetContratObjectifStatById;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CleanArchitecture.WebUI.Controllers;
@@ -45,5 +46,11 @@ public class ContratObjectifsController: ApiControllerBase
         await Mediator.Send(new DeleteContratObjectifCommand { Id = id });
 
         return NoContent();
+    }
+    
+    [HttpGet("stat/{id}")]
+    public async  Task<ActionResult<ContratObjectifStatByIdVm>> GetStat(int id)
+    {
+        return await Mediator.Send(new GetContratObjectifStatByIdQuery() { ListId = id });
     }
 }

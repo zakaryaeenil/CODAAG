@@ -1,0 +1,167 @@
+
+<!--begin::Layout-->
+<div class="d-flex flex-column flex-lg-row">
+
+
+  <!--begin::Sidebar-->
+  <div *ngIf="getedata.actionPDto"  class="flex-column flex-lg-row-auto w-lg-250px w-xl-350px mb-10">
+    <!--begin::Card-->
+    <div class="card mb-5 mb-xl-8">
+      <!--begin::Card body-->
+      <div class="card-body">
+        <!--begin::Summary-->
+        <!--begin::User Info-->
+        <div class="d-flex flex-center flex-column py-5">
+          <!--begin::Name-->
+          <a  class="fs-3 text-gray-800 text-hover-primary fw-bolder mb-3">{{getedata.actionPDto.title}}</a>
+          <!--end::Name-->
+          <!--begin::Position-->
+          <div class="mb-9">
+            <!--begin::Badge-->
+            <div class="badge badge-lg badge-light-primary d-inline">{{getedata.actionPDto.statut?.title}}</div>
+            <!--begin::Badge-->
+          </div>
+          <!--end::Position-->
+          <!--begin::Info-->
+          <!--begin::Info heading-->
+          <div class="fw-bolder mb-3">Color
+            <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-html="true" data-bs-content="Number of support tickets assigned, closed and pending this week."></i></div>
+          <!--end::Info heading-->
+          <div class="d-flex flex-wrap flex-center">
+
+
+            <!--begin::Stats-->
+            <div class="border border-gray-300 border-dashed rounded py-3 px-3 mb-3">
+              <div class="fs-4 fw-bolder text-gray-700">
+                <span class="w-75px">{{getedata.actionPDto.structures?.length}}</span>
+              </div>
+              <div class="fw-bold text-muted">Str.</div>
+            </div>
+            <!--end::Stats-->
+
+            <!--begin::Stats-->
+            <div class="border border-gray-300 border-dashed rounded py-3 px-3 mb-3">
+              <div class="fs-4 fw-bolder text-gray-700">
+                <span class="w-75px">{{getedata.actionPDto.evaluations?.length}}</span>
+              </div>
+              <div class="fw-bold text-muted">Eval.</div>
+            </div>
+            <!--end::Stats-->
+          </div>
+          <!--end::Info-->
+        </div>
+        <!--end::User Info-->
+
+        <!--end::Summary-->
+        <!--begin::Details toggle-->
+        <div class="d-flex flex-stack fs-4 py-3">
+          <div class="fw-bolder rotate collapsible" data-bs-toggle="collapse" href="#kt_user_view_details" role="button" aria-expanded="false" aria-controls="kt_user_view_details">Details
+            <span class="ms-2 rotate-180">
+                </span></div>
+          <span data-bs-toggle="tooltip" data-bs-trigger="hover" title="Edit customer details">
+														<a  class="btn btn-sm btn-light-primary" (click)="goToUpdate()">Edit</a>
+              </span>
+        </div>
+        <!--end::Details toggle-->
+        <div class="separator"></div>
+        <!--begin::Details content-->
+        <div  class="collapse show">
+          <div class="pb-5 fs-6">
+            <!--begin::Details item-->
+            <div class="fw-bolder mt-5">Action ID</div>
+            <div class="text-gray-600">{{getedata.actionPDto.id}}</div>
+            <!--end::Details item-->
+            <!--begin::Details item-->
+            <div class="fw-bolder mt-5">Action Title</div>
+            <div class="text-gray-600">{{getedata.actionPDto.title}}</div>
+            <!--end::Details item-->
+            <!--begin::Details item-->
+            <div class="fw-bolder mt-5">Action Note</div>
+            <div class="text-gray-600">{{getedata.actionPDto.note}}</div>
+            <!--end::Details item-->
+            <!--begin::Details item-->
+            <div class="fw-bolder mt-5">Action Taux de Realisation</div>
+            <div class="text-gray-600">{{getedata.actionPDto.tauxR}}</div>
+            <!--end::Details item-->
+            <!--begin::Details item-->
+            <div class="fw-bolder mt-5">Project Action </div>
+            <div class="text-gray-600">{{getedata.actionPDto.project?.codeProject}}</div>
+            <!--end::Details item-->
+            <!--begin::Details item-->
+            <div class="fw-bolder mt-5">Action Budget</div>
+            <div class="text-gray-600">{{getedata.actionPDto.budgR}}</div>
+            <!--end::Details item-->
+
+            <!--begin::Details item-->
+            <div class="fw-bolder mt-5">Action Budget Prv</div>
+            <div class="text-gray-600">{{getedata.actionPDto.budgPrv}}</div>
+            <!--end::Details item-->
+            <!--begin::Details item-->
+            <div class="fw-bolder mt-5">Project Start Date</div>
+            <div class="text-gray-600">{{getedata.actionPDto.startDate}}</div>
+            <!--end::Details item-->
+            <!--begin::Details item-->
+            <div class="fw-bolder mt-5">Project End Date</div>
+            <div class="text-gray-600">{{getedata.actionPDto.endDate}}</div>
+            <!--end::Details item-->
+            <!--begin::Details item-->
+            <div class="fw-bolder mt-5">Project Start Date Prv</div>
+            <div class="text-gray-600">{{getedata.actionPDto.startDatePrv}}</div>
+            <!--end::Details item-->
+            <!--begin::Details item-->
+            <div class="fw-bolder mt-5">Project End Date Prv</div>
+            <div class="text-gray-600">{{getedata.actionPDto.endDatePrv}}</div>
+            <!--end::Details item-->
+
+          </div>
+        </div>
+        <!--end::Details content-->
+      </div>
+      <!--end::Card body-->
+    </div>
+    <!--end::Card-->
+  </div>
+  <!--end::Sidebar-->
+
+
+  <!--begin::Content-->
+  <div class="flex-lg-row-fluid ms-lg-15">
+
+
+
+
+    <!--begin:::Tabs-->
+    <ul class="nav nav-custom nav-tabs nav-line-tabs nav-line-tabs-2x border-0 fs-4 fw-bold mb-8">
+      <!--begin:::Tab item-->
+      <li class="nav-item">
+        <a class="nav-link text-active-primary pb-4 " [ngClass]="{'active' : a_overview}" (click)="showOverView()">OverView</a>
+      </li>
+      <!--end:::Tab item-->
+      <!--begin:::Tab item-->
+      <li class="nav-item">
+        <a class="nav-link text-active-primary pb-4 " [ngClass]="{'active' : a_structures}" (click)="showStructures()">Structures</a>
+      </li>
+      <!--end:::Tab item-->
+      <!--begin:::Tab item-->
+      <li class="nav-item">
+        <a class="nav-link text-active-primary pb-4 " [ngClass]="{'active' : a_evaluations}" (click)="showEvaluations()">Evaluations</a>
+      </li>
+      <!--end:::Tab item-->
+
+    </ul>
+    <!--end:::Tabs-->
+
+
+
+    <!--begin:::Tab content-->
+      <app-a-over-view-view *ngIf="a_overview && vm" ></app-a-over-view-view>
+     <app-a-structure *ngIf="a_structures && vm" [a_sTable]="vm"></app-a-structure>>
+      <app-a-evaluation *ngIf="a_evaluations && vm" [a_eTable]="vm"></app-a-evaluation>
+
+    <!--end:::Tab content-->
+
+
+  </div>
+  <!--end::Content-->
+</div>
+<!--end::Layout-->

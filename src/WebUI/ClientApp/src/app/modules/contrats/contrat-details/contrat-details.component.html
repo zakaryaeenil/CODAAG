@@ -35,6 +35,14 @@
               <div class="fw-bold text-muted">Projects</div>
             </div>
             <!--end::Stats-->
+            <!--begin::Stats-->
+            <div class="border border-gray-300 border-dashed rounded py-3 px-3 mb-3">
+              <div class="fs-4 fw-bolder text-gray-700">
+                <span class="w-75px">{{getedata.contratObjectifDto.structures?.length}}</span>
+              </div>
+              <div class="fw-bold text-muted">Structures</div>
+            </div>
+            <!--end::Stats-->
 
           </div>
           <!--end::Info-->
@@ -108,7 +116,7 @@
       <!--end:::Tab item-->
       <!--begin:::Tab item-->
       <li class="nav-item">
-        <a class="nav-link text-active-primary pb-4 " [ngClass]="{'active' : co_actions}" (click)="showActions()">Projects</a>
+        <a class="nav-link text-active-primary pb-4 " [ngClass]="{'active' : co_structures}" (click)="showStructures()">Structures</a>
       </li>
       <!--end:::Tab item-->
     </ul>
@@ -119,7 +127,7 @@
     <!--begin:::Tab content-->
     <app-co-over-view *ngIf="co_overview && vm" ></app-co-over-view>
     <app-co-projects *ngIf="co_projects && vm" [co_pTable]="vm"></app-co-projects>
-    <app-co-actions *ngIf="co_actions && vm" [co_aTable]="vm"></app-co-actions>
+    <app-co-actions *ngIf="co_structures && vm" [co_sTable]="vm"></app-co-actions>
     <!--end:::Tab content-->
 
 

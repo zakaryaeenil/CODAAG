@@ -1,0 +1,72 @@
+<!--begin::Layout-->
+<div *ngIf="vm.evaluationDtos && vm.is" class="d-flex flex-column flex-lg-row">
+  <!--begin::Content-->
+  <div class="flex-lg-row-fluid mb-10 mb-lg-0 me-lg-7 me-xl-10">
+    <!--begin::Card-->
+    <div class="card">
+      <!--begin::Card body-->
+      <div  class="card-body p-12">
+        <label class="form-label fs-6 fw-bolder text-gray-700 mb-3">Evaluation</label>
+        <!--begin::Input group-->
+        <div  class="mb-5">
+          <!--begin::Select2-->
+          <select (change)="callType($event)" [(ngModel)]="e"  class="form-select mb-2" data-control="select2" data-hide-search="true" data-placeholder="Select an option"  >
+            <option  *ngFor="let c of vm.evaluationDtos"  [ngValue]="c.id" >{{c.title}}</option>
+          </select>
+          <!--end::Select2-->
+          <!--begin::Description-->
+          <div class="text-muted fs-7">Set the Evaluation.</div>
+          <!--end::Description-->
+        </div>
+        <!--end::Input group-->
+
+        <!--end::Form-->
+      </div>
+      <!--end::Card body-->
+    </div>
+    <!--end::Card-->
+  </div>
+  <!--end::Content-->
+</div>
+<!--end::Layout-->
+<br>
+<!-- begin::Table -->
+<ag-grid-angular *ngIf="vm.is && vm.projectsDtos"
+                 style="width: 97%; height: 85%"
+                 class="ag-theme-alpine"
+                 [columnDefs]="columnDefs"
+                 [defaultColDef]="defaultColDef"
+                 [autoGroupColumnDef]="autoGroupColumnDef"
+                 [rowData]="rowData$!"
+                 [animateRows]="true"
+                 [enableRangeSelection]="true"
+                 [paginationAutoPageSize]="true"
+                 [pagination]="true"
+                 [suppressRowClickSelection]="true"
+                 (cellValueChanged)="onRowValueChanged($event)"
+                 (gridReady)="onGridReady($event)"
+></ag-grid-angular>
+<!--begin::Layout-->
+<div *ngIf="!vm.is" class="d-flex flex-column flex-lg-row">
+  <!--begin::Content-->
+  <div class="flex-lg-row-fluid mb-10 mb-lg-0 me-lg-7 me-xl-10">
+    <!--begin::Card-->
+    <div class="card">
+      <!--begin::Card body-->
+      <div  class="card-body p-12">
+        <label class="form-label fs-6 fw-bolder text-gray-700 mb-3">Evaluation</label>
+        <!--begin::Input group-->
+        <div  class="mb-5">
+          <h5>No Evaluation For This Period {{anio}}.</h5>
+        </div>
+        <!--end::Input group-->
+
+        <!--end::Form-->
+      </div>
+      <!--end::Card body-->
+    </div>
+    <!--end::Card-->
+  </div>
+  <!--end::Content-->
+</div>
+<!--end::Layout-->

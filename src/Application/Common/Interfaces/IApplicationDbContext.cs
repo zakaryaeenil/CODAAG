@@ -12,7 +12,7 @@ public interface IApplicationDbContext
     DbSet<Statut> Statuts { get; }
     DbSet<ActionP> ActionPs { get; }
     DbSet<Evaluation> Evaluations { get; }
-    
+    DbSet<ModelImport> ModelImports { get; } 
     DbSet<Gestionnaire> Gestionnaires { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);

@@ -27,32 +27,72 @@ public class GetProjectByIdQueryHandler : IRequestHandler<GetProjectByIdQuery, P
 
     public async Task<ProjectByIdVm> Handle(GetProjectByIdQuery request, CancellationToken cancellationToken)
     { 
-        Gestionnaire user = _context.Gestionnaires.Single(x => x.Id == 2);
+        Gestionnaire user = _context.Gestionnaires
+            .Single(x => x.Id == 2);
 
-        Project project = _context.Projects
-            .Include(p => p.TypeProject)
-            .Include(s => s.Statut)
-            .Include(co => co.ContratObjectifs)
-            .Include(p => p.Structures)
-            .ThenInclude(g =>g.Gestionnaires)
-            .SingleOrDefault(x => x.Id == request.ListId) ?? throw new InvalidOperationException();
-     
-        foreach (var p in project.Structures)
+        Project project =  _context.Projects
+            .Include(p =>p.Structures)
+            .Include(p =>p.Actions)
+            .Include(p =>p.ContratObjectifs)
+            .Include(p =>p.Evaluations)
+            .ThenInclude(ea => ea.Evaluation)
+            .Include(p =>p.TypeProject)
+            .Include(p => p.Statut)
+            .Single(x => x.Id == request.ListId) ?? throw new InvalidOperationException();
+
+        Structure structure =  _context.Structures
+            .Include(p =>p.ParentStructure)
+            .Include(s => s.StructureChildren)
+            .Include(p => p.Projects)
+            .ThenInclude(e => e.Evaluations)
+            .ThenInclude(ea => ea.Evaluation)
+            .Single(x => x.Id == user.StructureId) ?? throw new InvalidOperationException();
+         
+        ICollection<Structure> listAll = new List<Structure>();
+        listAll.Add(structure);
+        
+        ICollection<Structure> structures = GetChildren<Structure>(structure, listAll);
+        
+
+        foreach (var st in structures)
         {
-            foreach (var g in p.Gestionnaires)
+            foreach (var p in st.Projects)
             {
-                if (g.Id == 2)
+                if (p.Id == project.Id)
                 {
                     return new ProjectByIdVm
                     {
-                        ProjectDto    = project
+                        ProjectDto = project
                     };
                 }
             }
         }
         
+      
+        
         return new ProjectByIdVm {};
     }
     
-   
+    private ICollection<Structure> GetChildren<TStructure>(Structure k ,ICollection<Structure> list)
+    {
+        
+        Structure? t = _context.Structures
+            .Include(p => p.ParentStructure)
+            .Include(p => p.StructureChildren)
+            .Include(p => p.Projects)
+            .ThenInclude(e => e.Evaluations)
+            .ThenInclude(ea => ea.Evaluation)
+            .SingleOrDefault(x => x.Id == k.Id);
+        if (t == null)
+        {
+            return list;
+        }
+        foreach (Structure child in t.StructureChildren)
+        {
+            list.Add(child);
+            GetChildren<Structure>(child,list);
+        }
+        return list;
+    }
+
 }
