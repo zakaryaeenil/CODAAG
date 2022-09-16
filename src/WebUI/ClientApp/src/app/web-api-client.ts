@@ -21,7 +21,8 @@ export interface IActionPsClient {
     update(id: number, command: UpdateActionPCommand): Observable<FileResponse>;
     delete(id: number): Observable<FileResponse>;
     getActionEval(): Observable<ActionPsWithEvalVm>;
-    createEvaluation(id: number | undefined, evalId: number | undefined, command: CreateActionPEvaluationCommand): Observable<string>;
+    createBulk(file: FileParameter | null | undefined): Observable<string>;
+    createEvaluation(id: number | undefined, evalId: number | undefined, command: CreateActionPEvaluationCommand): Observable<boolean>;
 }
 
 @Injectable({
@@ -338,7 +339,60 @@ export class ActionPsClient implements IActionPsClient {
         return _observableOf<ActionPsWithEvalVm>(<any>null);
     }
 
-    createEvaluation(id: number | undefined, evalId: number | undefined, command: CreateActionPEvaluationCommand) : Observable<string> {
+    createBulk(file: FileParameter | null | undefined) : Observable<string> {
+        let url_ = this.baseUrl + "/api/ActionPs/bulk/create/excel";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = new FormData();
+        if (file !== null && file !== undefined)
+            content_.append("File", file.data, file.fileName ? file.fileName : "File");
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateBulk(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateBulk(<any>response_);
+                } catch (e) {
+                    return <Observable<string>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<string>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCreateBulk(response: HttpResponseBase): Observable<string> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<string>(<any>null);
+    }
+
+    createEvaluation(id: number | undefined, evalId: number | undefined, command: CreateActionPEvaluationCommand) : Observable<boolean> {
         let url_ = this.baseUrl + "/api/ActionPs/evaluation?";
         if (id === null)
             throw new Error("The parameter 'id' cannot be null.");
@@ -369,14 +423,14 @@ export class ActionPsClient implements IActionPsClient {
                 try {
                     return this.processCreateEvaluation(<any>response_);
                 } catch (e) {
-                    return <Observable<string>><any>_observableThrow(e);
+                    return <Observable<boolean>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<string>><any>_observableThrow(response_);
+                return <Observable<boolean>><any>_observableThrow(response_);
         }));
     }
 
-    protected processCreateEvaluation(response: HttpResponseBase): Observable<string> {
+    protected processCreateEvaluation(response: HttpResponseBase): Observable<boolean> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -395,7 +449,7 @@ export class ActionPsClient implements IActionPsClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<string>(<any>null);
+        return _observableOf<boolean>(<any>null);
     }
 }
 
@@ -405,6 +459,7 @@ export interface IContratObjectifsClient {
     get2(id: number): Observable<ContratObjectifByIdVm>;
     update(id: number, command: UpdateContratObjectifCommand): Observable<FileResponse>;
     delete(id: number): Observable<FileResponse>;
+    createBulk(file: FileParameter | null | undefined): Observable<string>;
     getStat(id: number): Observable<ContratObjectifStatByIdVm>;
 }
 
@@ -674,6 +729,59 @@ export class ContratObjectifsClient implements IContratObjectifsClient {
         return _observableOf<FileResponse>(<any>null);
     }
 
+    createBulk(file: FileParameter | null | undefined) : Observable<string> {
+        let url_ = this.baseUrl + "/api/ContratObjectifs/bulk/create/excel";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = new FormData();
+        if (file !== null && file !== undefined)
+            content_.append("File", file.data, file.fileName ? file.fileName : "File");
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateBulk(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateBulk(<any>response_);
+                } catch (e) {
+                    return <Observable<string>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<string>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCreateBulk(response: HttpResponseBase): Observable<string> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<string>(<any>null);
+    }
+
     getStat(id: number) : Observable<ContratObjectifStatByIdVm> {
         let url_ = this.baseUrl + "/api/ContratObjectifs/stat/{id}";
         if (id === undefined || id === null)
@@ -726,12 +834,344 @@ export class ContratObjectifsClient implements IContratObjectifsClient {
     }
 }
 
+export interface IDashInfoClient {
+    get(id: number | null | undefined): Observable<StuctureInfoVm>;
+    getFirstTanche(id: number | null | undefined): Observable<FirstTrancheVm>;
+    getSecondTanche(id: number | null | undefined, conId: number | null | undefined): Observable<GetSecondTrancheVm>;
+    getStatTps(id: number | null | undefined, conId: number | null | undefined): Observable<GetStatPerTpVm>;
+    getStatStatuts(id: number | null | undefined, conId: number | null | undefined): Observable<GetStatPerStatutVm>;
+    getStatTris(id: number | null | undefined, conId: number | null | undefined): Observable<GetStatPerTriVm>;
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class DashInfoClient implements IDashInfoClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    get(id: number | null | undefined) : Observable<StuctureInfoVm> {
+        let url_ = this.baseUrl + "/api/DashInfo?";
+        if (id !== undefined && id !== null)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGet(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGet(<any>response_);
+                } catch (e) {
+                    return <Observable<StuctureInfoVm>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<StuctureInfoVm>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGet(response: HttpResponseBase): Observable<StuctureInfoVm> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = StuctureInfoVm.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<StuctureInfoVm>(<any>null);
+    }
+
+    getFirstTanche(id: number | null | undefined) : Observable<FirstTrancheVm> {
+        let url_ = this.baseUrl + "/api/DashInfo/tranche/first?";
+        if (id !== undefined && id !== null)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetFirstTanche(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetFirstTanche(<any>response_);
+                } catch (e) {
+                    return <Observable<FirstTrancheVm>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FirstTrancheVm>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetFirstTanche(response: HttpResponseBase): Observable<FirstTrancheVm> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FirstTrancheVm.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FirstTrancheVm>(<any>null);
+    }
+
+    getSecondTanche(id: number | null | undefined, conId: number | null | undefined) : Observable<GetSecondTrancheVm> {
+        let url_ = this.baseUrl + "/api/DashInfo/tranche/second?";
+        if (id !== undefined && id !== null)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        if (conId !== undefined && conId !== null)
+            url_ += "conId=" + encodeURIComponent("" + conId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetSecondTanche(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetSecondTanche(<any>response_);
+                } catch (e) {
+                    return <Observable<GetSecondTrancheVm>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GetSecondTrancheVm>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetSecondTanche(response: HttpResponseBase): Observable<GetSecondTrancheVm> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetSecondTrancheVm.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GetSecondTrancheVm>(<any>null);
+    }
+
+    getStatTps(id: number | null | undefined, conId: number | null | undefined) : Observable<GetStatPerTpVm> {
+        let url_ = this.baseUrl + "/api/DashInfo/tranche/tps?";
+        if (id !== undefined && id !== null)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        if (conId !== undefined && conId !== null)
+            url_ += "conId=" + encodeURIComponent("" + conId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetStatTps(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetStatTps(<any>response_);
+                } catch (e) {
+                    return <Observable<GetStatPerTpVm>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GetStatPerTpVm>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetStatTps(response: HttpResponseBase): Observable<GetStatPerTpVm> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetStatPerTpVm.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GetStatPerTpVm>(<any>null);
+    }
+
+    getStatStatuts(id: number | null | undefined, conId: number | null | undefined) : Observable<GetStatPerStatutVm> {
+        let url_ = this.baseUrl + "/api/DashInfo/tranche/stat?";
+        if (id !== undefined && id !== null)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        if (conId !== undefined && conId !== null)
+            url_ += "conId=" + encodeURIComponent("" + conId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetStatStatuts(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetStatStatuts(<any>response_);
+                } catch (e) {
+                    return <Observable<GetStatPerStatutVm>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GetStatPerStatutVm>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetStatStatuts(response: HttpResponseBase): Observable<GetStatPerStatutVm> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetStatPerStatutVm.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GetStatPerStatutVm>(<any>null);
+    }
+
+    getStatTris(id: number | null | undefined, conId: number | null | undefined) : Observable<GetStatPerTriVm> {
+        let url_ = this.baseUrl + "/api/DashInfo/tranche/tri?";
+        if (id !== undefined && id !== null)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        if (conId !== undefined && conId !== null)
+            url_ += "conId=" + encodeURIComponent("" + conId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetStatTris(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetStatTris(<any>response_);
+                } catch (e) {
+                    return <Observable<GetStatPerTriVm>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GetStatPerTriVm>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetStatTris(response: HttpResponseBase): Observable<GetStatPerTriVm> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetStatPerTriVm.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GetStatPerTriVm>(<any>null);
+    }
+}
+
 export interface IEvaluationsClient {
     get(): Observable<EvaluationsVm>;
     create(command: CreateEvaluationCommand): Observable<number>;
     get2(id: number): Observable<EvaluationByIdVm>;
     update(id: number, command: UpdateEvaluationCommand): Observable<FileResponse>;
     delete(id: number): Observable<FileResponse>;
+    createBulk(file: FileParameter | null | undefined): Observable<string>;
     getStat(id: number): Observable<GetEvaluationStatByIdVm>;
 }
 
@@ -1001,6 +1441,59 @@ export class EvaluationsClient implements IEvaluationsClient {
         return _observableOf<FileResponse>(<any>null);
     }
 
+    createBulk(file: FileParameter | null | undefined) : Observable<string> {
+        let url_ = this.baseUrl + "/api/Evaluations/bulk/create/excel";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = new FormData();
+        if (file !== null && file !== undefined)
+            content_.append("File", file.data, file.fileName ? file.fileName : "File");
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateBulk(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateBulk(<any>response_);
+                } catch (e) {
+                    return <Observable<string>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<string>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCreateBulk(response: HttpResponseBase): Observable<string> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<string>(<any>null);
+    }
+
     getStat(id: number) : Observable<GetEvaluationStatByIdVm> {
         let url_ = this.baseUrl + "/api/Evaluations/stat/{id}";
         if (id === undefined || id === null)
@@ -1053,77 +1546,6 @@ export class EvaluationsClient implements IEvaluationsClient {
     }
 }
 
-export interface IModelImportsClient {
-    create(file: FileParameter | null | undefined): Observable<boolean>;
-}
-
-@Injectable({
-    providedIn: 'root'
-})
-export class ModelImportsClient implements IModelImportsClient {
-    private http: HttpClient;
-    private baseUrl: string;
-    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
-
-    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
-        this.http = http;
-        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
-    }
-
-    create(file: FileParameter | null | undefined) : Observable<boolean> {
-        let url_ = this.baseUrl + "/api/ModelImports";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = new FormData();
-        if (file !== null && file !== undefined)
-            content_.append("file", file.data, file.fileName ? file.fileName : "file");
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processCreate(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processCreate(<any>response_);
-                } catch (e) {
-                    return <Observable<boolean>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<boolean>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processCreate(response: HttpResponseBase): Observable<boolean> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = resultData200 !== undefined ? resultData200 : <any>null;
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<boolean>(<any>null);
-    }
-}
-
 export interface IProjectsClient {
     get(): Observable<ProjectsVm>;
     create(command: CreateProjectCommand): Observable<number>;
@@ -1131,7 +1553,8 @@ export interface IProjectsClient {
     update(id: number, command: UpdateProjectCommand): Observable<FileResponse>;
     delete(id: number): Observable<FileResponse>;
     getActionEval(): Observable<ProjectsWithEvalVm>;
-    createEvaluation(id: number | undefined, evalId: number | undefined, command: CreateProjectEvaluationCommand): Observable<string>;
+    createBulk(file: FileParameter | null | undefined): Observable<string>;
+    createEvaluation(id: number | undefined, evalId: number | undefined, command: CreateProjectEvaluationCommand): Observable<boolean>;
 }
 
 @Injectable({
@@ -1448,7 +1871,60 @@ export class ProjectsClient implements IProjectsClient {
         return _observableOf<ProjectsWithEvalVm>(<any>null);
     }
 
-    createEvaluation(id: number | undefined, evalId: number | undefined, command: CreateProjectEvaluationCommand) : Observable<string> {
+    createBulk(file: FileParameter | null | undefined) : Observable<string> {
+        let url_ = this.baseUrl + "/api/Projects/bulk/create/excel";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = new FormData();
+        if (file !== null && file !== undefined)
+            content_.append("File", file.data, file.fileName ? file.fileName : "File");
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateBulk(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateBulk(<any>response_);
+                } catch (e) {
+                    return <Observable<string>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<string>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCreateBulk(response: HttpResponseBase): Observable<string> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<string>(<any>null);
+    }
+
+    createEvaluation(id: number | undefined, evalId: number | undefined, command: CreateProjectEvaluationCommand) : Observable<boolean> {
         let url_ = this.baseUrl + "/api/Projects/evaluation?";
         if (id === null)
             throw new Error("The parameter 'id' cannot be null.");
@@ -1479,14 +1955,14 @@ export class ProjectsClient implements IProjectsClient {
                 try {
                     return this.processCreateEvaluation(<any>response_);
                 } catch (e) {
-                    return <Observable<string>><any>_observableThrow(e);
+                    return <Observable<boolean>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<string>><any>_observableThrow(response_);
+                return <Observable<boolean>><any>_observableThrow(response_);
         }));
     }
 
-    protected processCreateEvaluation(response: HttpResponseBase): Observable<string> {
+    protected processCreateEvaluation(response: HttpResponseBase): Observable<boolean> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1505,7 +1981,7 @@ export class ProjectsClient implements IProjectsClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<string>(<any>null);
+        return _observableOf<boolean>(<any>null);
     }
 }
 
@@ -1515,6 +1991,7 @@ export interface IStatutsClient {
     get2(id: number): Observable<StatutByIdVm>;
     update(id: number, command: UpdateStatutCommand): Observable<FileResponse>;
     delete(id: number): Observable<FileResponse>;
+    createBulk(file: FileParameter | null | undefined): Observable<string>;
     getStat(id: number): Observable<StatutStatByIdVm>;
 }
 
@@ -1784,6 +2261,59 @@ export class StatutsClient implements IStatutsClient {
         return _observableOf<FileResponse>(<any>null);
     }
 
+    createBulk(file: FileParameter | null | undefined) : Observable<string> {
+        let url_ = this.baseUrl + "/api/Statuts/bulk/create/excel";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = new FormData();
+        if (file !== null && file !== undefined)
+            content_.append("File", file.data, file.fileName ? file.fileName : "File");
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateBulk(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateBulk(<any>response_);
+                } catch (e) {
+                    return <Observable<string>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<string>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCreateBulk(response: HttpResponseBase): Observable<string> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<string>(<any>null);
+    }
+
     getStat(id: number) : Observable<StatutStatByIdVm> {
         let url_ = this.baseUrl + "/api/Statuts/stat/{id}";
         if (id === undefined || id === null)
@@ -1842,6 +2372,7 @@ export interface IStructuresClient {
     get2(id: number): Observable<StructureByIdVm>;
     update(id: number, command: UpdateStructureCommand): Observable<FileResponse>;
     delete(id: number): Observable<FileResponse>;
+    createBulk(file: FileParameter | null | undefined): Observable<string>;
 }
 
 @Injectable({
@@ -2109,6 +2640,59 @@ export class StructuresClient implements IStructuresClient {
         }
         return _observableOf<FileResponse>(<any>null);
     }
+
+    createBulk(file: FileParameter | null | undefined) : Observable<string> {
+        let url_ = this.baseUrl + "/api/Structures/bulk/create/excel";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = new FormData();
+        if (file !== null && file !== undefined)
+            content_.append("File", file.data, file.fileName ? file.fileName : "File");
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateBulk(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateBulk(<any>response_);
+                } catch (e) {
+                    return <Observable<string>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<string>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCreateBulk(response: HttpResponseBase): Observable<string> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<string>(<any>null);
+    }
 }
 
 export interface ITypeProjectsClient {
@@ -2117,6 +2701,7 @@ export interface ITypeProjectsClient {
     get2(id: number): Observable<TypeProjectByIdVm>;
     update(id: number, command: UpdateTypeProjectCommand): Observable<FileResponse>;
     delete(id: number): Observable<FileResponse>;
+    createBulk(file: FileParameter | null | undefined): Observable<string>;
     getStat(id: number): Observable<TypeProjectsStatVm>;
 }
 
@@ -2384,6 +2969,59 @@ export class TypeProjectsClient implements ITypeProjectsClient {
             }));
         }
         return _observableOf<FileResponse>(<any>null);
+    }
+
+    createBulk(file: FileParameter | null | undefined) : Observable<string> {
+        let url_ = this.baseUrl + "/api/TypeProjects/bulk/create/excel";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = new FormData();
+        if (file !== null && file !== undefined)
+            content_.append("File", file.data, file.fileName ? file.fileName : "File");
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateBulk(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateBulk(<any>response_);
+                } catch (e) {
+                    return <Observable<string>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<string>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCreateBulk(response: HttpResponseBase): Observable<string> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<string>(<any>null);
     }
 
     getStat(id: number) : Observable<TypeProjectsStatVm> {
@@ -3492,7 +4130,6 @@ export interface IActionPsWithEvalVm {
 export class CreateActionPCommand implements ICreateActionPCommand {
     title?: string;
     note?: string | undefined;
-    tauxR?: number | undefined;
     budgR?: number | undefined;
     startDatePrv?: Date;
     endDatePrv?: Date;
@@ -3516,7 +4153,6 @@ export class CreateActionPCommand implements ICreateActionPCommand {
         if (_data) {
             this.title = _data["title"];
             this.note = _data["note"];
-            this.tauxR = _data["tauxR"];
             this.budgR = _data["budgR"];
             this.startDatePrv = _data["startDatePrv"] ? new Date(_data["startDatePrv"].toString()) : <any>undefined;
             this.endDatePrv = _data["endDatePrv"] ? new Date(_data["endDatePrv"].toString()) : <any>undefined;
@@ -3544,7 +4180,6 @@ export class CreateActionPCommand implements ICreateActionPCommand {
         data = typeof data === 'object' ? data : {};
         data["title"] = this.title;
         data["note"] = this.note;
-        data["tauxR"] = this.tauxR;
         data["budgR"] = this.budgR;
         data["startDatePrv"] = this.startDatePrv ? this.startDatePrv.toISOString() : <any>undefined;
         data["endDatePrv"] = this.endDatePrv ? this.endDatePrv.toISOString() : <any>undefined;
@@ -3565,7 +4200,6 @@ export class CreateActionPCommand implements ICreateActionPCommand {
 export interface ICreateActionPCommand {
     title?: string;
     note?: string | undefined;
-    tauxR?: number | undefined;
     budgR?: number | undefined;
     startDatePrv?: Date;
     endDatePrv?: Date;
@@ -3625,7 +4259,6 @@ export class UpdateActionPCommand implements IUpdateActionPCommand {
     id?: number;
     title?: string;
     note?: string | undefined;
-    tauxR?: number | undefined;
     budgR?: number | undefined;
     startDatePrv?: Date;
     endDatePrv?: Date;
@@ -3650,7 +4283,6 @@ export class UpdateActionPCommand implements IUpdateActionPCommand {
             this.id = _data["id"];
             this.title = _data["title"];
             this.note = _data["note"];
-            this.tauxR = _data["tauxR"];
             this.budgR = _data["budgR"];
             this.startDatePrv = _data["startDatePrv"] ? new Date(_data["startDatePrv"].toString()) : <any>undefined;
             this.endDatePrv = _data["endDatePrv"] ? new Date(_data["endDatePrv"].toString()) : <any>undefined;
@@ -3679,7 +4311,6 @@ export class UpdateActionPCommand implements IUpdateActionPCommand {
         data["id"] = this.id;
         data["title"] = this.title;
         data["note"] = this.note;
-        data["tauxR"] = this.tauxR;
         data["budgR"] = this.budgR;
         data["startDatePrv"] = this.startDatePrv ? this.startDatePrv.toISOString() : <any>undefined;
         data["endDatePrv"] = this.endDatePrv ? this.endDatePrv.toISOString() : <any>undefined;
@@ -3701,7 +4332,6 @@ export interface IUpdateActionPCommand {
     id?: number;
     title?: string;
     note?: string | undefined;
-    tauxR?: number | undefined;
     budgR?: number | undefined;
     startDatePrv?: Date;
     endDatePrv?: Date;
@@ -3799,7 +4429,6 @@ export class CreateContratObjectifCommand implements ICreateContratObjectifComma
     startD?: Date;
     endD?: Date;
     isActive?: boolean;
-    statut?: number | undefined;
 
     constructor(data?: ICreateContratObjectifCommand) {
         if (data) {
@@ -3817,7 +4446,6 @@ export class CreateContratObjectifCommand implements ICreateContratObjectifComma
             this.startD = _data["startD"] ? new Date(_data["startD"].toString()) : <any>undefined;
             this.endD = _data["endD"] ? new Date(_data["endD"].toString()) : <any>undefined;
             this.isActive = _data["isActive"];
-            this.statut = _data["statut"];
         }
     }
 
@@ -3835,7 +4463,6 @@ export class CreateContratObjectifCommand implements ICreateContratObjectifComma
         data["startD"] = this.startD ? this.startD.toISOString() : <any>undefined;
         data["endD"] = this.endD ? this.endD.toISOString() : <any>undefined;
         data["isActive"] = this.isActive;
-        data["statut"] = this.statut;
         return data; 
     }
 }
@@ -3846,7 +4473,6 @@ export interface ICreateContratObjectifCommand {
     startD?: Date;
     endD?: Date;
     isActive?: boolean;
-    statut?: number | undefined;
 }
 
 export class UpdateContratObjectifCommand implements IUpdateContratObjectifCommand {
@@ -3856,7 +4482,6 @@ export class UpdateContratObjectifCommand implements IUpdateContratObjectifComma
     startD?: Date;
     endD?: Date;
     isActive?: boolean;
-    statut?: number | undefined;
 
     constructor(data?: IUpdateContratObjectifCommand) {
         if (data) {
@@ -3875,7 +4500,6 @@ export class UpdateContratObjectifCommand implements IUpdateContratObjectifComma
             this.startD = _data["startD"] ? new Date(_data["startD"].toString()) : <any>undefined;
             this.endD = _data["endD"] ? new Date(_data["endD"].toString()) : <any>undefined;
             this.isActive = _data["isActive"];
-            this.statut = _data["statut"];
         }
     }
 
@@ -3894,7 +4518,6 @@ export class UpdateContratObjectifCommand implements IUpdateContratObjectifComma
         data["startD"] = this.startD ? this.startD.toISOString() : <any>undefined;
         data["endD"] = this.endD ? this.endD.toISOString() : <any>undefined;
         data["isActive"] = this.isActive;
-        data["statut"] = this.statut;
         return data; 
     }
 }
@@ -3906,7 +4529,6 @@ export interface IUpdateContratObjectifCommand {
     startD?: Date;
     endD?: Date;
     isActive?: boolean;
-    statut?: number | undefined;
 }
 
 export class ContratObjectifStatByIdVm implements IContratObjectifStatByIdVm {
@@ -3991,6 +4613,562 @@ export interface IContratObjectifStat {
     diffProjectsCount?: number;
     structuresCount?: number;
     diffStructuresCount?: number;
+}
+
+export class StuctureInfoVm implements IStuctureInfoVm {
+    _stuctureInfoModel?: StuctureInfoModel;
+
+    constructor(data?: IStuctureInfoVm) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this._stuctureInfoModel = _data["_stuctureInfoModel"] ? StuctureInfoModel.fromJS(_data["_stuctureInfoModel"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): StuctureInfoVm {
+        data = typeof data === 'object' ? data : {};
+        let result = new StuctureInfoVm();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["_stuctureInfoModel"] = this._stuctureInfoModel ? this._stuctureInfoModel.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IStuctureInfoVm {
+    _stuctureInfoModel?: StuctureInfoModel;
+}
+
+export class StuctureInfoModel implements IStuctureInfoModel {
+    actionCount?: number;
+    projectCount?: number;
+    contratCount?: number;
+
+    constructor(data?: IStuctureInfoModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.actionCount = _data["actionCount"];
+            this.projectCount = _data["projectCount"];
+            this.contratCount = _data["contratCount"];
+        }
+    }
+
+    static fromJS(data: any): StuctureInfoModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new StuctureInfoModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["actionCount"] = this.actionCount;
+        data["projectCount"] = this.projectCount;
+        data["contratCount"] = this.contratCount;
+        return data; 
+    }
+}
+
+export interface IStuctureInfoModel {
+    actionCount?: number;
+    projectCount?: number;
+    contratCount?: number;
+}
+
+export class FirstTrancheVm implements IFirstTrancheVm {
+    firstTranches?: FirstTranche[];
+
+    constructor(data?: IFirstTrancheVm) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["firstTranches"])) {
+                this.firstTranches = [] as any;
+                for (let item of _data["firstTranches"])
+                    this.firstTranches!.push(FirstTranche.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): FirstTrancheVm {
+        data = typeof data === 'object' ? data : {};
+        let result = new FirstTrancheVm();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.firstTranches)) {
+            data["firstTranches"] = [];
+            for (let item of this.firstTranches)
+                data["firstTranches"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IFirstTrancheVm {
+    firstTranches?: FirstTranche[];
+}
+
+export class FirstTranche implements IFirstTranche {
+    id?: number;
+    typeP?: string;
+    nbrProjects?: number;
+    tauxR?: number | undefined;
+
+    constructor(data?: IFirstTranche) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.typeP = _data["typeP"];
+            this.nbrProjects = _data["nbrProjects"];
+            this.tauxR = _data["tauxR"];
+        }
+    }
+
+    static fromJS(data: any): FirstTranche {
+        data = typeof data === 'object' ? data : {};
+        let result = new FirstTranche();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["typeP"] = this.typeP;
+        data["nbrProjects"] = this.nbrProjects;
+        data["tauxR"] = this.tauxR;
+        return data; 
+    }
+}
+
+export interface IFirstTranche {
+    id?: number;
+    typeP?: string;
+    nbrProjects?: number;
+    tauxR?: number | undefined;
+}
+
+export class GetSecondTrancheVm implements IGetSecondTrancheVm {
+    seconds?: SecondTranche[];
+
+    constructor(data?: IGetSecondTrancheVm) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["seconds"])) {
+                this.seconds = [] as any;
+                for (let item of _data["seconds"])
+                    this.seconds!.push(SecondTranche.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): GetSecondTrancheVm {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetSecondTrancheVm();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.seconds)) {
+            data["seconds"] = [];
+            for (let item of this.seconds)
+                data["seconds"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IGetSecondTrancheVm {
+    seconds?: SecondTranche[];
+}
+
+export class SecondTranche implements ISecondTranche {
+    statutsTaux?: HelperSecondTranche[];
+    structure?: string;
+
+    constructor(data?: ISecondTranche) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["statutsTaux"])) {
+                this.statutsTaux = [] as any;
+                for (let item of _data["statutsTaux"])
+                    this.statutsTaux!.push(HelperSecondTranche.fromJS(item));
+            }
+            this.structure = _data["structure"];
+        }
+    }
+
+    static fromJS(data: any): SecondTranche {
+        data = typeof data === 'object' ? data : {};
+        let result = new SecondTranche();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.statutsTaux)) {
+            data["statutsTaux"] = [];
+            for (let item of this.statutsTaux)
+                data["statutsTaux"].push(item.toJSON());
+        }
+        data["structure"] = this.structure;
+        return data; 
+    }
+}
+
+export interface ISecondTranche {
+    statutsTaux?: HelperSecondTranche[];
+    structure?: string;
+}
+
+export class HelperSecondTranche implements IHelperSecondTranche {
+    statutName?: string;
+    tauxR?: number | undefined;
+
+    constructor(data?: IHelperSecondTranche) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.statutName = _data["statutName"];
+            this.tauxR = _data["tauxR"];
+        }
+    }
+
+    static fromJS(data: any): HelperSecondTranche {
+        data = typeof data === 'object' ? data : {};
+        let result = new HelperSecondTranche();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["statutName"] = this.statutName;
+        data["tauxR"] = this.tauxR;
+        return data; 
+    }
+}
+
+export interface IHelperSecondTranche {
+    statutName?: string;
+    tauxR?: number | undefined;
+}
+
+export class GetStatPerTpVm implements IGetStatPerTpVm {
+    _typeProjects?: FisrtStatTPModel[];
+
+    constructor(data?: IGetStatPerTpVm) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["_typeProjects"])) {
+                this._typeProjects = [] as any;
+                for (let item of _data["_typeProjects"])
+                    this._typeProjects!.push(FisrtStatTPModel.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): GetStatPerTpVm {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetStatPerTpVm();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this._typeProjects)) {
+            data["_typeProjects"] = [];
+            for (let item of this._typeProjects)
+                data["_typeProjects"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IGetStatPerTpVm {
+    _typeProjects?: FisrtStatTPModel[];
+}
+
+export class FisrtStatTPModel implements IFisrtStatTPModel {
+    tpName?: string;
+    taux?: number;
+
+    constructor(data?: IFisrtStatTPModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.tpName = _data["tpName"];
+            this.taux = _data["taux"];
+        }
+    }
+
+    static fromJS(data: any): FisrtStatTPModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new FisrtStatTPModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["tpName"] = this.tpName;
+        data["taux"] = this.taux;
+        return data; 
+    }
+}
+
+export interface IFisrtStatTPModel {
+    tpName?: string;
+    taux?: number;
+}
+
+export class GetStatPerStatutVm implements IGetStatPerStatutVm {
+    perStructureModels?: PerStatutModel[];
+
+    constructor(data?: IGetStatPerStatutVm) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["perStructureModels"])) {
+                this.perStructureModels = [] as any;
+                for (let item of _data["perStructureModels"])
+                    this.perStructureModels!.push(PerStatutModel.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): GetStatPerStatutVm {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetStatPerStatutVm();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.perStructureModels)) {
+            data["perStructureModels"] = [];
+            for (let item of this.perStructureModels)
+                data["perStructureModels"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IGetStatPerStatutVm {
+    perStructureModels?: PerStatutModel[];
+}
+
+export class PerStatutModel implements IPerStatutModel {
+    statutName?: string;
+    taux?: number;
+
+    constructor(data?: IPerStatutModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.statutName = _data["statutName"];
+            this.taux = _data["taux"];
+        }
+    }
+
+    static fromJS(data: any): PerStatutModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new PerStatutModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["statutName"] = this.statutName;
+        data["taux"] = this.taux;
+        return data; 
+    }
+}
+
+export interface IPerStatutModel {
+    statutName?: string;
+    taux?: number;
+}
+
+export class GetStatPerTriVm implements IGetStatPerTriVm {
+    perTrimestreModels?: PerTrimestreModel[];
+
+    constructor(data?: IGetStatPerTriVm) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["perTrimestreModels"])) {
+                this.perTrimestreModels = [] as any;
+                for (let item of _data["perTrimestreModels"])
+                    this.perTrimestreModels!.push(PerTrimestreModel.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): GetStatPerTriVm {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetStatPerTriVm();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.perTrimestreModels)) {
+            data["perTrimestreModels"] = [];
+            for (let item of this.perTrimestreModels)
+                data["perTrimestreModels"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IGetStatPerTriVm {
+    perTrimestreModels?: PerTrimestreModel[];
+}
+
+export class PerTrimestreModel implements IPerTrimestreModel {
+    trimestreName?: string;
+    taux?: number;
+
+    constructor(data?: IPerTrimestreModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.trimestreName = _data["trimestreName"];
+            this.taux = _data["taux"];
+        }
+    }
+
+    static fromJS(data: any): PerTrimestreModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new PerTrimestreModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["trimestreName"] = this.trimestreName;
+        data["taux"] = this.taux;
+        return data; 
+    }
+}
+
+export interface IPerTrimestreModel {
+    trimestreName?: string;
+    taux?: number;
 }
 
 export class EvaluationsVm implements IEvaluationsVm {
@@ -4413,7 +5591,6 @@ export class CreateProjectCommand implements ICreateProjectCommand {
     startDate?: Date | undefined;
     endDate?: Date | undefined;
     priority?: PriorityLevel;
-    tauxR?: number | undefined;
     modeReel?: string | undefined;
     isInitial?: boolean;
     statut?: number | undefined;
@@ -4439,7 +5616,6 @@ export class CreateProjectCommand implements ICreateProjectCommand {
             this.startDate = _data["startDate"] ? new Date(_data["startDate"].toString()) : <any>undefined;
             this.endDate = _data["endDate"] ? new Date(_data["endDate"].toString()) : <any>undefined;
             this.priority = _data["priority"];
-            this.tauxR = _data["tauxR"];
             this.modeReel = _data["modeReel"];
             this.isInitial = _data["isInitial"];
             this.statut = _data["statut"];
@@ -4473,7 +5649,6 @@ export class CreateProjectCommand implements ICreateProjectCommand {
         data["startDate"] = this.startDate ? this.startDate.toISOString() : <any>undefined;
         data["endDate"] = this.endDate ? this.endDate.toISOString() : <any>undefined;
         data["priority"] = this.priority;
-        data["tauxR"] = this.tauxR;
         data["modeReel"] = this.modeReel;
         data["isInitial"] = this.isInitial;
         data["statut"] = this.statut;
@@ -4500,7 +5675,6 @@ export interface ICreateProjectCommand {
     startDate?: Date | undefined;
     endDate?: Date | undefined;
     priority?: PriorityLevel;
-    tauxR?: number | undefined;
     modeReel?: string | undefined;
     isInitial?: boolean;
     statut?: number | undefined;
@@ -4562,7 +5736,6 @@ export class UpdateProjectCommand implements IUpdateProjectCommand {
     startDate?: Date | undefined;
     endDate?: Date | undefined;
     priority?: PriorityLevel;
-    tauxR?: number | undefined;
     modeReel?: string | undefined;
     isInitial?: boolean;
     statut?: number | undefined;
@@ -4589,7 +5762,6 @@ export class UpdateProjectCommand implements IUpdateProjectCommand {
             this.startDate = _data["startDate"] ? new Date(_data["startDate"].toString()) : <any>undefined;
             this.endDate = _data["endDate"] ? new Date(_data["endDate"].toString()) : <any>undefined;
             this.priority = _data["priority"];
-            this.tauxR = _data["tauxR"];
             this.modeReel = _data["modeReel"];
             this.isInitial = _data["isInitial"];
             this.statut = _data["statut"];
@@ -4624,7 +5796,6 @@ export class UpdateProjectCommand implements IUpdateProjectCommand {
         data["startDate"] = this.startDate ? this.startDate.toISOString() : <any>undefined;
         data["endDate"] = this.endDate ? this.endDate.toISOString() : <any>undefined;
         data["priority"] = this.priority;
-        data["tauxR"] = this.tauxR;
         data["modeReel"] = this.modeReel;
         data["isInitial"] = this.isInitial;
         data["statut"] = this.statut;
@@ -4652,7 +5823,6 @@ export interface IUpdateProjectCommand {
     startDate?: Date | undefined;
     endDate?: Date | undefined;
     priority?: PriorityLevel;
-    tauxR?: number | undefined;
     modeReel?: string | undefined;
     isInitial?: boolean;
     statut?: number | undefined;

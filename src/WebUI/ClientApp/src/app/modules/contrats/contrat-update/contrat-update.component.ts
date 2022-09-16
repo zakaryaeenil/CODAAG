@@ -18,15 +18,13 @@ import {ToastrService} from "ngx-toastr";
 export class ContratUpdateComponent implements OnInit {
 
   contrat : ContratObjectif | undefined = new ContratObjectif()
-  liststatuts : StatutsVm
+
   constructor(private statuts : StatutsClient,
               private c : ContratObjectifsClient,
               private route : ActivatedRoute,
               private router : Router,
               private toastr : ToastrService) {
-    statuts.get().subscribe(res =>{
-      this.liststatuts = res
-    })
+
     c.get2(route.snapshot.params['id']).subscribe(res =>{
       this.contrat = res.contratObjectifDto
     })
@@ -41,7 +39,6 @@ export class ContratUpdateComponent implements OnInit {
       comment :this.contrat?.note,
       startD : this.contrat?.startDate,
       endD : this.contrat?.endDate,
-      statut : this.contrat?.statutId,
       isActive :this.contrat?.isActive,
     }).subscribe(
       result => {

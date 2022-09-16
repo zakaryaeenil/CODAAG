@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import {
   ContratObjectifsClient,
   ContratObjectifsVm, CreateActionPCommand, CreateProjectCommand,
-  CreateStructureCommand, ProjectsClient, StatutsClient, StatutsVm,
+  CreateStructureCommand, FileParameter, ProjectsClient, StatutsClient, StatutsVm,
   StructuresClient,
   StructuresVm, TypeProjectsClient, TypeProjectsVm
 } from "../../../web-api-client";
-import {NgbToastModule} from "@ng-bootstrap/ng-bootstrap";
+import {ModalDismissReasons, NgbModal, NgbToastModule} from "@ng-bootstrap/ng-bootstrap";
 import {IDropdownSettings} from "ng-multiselect-dropdown";
 import {ToastrService} from "ngx-toastr";
 import {Router} from "@angular/router";
@@ -22,7 +22,8 @@ export class ProjectCreateComponent implements OnInit {
   contratsVm : ContratObjectifsVm
   vmStatut : StatutsVm
   vmTypeProjects : TypeProjectsVm
-
+  closeResult : string = "";
+  public selectedFile : File ;
 
   startD : Date
   endD : Date
@@ -70,6 +71,7 @@ export class ProjectCreateComponent implements OnInit {
               private listStatuts : StatutsClient,
               private  t : TypeProjectsClient,
               private toastr : ToastrService,
+              private modalService: NgbModal,
               private router : Router) {
     listStructures.get().subscribe(result =>{
        this.StructureVm = result
@@ -115,7 +117,6 @@ export class ProjectCreateComponent implements OnInit {
       title : this.title,
       note : this.comment,
       priority : this.priority,
-      tauxR : 0,
       modeReel : this.mode,
       startDate : this.startD,
       endDate : this.endD,
@@ -194,7 +195,54 @@ export class ProjectCreateComponent implements OnInit {
       }
     )
   }
+  onselectedChange(event : any){
+    this.selectedFile =  event.target.files[0]
+    // this.filePara.data = event.target.files[0];
+    // this.filePara.fileName = event.target.files[0].name;
+  }
+  open(content : any) {
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+      if (result === 'yes') {
+        this.OnUpload();
+      }
+    }, (reason) => {
+      this.closeResult = `Dismissed ${ProjectCreateComponent.getDismissReason(reason)}`;
+    });
+  }
+  private static getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
+  }
 
+  OnUpload(){
+    let fileParameter: FileParameter = { data: this.selectedFile, fileName: this.selectedFile.name };
+    this.createProject.createBulk(fileParameter
+    ).subscribe(
+      results =>{
+        this.toastr.info("Project " +results , "Emmmm!", {
+          timeOut: 3000
+        })
+        this.router.navigateByUrl('projects/all');
+      },
+      error => {
+        let errors = JSON.parse(error.response);
+        if (errors && errors.errors && errors.errors.File) {
+          errors.errors.Title.forEach((e: string | undefined) => {
+            this.toastr.error(e, "Major Error!", {
+              timeOut: 4000
+            });
+          })
+        }
+
+      }
+    )
+  }
   onItemSelect(item : any) {
     this.selectedItems.push(item)
   }

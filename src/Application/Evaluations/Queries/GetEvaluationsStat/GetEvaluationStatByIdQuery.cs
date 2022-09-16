@@ -17,11 +17,13 @@ public class GetEvaluationStatByIdQueryHandler : IRequestHandler<GetEvaluationSt
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
+    private readonly IIdentityService _identityService;
 
-    public GetEvaluationStatByIdQueryHandler(IApplicationDbContext context, IMapper mapper, ICsvFileBuilder fileBuilder)
+    public GetEvaluationStatByIdQueryHandler(IApplicationDbContext context, IMapper mapper, IIdentityService identityService)
     {
         _context = context;
         _mapper = mapper;
+        _identityService = identityService;
         //_fileBuilder = fileBuilder;
     }
 
@@ -29,11 +31,10 @@ public class GetEvaluationStatByIdQueryHandler : IRequestHandler<GetEvaluationSt
     {
         Gestionnaire user = _context.Gestionnaires
             .Single(x => x.Id == 2);
-
         Structure structure =  _context.Structures
             .Include(p =>p.ParentStructure)
             .Include(s => s.StructureChildren)
-            .Single(x => x.Id == user.StructureId) ?? throw new InvalidOperationException();
+            .Single(x => x.Id == user.StructureId)?? throw new InvalidOperationException();
          
         ICollection<Structure> listAll = new List<Structure>();
         listAll.Add(structure);

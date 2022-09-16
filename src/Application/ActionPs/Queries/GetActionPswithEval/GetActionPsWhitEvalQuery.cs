@@ -16,23 +16,22 @@ public class GetActionPsWhitEvalQueryHandler : IRequestHandler<GetActionPsWhitEv
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
-
-    public GetActionPsWhitEvalQueryHandler(IApplicationDbContext context, IMapper mapper, ICsvFileBuilder fileBuilder)
+  
+    public GetActionPsWhitEvalQueryHandler(IApplicationDbContext context, IMapper mapper)
     {
         _context = context;
         _mapper = mapper;
-        //_fileBuilder = fileBuilder;
+      
     }
 
     public async Task<ActionPsWithEvalVm> Handle(GetActionPsWhitEvalQuery request, CancellationToken cancellationToken)
     {
-        var evaluations = _context.Evaluations.ToList();
+        var evaluations = _context.Evaluations.Where(item => item.StartDate <= DateTime.Now && item.EndDate >= DateTime.Now).ToList();
         bool containsItem = evaluations.Any(item => item.StartDate <= DateTime.Now && item.EndDate >= DateTime.Now);
         if(containsItem)
         {
             Gestionnaire user = _context.Gestionnaires
                 .Single(x => x.Id == 2);
-
             Structure structure =  _context.Structures
                 .Include(p =>p.ParentStructure)
                 .Include(s => s.StructureChildren)

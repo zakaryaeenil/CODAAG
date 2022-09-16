@@ -1,7 +1,7 @@
 using AutoMapper;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Dto.Helpers.TypeProjectModel;
-using CleanArchitecture.Application.TypeProjects.Queries.GetTypeProjectById;
+
 using CleanArchitecture.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -17,12 +17,12 @@ public class GetTypeProjectsStatQueryHandler : IRequestHandler<GetTypeProjectsSt
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
+    
 
-    public GetTypeProjectsStatQueryHandler(IApplicationDbContext context, IMapper mapper, ICsvFileBuilder fileBuilder)
+    public GetTypeProjectsStatQueryHandler(IApplicationDbContext context, IMapper mapper)
     {
         _context = context;
         _mapper = mapper;
-        //_fileBuilder = fileBuilder;
     }
 
     public async Task<TypeProjectsStatVm> Handle(GetTypeProjectsStatQuery request, CancellationToken cancellationToken)

@@ -4,7 +4,7 @@ using MediatR;
 
 namespace CleanArchitecture.Application.TypeProjects.Commands.CreateTypeProject;
 
-public class CreateTypeProjectCommand: IRequest<int>
+public class CreateTypeProjectCommand : IRequest<int>
 {
  
     public string? Title { get; set; }

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CleanArchitecture.Application.ContratObjectifs.Queries.GetContratObjectifs;
 
-public class GetContratObjectifsQuery: IRequest<ContratObjectifsVm>
+public class GetContratObjectifsQuery : IRequest<ContratObjectifsVm>
 {
 }
 

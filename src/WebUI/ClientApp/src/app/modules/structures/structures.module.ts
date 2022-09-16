@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { StructuresRoutingModule } from './structures-routing.module';
 import { StructuresComponent } from './structures.component';
 import { StructuresViewComponent } from './structures-view/structures-view.component';
-import {DropdownMenusModule} from "../../_metronic/partials";
+import {CardsModule, DropdownMenusModule} from "../../_metronic/partials";
 import {InlineSVGModule} from "ng-inline-svg-2";
 import {NgbDropdownModule, NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {NgxPaginationModule} from "ngx-pagination";
@@ -62,6 +62,7 @@ import {NgApexchartsModule} from "ng-apexcharts";
         MatSortModule,
         AgGridModule.withComponents([StructureButtonRenderComponent]),
         NgApexchartsModule,
+        CardsModule,
     ]
 })
 export class StructuresModule { }

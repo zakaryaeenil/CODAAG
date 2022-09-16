@@ -1,3 +1,4 @@
+using CleanArchitecture.Application.Structures.Commands.CreateBulkStructure;
 using CleanArchitecture.Application.Structures.Commands.CreateStructure;
 using CleanArchitecture.Application.Structures.Commands.DeleteStructure;
 using CleanArchitecture.Application.Structures.Commands.UpdateStructure;
@@ -27,7 +28,12 @@ public class StructuresController: ApiControllerBase
     {
         return await Mediator.Send(command);
     } 
-    
+    [HttpPost("bulk/create/excel"),DisableRequestSizeLimit]
+    public async Task<ActionResult<string>> CreateBulk([FromForm] CreateBulkStructureCommand command)
+    {
+        return await Mediator.Send(command);
+    }
+
     [HttpPut("{id}")]
     public async Task<ActionResult> Update(int id, UpdateStructureCommand command)
     {

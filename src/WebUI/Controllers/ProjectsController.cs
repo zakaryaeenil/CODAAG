@@ -1,5 +1,6 @@
 using CleanArchitecture.Application.ContratObjectifs.Queries.GetContratObjectifById;
 using CleanArchitecture.Application.ContratObjectifs.Queries.GetContratObjectifs;
+using CleanArchitecture.Application.Projects.Commands.CreateBulkProject;
 using CleanArchitecture.Application.Projects.Commands.CreateProject;
 using CleanArchitecture.Application.Projects.Commands.CreateProjectEvaluation;
 using CleanArchitecture.Application.Projects.Commands.DeleteProject;
@@ -34,17 +35,21 @@ public class ProjectsController : ApiControllerBase
     {
         return await Mediator.Send(command);
     }
+    [HttpPost("bulk/create/excel"),DisableRequestSizeLimit]
+    public async Task<ActionResult<string>> CreateBulk([FromForm] CreateBulkProjectCommand command)
+    {
+        return await Mediator.Send(command);
+    }
     [HttpPost("evaluation")]
-    public async Task<ActionResult<string>> CreateEvaluation(int id ,int evalId, CreateProjectEvaluationCommand command)
+    public async Task<ActionResult<bool>> CreateEvaluation(int id ,int evalId, CreateProjectEvaluationCommand command)
     {
         if (id != command.Id || evalId != command.evalId)
         {
             return BadRequest();
         }
 
-        await Mediator.Send(command);
-
-        return NoContent();
+        return await Mediator.Send(command);
+        
     }
  
     [HttpPut("{id}")]

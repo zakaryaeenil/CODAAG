@@ -15,7 +15,6 @@ public class StructureDto : IMapFrom<Structure>
     public DateTime EndDate { get; set; }
 
     public StructureDto? ParentStructure { get; set; }
-    public ICollection<GestionnaireDto> Gestionnaires { get; set; } = new List<GestionnaireDto>();
     public ICollection<StructureDto> StructureChildren { get; set; } = new List<StructureDto>();
     public ICollection<ProjectDto> Projects { get; set; } = new List<ProjectDto>();
     public ICollection<ContratObjectifDto> ContratObjectifs { get; set; } = new List<ContratObjectifDto>();

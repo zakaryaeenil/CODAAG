@@ -1,5 +1,4 @@
 using CleanArchitecture.Application.Common.Interfaces;
-using CleanArchitecture.Application.Evaluations.Commands.CreateEvaluation;
 using FluentValidation;
 
 namespace CleanArchitecture.Application.ActionPs.Commands.CreateActionP;

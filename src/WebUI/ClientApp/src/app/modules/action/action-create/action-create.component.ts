@@ -3,12 +3,13 @@ import {IDropdownSettings} from "ng-multiselect-dropdown";
 import {
   ActionPsClient,
   CreateActionPCommand,
-  CreateProjectCommand,
+  CreateProjectCommand, FileParameter,
   ProjectsClient,
   ProjectsVm, StatutsClient, StatutsVm, StructuresClient, StructuresVm
 } from "../../../web-api-client";
 import {ToastrService} from "ngx-toastr";
 import {Router} from "@angular/router";
+import {ModalDismissReasons, NgbModal} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'app-action-create',
@@ -20,6 +21,8 @@ export class ActionCreateComponent implements OnInit {
   vmS : StructuresVm
   vmP : ProjectsVm
   vmStatut : StatutsVm
+  closeResult : string = "";
+  public selectedFile : File ;
 
   startD : Date = new Date();
   endD : Date = new Date();
@@ -55,6 +58,7 @@ export class ActionCreateComponent implements OnInit {
               private listStatuts : StatutsClient,
               private CreateAction : ActionPsClient,
               private toastr : ToastrService,
+              private modalService: NgbModal,
               private router : Router) {
 
     liststructure.get().subscribe(results =>{
@@ -85,7 +89,6 @@ export class ActionCreateComponent implements OnInit {
     this.CreateAction.create(<CreateActionPCommand>{
       title : this.title,
       note : this.comment,
-      tauxR : 0,
       budgR : this.budgR,
       startDate : this.startD,
       endDate : this.endD,
@@ -163,7 +166,54 @@ export class ActionCreateComponent implements OnInit {
       }
     )
   }
+  onselectedChange(event : any){
+    this.selectedFile =  event.target.files[0]
+    // this.filePara.data = event.target.files[0];
+    // this.filePara.fileName = event.target.files[0].name;
+  }
+  open(content : any) {
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+      if (result === 'yes') {
+        this.OnUpload();
+      }
+    }, (reason) => {
+      this.closeResult = `Dismissed ${ActionCreateComponent.getDismissReason(reason)}`;
+    });
+  }
+  private static getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
+  }
 
+  OnUpload(){
+    let fileParameter: FileParameter = { data: this.selectedFile, fileName: this.selectedFile.name };
+    this.CreateAction.createBulk(fileParameter
+    ).subscribe(
+      results =>{
+        this.toastr.info("Actions " +results , "Emmmm!", {
+          timeOut: 3000
+        })
+        this.router.navigateByUrl('actions/all');
+      },
+      error => {
+        let errors = JSON.parse(error.response);
+        if (errors && errors.errors && errors.errors.File) {
+          errors.errors.Title.forEach((e: string | undefined) => {
+            this.toastr.error(e, "Major Error!", {
+              timeOut: 4000
+            });
+          })
+        }
+
+      }
+    )
+  }
   onItemSelect(item : any) {
     this.selectedItems.push(item)
   }

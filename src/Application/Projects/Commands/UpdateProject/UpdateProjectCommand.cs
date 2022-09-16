@@ -17,7 +17,7 @@ public class UpdateProjectCommand : IRequest
     public DateTime? StartDate { get; init; }
     public DateTime? EndDate { get; init; }
     public PriorityLevel Priority { get; init; } = PriorityLevel.None;
-    public int? TauxR { get; init; } = 0;
+   
     public string? ModeReel { get; init; }
     public bool IsInitial { get; init; } = true;
 
@@ -66,7 +66,6 @@ public class UpdateProjectCommandHandler : IRequestHandler<UpdateProjectCommand>
             entity.EndDatePrv = request.EndDatePrv;
             entity.StatutId = s.Id;
             entity.TypeProjectId = tp.Id;
-            entity.TauxR = request.TauxR;
             entity.ModeReel = request.ModeReel;
             entity.IsInitial = request.IsInitial;
             entity.Priority = request.Priority;

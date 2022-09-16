@@ -17,19 +17,19 @@ public class GetProjectByIdQueryHandler : IRequestHandler<GetProjectByIdQuery, P
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
+   
 
-    public GetProjectByIdQueryHandler(IApplicationDbContext context, IMapper mapper, ICsvFileBuilder fileBuilder)
+    public GetProjectByIdQueryHandler(IApplicationDbContext context, IMapper mapper)
     {
         _context = context;
         _mapper = mapper;
-        //_fileBuilder = fileBuilder;
     }
 
     public async Task<ProjectByIdVm> Handle(GetProjectByIdQuery request, CancellationToken cancellationToken)
     { 
+        
         Gestionnaire user = _context.Gestionnaires
             .Single(x => x.Id == 2);
-
         Project project =  _context.Projects
             .Include(p =>p.Structures)
             .Include(p =>p.Actions)

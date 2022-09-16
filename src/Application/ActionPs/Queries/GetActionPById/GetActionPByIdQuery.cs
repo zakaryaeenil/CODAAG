@@ -1,7 +1,7 @@
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using CleanArchitecture.Application.Common.Interfaces;
-using CleanArchitecture.Application.Dto;
+
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,11 +17,10 @@ public class GetActionPByIdQueryHandler : IRequestHandler<GetActionPByIdQuery, A
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
 
-    public GetActionPByIdQueryHandler(IApplicationDbContext context, IMapper mapper, ICsvFileBuilder fileBuilder)
+    public GetActionPByIdQueryHandler(IApplicationDbContext context, IMapper mapper)
     {
         _context = context;
         _mapper = mapper;
-        //_fileBuilder = fileBuilder;
     }
 
     public async Task<ActionPByIdVm> Handle(GetActionPByIdQuery request, CancellationToken cancellationToken)

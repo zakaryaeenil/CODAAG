@@ -9,7 +9,7 @@ public class CreateActionPCommand: IRequest<int>
 {
     public string Title { get; init; }
     public string? Note { get; init; }
-    public int? TauxR { get; init; } = 0;
+  
     public float? BudgR { get; init; } = 0;
     public DateTime StartDatePrv { get; init; }
     public DateTime EndDatePrv { get; init; }
@@ -53,7 +53,7 @@ public class CreateActionPCommandHandler : IRequestHandler<CreateActionPCommand,
             EndDate = request.EndDate,
             StartDatePrv = request.StartDatePrv,
             EndDatePrv = request.EndDatePrv,
-            TauxR = request.TauxR,
+            TauxR = 0,
             BudgPrv = request.BudgPrv,
             BudgR = request.BudgR,
             ProjectId = p.Id,

@@ -28,7 +28,6 @@ public class GetStatutsQueryHandler : IRequestHandler<GetStatutsQuery, StatutsVm
         {
             StatutDtos = await _context.Statuts
                 .AsNoTracking()
-               // .ProjectTo<BriefStatutDto>(_mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken)
         };
     }

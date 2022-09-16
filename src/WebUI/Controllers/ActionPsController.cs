@@ -1,5 +1,6 @@
 using CleanArchitecture.Application.ActionPs.Commands.CreateActionEvaluation;
 using CleanArchitecture.Application.ActionPs.Commands.CreateActionP;
+using CleanArchitecture.Application.ActionPs.Commands.CreateBulkActionP;
 using CleanArchitecture.Application.ActionPs.Commands.DeleteActionP;
 using CleanArchitecture.Application.ActionPs.Commands.UpdateActionP;
 using CleanArchitecture.Application.ActionPs.Queries.GetActionPById;
@@ -35,18 +36,21 @@ public class ActionPsController : ApiControllerBase
     {
         return await Mediator.Send(command);
     }
-    
+    [HttpPost("bulk/create/excel"),DisableRequestSizeLimit]
+    public async Task<ActionResult<string>> CreateBulk([FromForm] CreateBulkActionPCommand command)
+    {
+        return await Mediator.Send(command);
+    } 
     [HttpPost("evaluation")]
-    public async Task<ActionResult<string>> CreateEvaluation(int id ,int evalId, CreateActionPEvaluationCommand command)
+    public async Task<ActionResult<bool>> CreateEvaluation(int id ,int evalId, CreateActionPEvaluationCommand command)
     {
         if (id != command.Id || evalId != command.evalId)
         {
             return BadRequest();
         }
 
-        await Mediator.Send(command);
-
-        return NoContent();
+        return await Mediator.Send(command);
+        
     }
 
     

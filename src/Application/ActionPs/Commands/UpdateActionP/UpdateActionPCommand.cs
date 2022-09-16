@@ -12,7 +12,6 @@ public class UpdateActionPCommand: IRequest
 
     public string Title { get; init; }
     public string? Note { get; init; }
-    public int? TauxR { get; init; } = 0;
     public float? BudgR { get; init; } = 0;
     public DateTime StartDatePrv { get; init; }
     public DateTime EndDatePrv { get; init; }
@@ -62,7 +61,6 @@ public class UpdateActionPCommandHandler : IRequestHandler<UpdateActionPCommand>
         entity.EndDate = request.EndDate;
         entity.StartDatePrv = request.StartDatePrv;
         entity.EndDatePrv = request.EndDatePrv;
-        entity.TauxR = request.TauxR;
         entity.BudgPrv = request.BudgPrv;
         entity.BudgR = request.BudgR;
         entity.ProjectId = p.Id;

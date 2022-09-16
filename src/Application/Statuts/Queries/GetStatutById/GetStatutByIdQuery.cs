@@ -17,23 +17,22 @@ public class GetStatutByIdQueryHandler : IRequestHandler<GetStatutByIdQuery, Sta
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
+   
 
-    public GetStatutByIdQueryHandler(IApplicationDbContext context, IMapper mapper, ICsvFileBuilder fileBuilder)
+    public GetStatutByIdQueryHandler(IApplicationDbContext context, IMapper mapper)
     {
         _context = context;
         _mapper = mapper;
-        //_fileBuilder = fileBuilder;
     }
 
     public async Task<StatutByIdVm> Handle(GetStatutByIdQuery request, CancellationToken cancellationToken)
     {
         Gestionnaire user = _context.Gestionnaires
             .Single(x => x.Id == 2);
-
         Structure structure =  _context.Structures
             .Include(p =>p.ParentStructure)
             .Include(s => s.StructureChildren)
-            .Single(x => x.Id == user.StructureId) ?? throw new InvalidOperationException();
+            .Single(x =>x.Id == user.StructureId) ?? throw new InvalidOperationException();
          
         ICollection<Structure> listAll = new List<Structure>();
         listAll.Add(structure);

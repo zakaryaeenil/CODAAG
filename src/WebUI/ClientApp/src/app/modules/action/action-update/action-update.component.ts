@@ -85,7 +85,6 @@ export class ActionUpdateComponent implements OnInit {
       id : this.actionp?.id,
       title : this.actionp?.title,
       note : this.actionp?.note,
-      tauxR : this.actionp?.tauxR,
       budgR : this.actionp?.budgR,
       startDate : this.actionp?.startDate,
       endDate : this.actionp?.endDate,

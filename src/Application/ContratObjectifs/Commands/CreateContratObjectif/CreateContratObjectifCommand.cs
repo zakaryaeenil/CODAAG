@@ -1,5 +1,4 @@
 using CleanArchitecture.Application.Common.Interfaces;
-using CleanArchitecture.Application.Structures.Commands.CreateStructure;
 using CleanArchitecture.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -15,8 +14,6 @@ public class CreateContratObjectifCommand : IRequest<int>
     public DateTime EndD { get; init; }
     public bool IsActive { get; init; } = true;
     
-    public int? Statut { get; init; }
-   
 }
 
 public class CreateContratObjectifCommandHandler : IRequestHandler<CreateContratObjectifCommand, int>
@@ -32,8 +29,12 @@ public class CreateContratObjectifCommandHandler : IRequestHandler<CreateContrat
     {
         Statut s = _context.Statuts
             .AsNoTracking()
-            .SingleOrDefault(x => x.Id == request.Statut) ?? throw new InvalidOperationException();
-       
+            .SingleOrDefault(x => x.Id == 5) ?? throw new InvalidOperationException();
+
+        foreach (var a in _context.ContratObjectifs.ToList())
+        {
+            a.IsActive = false;
+        }
         var entity = new ContratObjectif()
             {
                 Title = request.Title,

@@ -1,73 +1,412 @@
-<!-- begin::Row -->
-<div class="row gy-5 g-xl-8">
-  <div class="col-xxl-4">
-    <app-mixed-widget2
-      class="card card-xl-stretch mb-xl-8"
-      chartColor="danger"
-      chartHeight="200px"
-      strokeColor="#cb1e46"
-    ></app-mixed-widget2>
-  </div>
-  <div class="col-xxl-4">
-    <app-lists-widget5 class="card card-xxl-stretch"></app-lists-widget5>
-  </div>
-  <div class="col-xxl-4">
-    <app-mixed-widget10
-      class="card card-xxl-stretch-50 mb-5 mb-xl-8"
-      chartColor="primary"
-      chartHeight="150px"
-    ></app-mixed-widget10>
-    <app-mixed-widget11
-      class="card card-xxl-stretch-50 mb-5 mb-xl-8"
-      chartColor="primary"
-      chartHeight="175px"
-    ></app-mixed-widget11>
-  </div>
-</div>
-<!-- end::Row -->
+<!--begin::Notice-->
+<div *ngIf=" _isActive && _evaluations.length > 0 " class="notice d-flex bg-light-warning rounded border-warning border border-dashed mb-9 p-6">
+  <div *ngIf="getEval | async ">
+    <!--begin::Svg Icon | path: icons/duotune/general/gen044.svg-->
+    <span class="svg-icon svg-icon-2tx svg-icon-warning me-4">
+														<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+															<rect opacity="0.3" x="2" y="2" width="20" height="20" rx="10" fill="black" />
+															<rect x="11" y="14" width="7" height="2" rx="1" transform="rotate(-90 11 14)" fill="black" />
+															<rect x="11" y="17" width="2" height="2" rx="1" transform="rotate(-90 11 17)" fill="black" />
+														</svg>
+													</span>
+    <!--end::Svg Icon-->
+    <!--end::Icon-->
+    <!--begin::Wrapper-->
+    <div class="d-flex flex-stack flex-grow-1">
+      <!--begin::Content-->
+      <div class="fw-bold">
+        <h4 class="text-gray-900 fw-bolder">Evaluation Period </h4>
+        <div class="fs-6 text-gray-700">You Can Evaluate Projects and Actions
+          <span class="fw-bold ">
+        Evaluation :
+          </span>
+          <span *ngFor="let c of _evaluations"> <a class="fw-bolder" >{{c.title}}</a></span>
+          <br />
 
-<!-- begin::Row -->
-<div class="row gy-5 gx-xl-8">
-  <div class="col-xxl-4">
-    <app-lists-widget3
-      class="card card-xxl-stretch mb-xl-3"
-    ></app-lists-widget3>
+        </div>
+      </div>
+      <!--end::Content-->
+    </div>
+    <!--end::Wrapper-->
   </div>
-  <div class="col-xl-8">
-    <app-tables-widget10
-      class="card card-xxl-stretch mb-5 mb-xl-8"
-    ></app-tables-widget10>
-  </div>
-</div>
-<!-- end::Row -->
+  <!--begin::Icon-->
 
-<!-- begin::Row -->
-<div class="row gy-5 g-xl-8">
-  <div class="col-xl-4">
-    <app-lists-widget2 class="card card-xl-stretch mb-xl-8"></app-lists-widget2>
-  </div>
-  <div class="col-xl-4">
-    <app-lists-widget6 class="card card-xl-stretch mb-xl-8"></app-lists-widget6>
-  </div>
-  <div class="col-xl-4">
-    <app-lists-widget4
-      class="card card-xl-stretch mb-5 mb-xl-8"
-    ></app-lists-widget4>
-  </div>
 </div>
-<!-- end::Row -->
+<!--end::Notice-->
 
-<div class="row g-5 gx-xxl-8">
-  <div class="col-xxl-4">
-    <app-mixed-widget8
-      class="card card-xxl-stretch mb-xl-3"
-      chartColor="success"
-      chartHeight="150px"
-    ></app-mixed-widget8>
-  </div>
-  <div class="col-xxl-8">
-    <app-tables-widget5
-      class="card card-xxl-stretch mb-5 mb-xxl-8"
-    ></app-tables-widget5>
+
+
+<!--end::Row-->
+<div *ngIf="getContrats | async " class="d-flex flex-wrap flex-stack mb-5">
+  <h3 class="fw-bolder my-2">
+
+  </h3>
+
+  <div class="d-flex my-2">
+    <select (change)="OnChangeContrat()"
+            [(ngModel)]="coId"
+            data-control="select2"
+            data-hide-search="false"
+            class="form-select form-select-white form-select-sm w-125px"
+    >
+      <option  [ngValue]="null" selected>Tout</option>
+      <option *ngFor="let co of contratsVm.contratObjectifDtos" [ngValue]="co.id" >{{co.codeCO}}</option>
+    </select>
   </div>
 </div>
+
+<!--begin::Row-->
+<div class="row g-5 g-xl-8">
+  <!--begin::Col-->
+  <div *ngIf="getFirsttTranche | async" class="col-xl-4">
+    <!--begin::Tables Widget 1-->
+    <div class="card card-xl-stretch mb-xl-z">
+      <!--begin::Header-->
+      <div class="card-header border-0 pt-5">
+        <h3 class="card-title align-items-start flex-column">
+          <span class="card-label fw-bolder fs-3 mb-1">Project Prioritaire</span>
+          <span class="text-muted fw-bold fs-7">You Have {{vmFirsttTranche.firstTranches?.length}} Prioritaire</span>
+        </h3>
+      </div>
+      <!--end::Header-->
+      <!--begin::Body-->
+      <div class="card-body py-3">
+        <!--begin::Table container-->
+        <div class="table-responsive">
+          <!--begin::Table-->
+          <table class="table align-middle gs-0 gy-5">
+            <!--begin::Table head-->
+            <thead>
+            <tr>
+              <th class="p-0 min-w-200px"></th>
+              <th class="p-0 min-w-100px"></th>
+              <th class="p-0 min-w-100px"></th>
+              <th class="p-0 min-w-40px"></th>
+            </tr>
+            </thead>
+            <!--end::Table head-->
+            <!--begin::Table body-->
+            <tbody>
+            <tr *ngFor="let tpCo of vmFirsttTranche.firstTranches">
+              <td>
+                <a  class="text-dark fw-bolder text-hover-primary mb-1 fs-6">{{tpCo.typeP}}</a>
+              </td>
+              <td>
+                <a class="text-dark fw-bolder text-hover-primary mb-1 fs-6">{{tpCo.nbrProjects}}</a>
+              </td>
+              <td>
+                <div class="d-flex flex-column w-100 me-2">
+                  <div class="d-flex flex-stack mb-2">
+                    <span class="text-muted me-2 fs-7 fw-bold">{{tpCo.tauxR | number : '1.2-2'}}%</span>
+                  </div>
+                </div>
+              </td>
+              <td class="text-end">
+                <a (click)="OnChangeTypeProject(tpCo.id ,tpCo.typeP)" class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary">
+                  <!--begin::Svg Icon | path: icons/duotune/arrows/arr064.svg-->
+                  <span class="svg-icon svg-icon-2">
+																			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+																				<rect opacity="0.5" x="18" y="13" width="13" height="2" rx="1" transform="rotate(-180 18 13)" fill="black" />
+																				<path d="M15.4343 12.5657L11.25 16.75C10.8358 17.1642 10.8358 17.8358 11.25 18.25C11.6642 18.6642 12.3358 18.6642 12.75 18.25L18.2929 12.7071C18.6834 12.3166 18.6834 11.6834 18.2929 11.2929L12.75 5.75C12.3358 5.33579 11.6642 5.33579 11.25 5.75C10.8358 6.16421 10.8358 6.83579 11.25 7.25L15.4343 11.4343C15.7467 11.7467 15.7467 12.2533 15.4343 12.5657Z" fill="black" />
+																			</svg>
+																		</span>
+                  <!--end::Svg Icon-->
+                </a>
+              </td>
+            </tr>
+            <tr >
+              <td>
+                <a  class="text-dark fw-bolder text-hover-primary mb-1 fs-6">Tout</a>
+              </td>
+              <td>
+                <a class="text-dark fw-bolder text-hover-primary mb-1 fs-6">{{final}}</a>
+              </td>
+              <td>
+                <div class="d-flex flex-column w-100 me-2">
+                  <div class="d-flex flex-stack mb-2">
+                    <span class="text-muted me-2 fs-7 fw-bold"></span>
+                  </div>
+                </div>
+              </td>
+              <td class="text-end">
+                <a (click)="OnChangeTypeProject(null , 'Tout')" class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary">
+                  <!--begin::Svg Icon | path: icons/duotune/arrows/arr064.svg-->
+                  <span class="svg-icon svg-icon-2">
+																			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+																				<rect opacity="0.5" x="18" y="13" width="13" height="2" rx="1" transform="rotate(-180 18 13)" fill="black" />
+																				<path d="M15.4343 12.5657L11.25 16.75C10.8358 17.1642 10.8358 17.8358 11.25 18.25C11.6642 18.6642 12.3358 18.6642 12.75 18.25L18.2929 12.7071C18.6834 12.3166 18.6834 11.6834 18.2929 11.2929L12.75 5.75C12.3358 5.33579 11.6642 5.33579 11.25 5.75C10.8358 6.16421 10.8358 6.83579 11.25 7.25L15.4343 11.4343C15.7467 11.7467 15.7467 12.2533 15.4343 12.5657Z" fill="black" />
+																			</svg>
+																		</span>
+                  <!--end::Svg Icon-->
+                </a>
+              </td>
+            </tr>
+            </tbody>
+            <!--end::Table body-->
+          </table>
+          <!--end::Table-->
+        </div>
+        <!--end::Table container-->
+      </div>
+    </div>
+    <!--endW::Tables Widget 1-->
+  </div>
+  <!--end::Col-->
+  <!--begin::Col-->
+  <div  class="col-xl-8">
+    <!--begin::Tables Widget 2-->
+    <div *ngIf="getSecondTranche | async" class="card card-xl-stretch mb-5 mb-xl-8">
+      <!--begin::Header-->
+      <div class="card-header border-0 pt-5">
+        <h3 *ngIf="typeProjectName" class="card-title align-items-start flex-column">
+          <span class="card-label fw-bolder fs-3 mb-1">Taux De Realisation  Par Actions in {{typeProjectName}}</span>
+        </h3>
+      </div>
+      <!--end::Header-->
+      <!--begin::Body-->
+      <div class="card-body py-3">
+        <!--begin::Table container-->
+        <div class="table-responsive">
+          <!--begin::Table-->
+          <table class="table align-middle gs-0 gy-5">
+            <!--begin::Table head-->
+            <thead>
+            <tr>
+              <th class="p-0 w-150px"></th>
+              <th *ngFor="let statutnname of statutss" class="p-0 min-w-150px">
+               <span class="fw-bold">{{statutnname}} </span>
+              </th>
+            </tr>
+            </thead>
+            <!--end::Table head-->
+            <!--begin::Table body-->
+            <tbody>
+            <tr *ngFor="let data of vmSecondtTranche.seconds">
+              <td>
+                <span class="text-muted fw-bold d-block fs-7">{{data.structure}}</span>
+              </td>
+              <td *ngFor="let d of data.statutsTaux">
+                <a  class="text-dark fw-bolder text-hover-primary mb-1 fs-6">{{d.tauxR}}%</a>
+              </td>
+
+            </tr>
+            </tbody>
+            <!--end::Table body-->
+          </table>
+          <!--end::Table-->
+        </div>
+        <!--end::Table container-->
+      </div>
+      <!--end::Body-->
+    </div>
+    <!--end::Tables Widget 2-->
+  </div>
+  <!--end::Col-->
+</div>
+<!--end::Row-->
+<br>
+<!--end::Deactivate Account-->
+<div *ngIf="getStructures | async" class="d-flex justify-content-between">
+  <div></div>
+  <div>
+    <!--begin::Select-->
+    <select (change)="OnChangeStructure($event)" [(ngModel)]="selectedStruc"  data-control="select2"
+            data-hide-search="false"
+            class="form-select form-select-white form-select-sm w-125px">
+      <option selected value=null>Tout</option>
+      <option  *ngFor="let in of vm.structureDtos"  value="{{in.id }}">{{in.title}}</option>
+    </select>
+    <!--end::Select-->
+    <!--end::Menu-->
+  </div>
+</div>
+<br>
+<!--begin::Row-->
+<div *ngIf="getDataInfo | async" class="row g-5 g-xl-8">
+  <div class="col">
+    <!--begin::Statistics Widget 5-->
+    <a  class="card bg-body hoverable card-xl-stretch mb-xl-8">
+      <!--begin::Body-->
+      <div class="card-body">
+        <!--begin::Svg Icon | path: icons/duotune/general/gen032.svg-->
+        <span class="svg-icon svg-icon-primary svg-icon-3x ms-n1">
+													<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+														<rect x="8" y="9" width="3" height="10" rx="1.5" fill="black" />
+														<rect opacity="0.5" x="13" y="5" width="3" height="14" rx="1.5" fill="black" />
+														<rect x="18" y="11" width="3" height="8" rx="1.5" fill="black" />
+														<rect x="3" y="13" width="3" height="6" rx="1.5" fill="black" />
+													</svg>
+												</span>
+        <!--end::Svg Icon-->
+        <div class="text-gray-900 fw-bolder fs-2 mb-2 mt-5">{{c}}</div>
+        <div class="fw-bold text-gray-400">CONTRATS</div>
+      </div>
+      <!--end::Body-->
+    </a>
+    <!--end::Statistics Widget 5-->
+  </div>
+  <div class="col">
+    <!--begin::Statistics Widget 5-->
+    <a href="#" class="card bg-primary hoverable card-xl-stretch mb-xl-8">
+      <!--begin::Body-->
+      <div class="card-body">
+        <!--begin::Svg Icon | path: icons/duotune/general/gen032.svg-->
+        <span class="svg-icon svg-icon-white svg-icon-3x ms-n1">
+													<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+														<rect x="8" y="9" width="3" height="10" rx="1.5" fill="black" />
+														<rect opacity="0.5" x="13" y="5" width="3" height="14" rx="1.5" fill="black" />
+														<rect x="18" y="11" width="3" height="8" rx="1.5" fill="black" />
+														<rect x="3" y="13" width="3" height="6" rx="1.5" fill="black" />
+													</svg>
+												</span>
+        <!--end::Svg Icon-->
+        <div class="text-gray-100 fw-bolder fs-2 mb-2 mt-5">{{p}}</div>
+        <div class="fw-bold text-gray-100">PROJECTS </div>
+      </div>
+      <!--end::Body-->
+    </a>
+    <!--end::Statistics Widget 5-->
+  </div>
+  <div class="col">
+    <!--begin::Statistics Widget 5-->
+    <a href="#" class="card bg-info hoverable card-xl-stretch mb-5 mb-xl-8">
+      <!--begin::Body-->
+      <div class="card-body">
+        <!--begin::Svg Icon | path: icons/duotune/general/gen032.svg-->
+        <span class="svg-icon svg-icon-primary svg-icon-3x ms-n1">
+													<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+														<rect x="8" y="9" width="3" height="10" rx="1.5" fill="black" />
+														<rect opacity="0.5" x="13" y="5" width="3" height="14" rx="1.5" fill="black" />
+														<rect x="18" y="11" width="3" height="8" rx="1.5" fill="black" />
+														<rect x="3" y="13" width="3" height="6" rx="1.5" fill="black" />
+													</svg>
+												</span>
+        <!--end::Svg Icon-->
+        <div class="text-white fw-bolder fs-2 mb-2 mt-5">{{a}}</div>
+        <div class="fw-bold text-white">ACTIONS</div>
+      </div>
+      <!--end::Body-->
+    </a>
+    <!--end::Statistics Widget 5-->
+  </div>
+</div>
+<!--end::Row-->
+
+<!--begin::Row-->
+<div class="row g-5 g-xl-8">
+  <!--begin::Col-->
+  <div  class="col">
+    <!--begin::Tables Widget 1-->
+    <div class="card card-xl-stretch mb-xl-z">
+      <!--begin::Header-->
+      <div class="card-header border-0 pt-5">
+        <h3 class="card-title align-items-start flex-column">
+          <span class="card-label fw-bolder fs-3 mb-1">Project Per Types Projects</span>
+        </h3>
+      </div>
+      <!--end::Header-->
+      <!--begin::Body-->
+      <div *ngIf="getStatsPerTp | async " class="card-body py-3">
+        <div  *ngIf="getChartTp" id="chart2">
+          <apx-chart
+            [series]="chartOptionsTp.series!"
+            [chart]="chartOptionsTp.chart!"
+            [dataLabels]="chartOptionsTp.dataLabels!"
+            [plotOptions]="chartOptionsTp.plotOptions!"
+            [xaxis]="chartOptionsTp.xaxis!"
+          ></apx-chart>
+        </div>
+      </div>
+    </div>
+    <!--endW::Tables Widget 1-->
+  </div>
+  <!--end::Col-->
+  <!--begin::Col-->
+  <div  class="col">
+    <!--begin::Tables Widget 1-->
+    <div class="card card-xl-stretch mb-xl-z">
+      <!--begin::Header-->
+      <div class="card-header border-0 pt-5">
+        <h3 class="card-title align-items-start flex-column">
+          <span class="card-label fw-bolder fs-3 mb-1">Project Prioritaire</span>
+        </h3>
+      </div>
+      <!--end::Header-->
+      <!--begin::Body-->
+      <div class="card-body py-3">
+        <div  *ngIf="getChartTrimestre" id="chart3">
+          <apx-chart
+            [series]="chartOptionsTrimestre.series!"
+            [chart]="chartOptionsTrimestre.chart!"
+            [dataLabels]="chartOptionsTrimestre.dataLabels!"
+            [plotOptions]="chartOptionsTrimestre.plotOptions!"
+            [xaxis]="chartOptionsTrimestre.xaxis!"
+          ></apx-chart>
+        </div>
+      </div>
+    </div>
+    <!--endW::Tables Widget 1-->
+  </div>
+  <!--end::Col-->
+
+</div>
+<!--end::Row-->
+<!--begin::Row-->
+<div  class="row g-5 g-xl-8">
+  <!--begin::Col-->
+  <div  class="col">
+    <!--begin::Tables Widget 1-->
+    <div class="card card-xl-stretch mb-xl-z">
+      <!--begin::Header-->
+      <div class="card-header border-0 pt-5">
+        <h3 class="card-title align-items-start flex-column">
+          <span class="card-label fw-bolder fs-3 mb-1">Stats Projects Per Statuts</span>
+        </h3>
+      </div>
+      <!--end::Header-->
+      <!--begin::Body-->
+      <div  *ngIf="getStatsPerStatuts | async" class="card-body py-3">
+        <div *ngIf="getChartStatuts" id="chart1">
+          <apx-chart
+            [series]="chartOptionsStatuts.series!"
+            [chart]="chartOptionsStatuts.chart!"
+            [labels]="chartOptionsStatuts.labels!"
+            [responsive]="chartOptionsStatuts.responsive!"
+          ></apx-chart>
+        </div>
+        <br>
+      </div>
+    </div>
+    <!--endW::Tables Widget 1-->
+  </div>
+  <!--end::Col-->
+  <!--begin::Col-->
+  <div  class="col">
+    <!--begin::Tables Widget 1-->
+    <div class="card card-xl-stretch mb-xl-z">
+      <!--begin::Header-->
+      <div class="card-header border-0 pt-5">
+        <h3 class="card-title align-items-start flex-column">
+          <span class="card-label fw-bolder fs-3 mb-1"> Stats Projects Per Structures</span>
+        </h3>
+      </div>
+      <!--end::Header-->
+      <!--begin::Body-->
+      <div *ngIf="getStatsStructures  | async" class="card-body py-4">
+        <div id="chart">
+          <apx-chart
+            [series]="chartOptionsStructures.series!"
+            [chart]="chartOptionsStructures.chart!"
+            [labels]="chartOptionsStructures.labels!"
+            [responsive]="chartOptionsStructures.responsive!"
+          ></apx-chart>
+        </div>
+        <br>
+      </div>
+    </div>
+    <!--endW::Tables Widget 1-->
+  </div>
+  <!--end::Col-->
+
+</div>
+<!--end::Row-->

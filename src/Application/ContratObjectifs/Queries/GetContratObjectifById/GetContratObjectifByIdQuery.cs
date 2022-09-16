@@ -1,9 +1,11 @@
+using System.Security.Claims;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Dto;
 using CleanArchitecture.Domain.Entities;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace CleanArchitecture.Application.ContratObjectifs.Queries.GetContratObjectifById;
@@ -16,24 +18,23 @@ public class GetContratObjectifByIdQuery : IRequest<ContratObjectifByIdVm>
 public class GetContratObjectifByIdQueryHandler : IRequestHandler<GetContratObjectifByIdQuery, ContratObjectifByIdVm>
 {
     private readonly IApplicationDbContext _context;
-    private readonly IMapper _mapper;
+   
 
-    public GetContratObjectifByIdQueryHandler(IApplicationDbContext context, IMapper mapper, ICsvFileBuilder fileBuilder)
+    public GetContratObjectifByIdQueryHandler(IApplicationDbContext context)
     {
         _context = context;
-        _mapper = mapper;
-        //_fileBuilder = fileBuilder;
+      
     }
 
     public async Task<ContratObjectifByIdVm> Handle(GetContratObjectifByIdQuery request, CancellationToken cancellationToken)
     {
         Gestionnaire user = _context.Gestionnaires
             .Single(x => x.Id == 2);
-
+ 
         Structure structure =  _context.Structures
             .Include(p =>p.ParentStructure)
             .Include(s => s.StructureChildren)
-            .Single(x => x.Id == user.StructureId) ?? throw new InvalidOperationException();
+            .Single(x => x.Id == user.Id) ?? throw new InvalidOperationException();
          
         ICollection<Structure> listAll = new List<Structure>();
         listAll.Add(structure);

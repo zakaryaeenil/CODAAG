@@ -17,7 +17,6 @@ public class CreateProjectCommand : IRequest<int>
     public DateTime? StartDate { get; init; }
     public DateTime? EndDate { get; init; }
     public PriorityLevel Priority { get; init; } = PriorityLevel.None;
-    public int? TauxR { get; init; } = 0;
     public string? ModeReel { get; init; }
     public bool IsInitial { get; init; } = true;
 
@@ -64,10 +63,10 @@ public class CreateProjectCommandHandler : IRequestHandler<CreateProjectCommand,
             EndDatePrv = request.EndDatePrv,
             StatutId = s.Id,
             TypeProjectId = tp.Id,
-             TauxR = request.TauxR,
-             ModeReel = request.ModeReel,
-             IsInitial = request.IsInitial,
-             Priority = request.Priority
+            TauxR = 0,
+            ModeReel = request.ModeReel,
+            IsInitial = request.IsInitial,
+            Priority = request.Priority
           
         };
         entity.CodeProject = entity.Id + "-" + entity.Title;

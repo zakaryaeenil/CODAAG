@@ -45,43 +45,7 @@
       <!--end::Card header-->
     </div>
     <!--end::Order details-->
-    <!--begin::Order details-->
-    <div class="card card-flush py-4">
-      <!--begin::Card header-->
-      <div class="card-header">
-        <div class="card-title">
-          <h2>Contrat Statut</h2>
-        </div>
-      </div>
-      <!--end::Card header-->
-      <!--begin::Card body-->
-      <div class="card-body pt-0">
-        <div class="d-flex flex-column gap-10">
-          <!--begin::Input group-->
-          <div class="fv-row">
-            <!--begin::Input group-->
-            <div *ngIf="liststatuts.statutDtos" class="mb-10 fv-row">
-              <!--begin::Select2-->
-              <select [(ngModel)]="contrat.statutId" class="form-select mb-2" data-control="select2" data-hide-search="true" data-placeholder="Select an option" name="contratObjectifs" >
-                <option  [ngValue]="null" ></option>
-                <option  *ngFor="let stat of liststatuts.statutDtos" [ngValue]="stat.id" >{{stat.title}}</option>
-              </select>
-              <!--end::Select2-->
-              <!--begin::Description-->
-              <div class="text-muted fs-7">Set the Contrat Objectifs. The defeult value means he have no Contarct.</div>
-              <!--end::Description-->
-            </div>
-            <!--end::Input group-->
-            <!--begin::Description-->
-            <div class="text-muted fs-7">Set the start date of the structure to process.</div>
-            <!--end::Description-->
-          </div>
-          <!--end::Input group-->
-        </div>
-      </div>
-      <!--end::Card header-->
-    </div>
-    <!--end::Order details-->
+
   </div>
   <!--end::Aside column-->
 

@@ -15,22 +15,24 @@ public class GetProjectsWithEvalQueryHandler : IRequestHandler<GetProjectsWithEv
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
+    private readonly IIdentityService _identityService;
 
-    public GetProjectsWithEvalQueryHandler(IApplicationDbContext context, IMapper mapper, ICsvFileBuilder fileBuilder)
+    public GetProjectsWithEvalQueryHandler(IApplicationDbContext context, IMapper mapper,  ICurrentUserService currentUserService, IIdentityService identityService)
     {
         _context = context;
         _mapper = mapper;
-        //_fileBuilder = fileBuilder;
+        _identityService = identityService;
+       
     }
 
     public async Task<ProjectsWithEvalVm> Handle(GetProjectsWithEvalQuery request, CancellationToken cancellationToken)
     {
-        var evaluations = _context.Evaluations.ToList();
+        var evaluations = _context.Evaluations.Where(item => item.StartDate <= DateTime.Now && item.EndDate >= DateTime.Now).ToList();
         bool containsItem = evaluations.Any(item => item.StartDate <= DateTime.Now && item.EndDate >= DateTime.Now);
         if(containsItem)
         {
-            Gestionnaire user = _context.Gestionnaires
-                .Single(x => x.Id == 2);
+            var user = _identityService.GetUserNameAsync(Convert.ToString(2));
+
 
             Structure structure =  _context.Structures
                 .Include(p =>p.ParentStructure)
@@ -38,7 +40,7 @@ public class GetProjectsWithEvalQueryHandler : IRequestHandler<GetProjectsWithEv
                 .Include(p => p.Projects)
                 .ThenInclude(e => e.Evaluations)
                 .ThenInclude(ea => ea.Evaluation)
-                .Single(x => x.Id == user.StructureId) ?? throw new InvalidOperationException();
+                .Single(x => x.Id == user.Id) ?? throw new InvalidOperationException();
             
             ICollection<Structure> listAll = new List<Structure>();
             listAll.Add(structure);

@@ -1,4 +1,5 @@
 using CleanArchitecture.Application.Dto.Helpers.StatutModel;
+using CleanArchitecture.Application.Statuts.Commands.CreateBulkStatut;
 using CleanArchitecture.Application.Statuts.Commands.CreateStatut;
 using CleanArchitecture.Application.Statuts.Commands.DeleteStatut;
 using CleanArchitecture.Application.Statuts.Commands.UpdateStatut;
@@ -22,6 +23,7 @@ public class StatutsController: ApiControllerBase
     {
         return await Mediator.Send(new GetStatutByIdQuery() { ListId = id });
     }
+    
     [HttpPost]
     public async Task<ActionResult<int>> Create(CreateStatutCommand command)
     {
@@ -29,6 +31,12 @@ public class StatutsController: ApiControllerBase
             return await Mediator.Send(command);
     }
     
+    [HttpPost("bulk/create/excel"),DisableRequestSizeLimit]
+    public async Task<ActionResult<string>> CreateBulk([FromForm] CreateBulkStatutCommand command)
+    {
+        return await Mediator.Send(command);
+    }
+
     [HttpPut("{id}")]
     public async Task<ActionResult> Update(int id, UpdateStatutCommand command)
     {

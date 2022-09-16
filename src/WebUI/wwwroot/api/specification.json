@@ -183,6 +183,42 @@
         }
       }
     },
+    "/api/ActionPs/bulk/create/excel": {
+      "post": {
+        "tags": [
+          "ActionPs"
+        ],
+        "operationId": "ActionPs_CreateBulk",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "File": {
+                    "type": "string",
+                    "format": "binary",
+                    "nullable": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/ActionPs/evaluation": {
       "post": {
         "tags": [
@@ -227,7 +263,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string"
+                  "type": "boolean"
                 }
               }
             }
@@ -392,6 +428,42 @@
         }
       }
     },
+    "/api/ContratObjectifs/bulk/create/excel": {
+      "post": {
+        "tags": [
+          "ContratObjectifs"
+        ],
+        "operationId": "ContratObjectifs_CreateBulk",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "File": {
+                    "type": "string",
+                    "format": "binary",
+                    "nullable": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/ContratObjectifs/stat/{id}": {
       "get": {
         "tags": [
@@ -417,6 +489,238 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ContratObjectifStatByIdVm"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/DashInfo": {
+      "get": {
+        "tags": [
+          "DashInfo"
+        ],
+        "operationId": "DashInfo_Get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StuctureInfoVm"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/DashInfo/tranche/first": {
+      "get": {
+        "tags": [
+          "DashInfo"
+        ],
+        "operationId": "DashInfo_GetFirstTanche",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FirstTrancheVm"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/DashInfo/tranche/second": {
+      "get": {
+        "tags": [
+          "DashInfo"
+        ],
+        "operationId": "DashInfo_GetSecondTanche",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            },
+            "x-position": 1
+          },
+          {
+            "name": "conId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            },
+            "x-position": 2
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetSecondTrancheVm"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/DashInfo/tranche/tps": {
+      "get": {
+        "tags": [
+          "DashInfo"
+        ],
+        "operationId": "DashInfo_GetStatTps",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            },
+            "x-position": 1
+          },
+          {
+            "name": "conId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            },
+            "x-position": 2
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetStatPerTpVm"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/DashInfo/tranche/stat": {
+      "get": {
+        "tags": [
+          "DashInfo"
+        ],
+        "operationId": "DashInfo_GetStatStatuts",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            },
+            "x-position": 1
+          },
+          {
+            "name": "conId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            },
+            "x-position": 2
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetStatPerStatutVm"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/DashInfo/tranche/tri": {
+      "get": {
+        "tags": [
+          "DashInfo"
+        ],
+        "operationId": "DashInfo_GetStatTris",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            },
+            "x-position": 1
+          },
+          {
+            "name": "conId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            },
+            "x-position": 2
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetStatPerTriVm"
                 }
               }
             }
@@ -581,6 +885,42 @@
         }
       }
     },
+    "/api/Evaluations/bulk/create/excel": {
+      "post": {
+        "tags": [
+          "Evaluations"
+        ],
+        "operationId": "Evaluations_CreateBulk",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "File": {
+                    "type": "string",
+                    "format": "binary",
+                    "nullable": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Evaluations/stat/{id}": {
       "get": {
         "tags": [
@@ -606,42 +946,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/GetEvaluationStatByIdVm"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/ModelImports": {
-      "post": {
-        "tags": [
-          "ModelImports"
-        ],
-        "operationId": "ModelImports_Create",
-        "requestBody": {
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "file": {
-                    "type": "string",
-                    "format": "binary",
-                    "nullable": true
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "boolean"
                 }
               }
             }
@@ -826,6 +1130,42 @@
         }
       }
     },
+    "/api/Projects/bulk/create/excel": {
+      "post": {
+        "tags": [
+          "Projects"
+        ],
+        "operationId": "Projects_CreateBulk",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "File": {
+                    "type": "string",
+                    "format": "binary",
+                    "nullable": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Projects/evaluation": {
       "post": {
         "tags": [
@@ -870,7 +1210,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string"
+                  "type": "boolean"
                 }
               }
             }
@@ -1028,6 +1368,42 @@
                 "schema": {
                   "type": "string",
                   "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Statuts/bulk/create/excel": {
+      "post": {
+        "tags": [
+          "Statuts"
+        ],
+        "operationId": "Statuts_CreateBulk",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "File": {
+                    "type": "string",
+                    "format": "binary",
+                    "nullable": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
                 }
               }
             }
@@ -1224,6 +1600,42 @@
         }
       }
     },
+    "/api/Structures/bulk/create/excel": {
+      "post": {
+        "tags": [
+          "Structures"
+        ],
+        "operationId": "Structures_CreateBulk",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "File": {
+                    "type": "string",
+                    "format": "binary",
+                    "nullable": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/TypeProjects": {
       "get": {
         "tags": [
@@ -1374,6 +1786,42 @@
                 "schema": {
                   "type": "string",
                   "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/TypeProjects/bulk/create/excel": {
+      "post": {
+        "tags": [
+          "TypeProjects"
+        ],
+        "operationId": "TypeProjects_CreateBulk",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "File": {
+                    "type": "string",
+                    "format": "binary",
+                    "nullable": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
                 }
               }
             }
@@ -2105,11 +2553,6 @@
             "type": "string",
             "nullable": true
           },
-          "tauxR": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
           "budgR": {
             "type": "number",
             "format": "float",
@@ -2186,11 +2629,6 @@
           },
           "note": {
             "type": "string",
-            "nullable": true
-          },
-          "tauxR": {
-            "type": "integer",
-            "format": "int32",
             "nullable": true
           },
           "budgR": {
@@ -2281,11 +2719,6 @@
           },
           "isActive": {
             "type": "boolean"
-          },
-          "statut": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
           }
         }
       },
@@ -2315,11 +2748,6 @@
           },
           "isActive": {
             "type": "boolean"
-          },
-          "statut": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
           }
         }
       },
@@ -2349,6 +2777,183 @@
             "format": "int32"
           },
           "diffStructuresCount": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "StuctureInfoVm": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "_stuctureInfoModel": {
+            "$ref": "#/components/schemas/StuctureInfoModel"
+          }
+        }
+      },
+      "StuctureInfoModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "actionCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "projectCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "contratCount": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "FirstTrancheVm": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "firstTranches": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FirstTranche"
+            }
+          }
+        }
+      },
+      "FirstTranche": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "typeP": {
+            "type": "string"
+          },
+          "nbrProjects": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "tauxR": {
+            "type": "number",
+            "format": "float",
+            "nullable": true
+          }
+        }
+      },
+      "GetSecondTrancheVm": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "seconds": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SecondTranche"
+            }
+          }
+        }
+      },
+      "SecondTranche": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "statutsTaux": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/HelperSecondTranche"
+            }
+          },
+          "structure": {
+            "type": "string"
+          }
+        }
+      },
+      "HelperSecondTranche": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "statutName": {
+            "type": "string"
+          },
+          "tauxR": {
+            "type": "number",
+            "format": "float",
+            "nullable": true
+          }
+        }
+      },
+      "GetStatPerTpVm": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "_typeProjects": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FisrtStatTPModel"
+            }
+          }
+        }
+      },
+      "FisrtStatTPModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "tpName": {
+            "type": "string"
+          },
+          "taux": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "GetStatPerStatutVm": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "perStructureModels": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PerStatutModel"
+            }
+          }
+        }
+      },
+      "PerStatutModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "statutName": {
+            "type": "string"
+          },
+          "taux": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "GetStatPerTriVm": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "perTrimestreModels": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PerTrimestreModel"
+            }
+          }
+        }
+      },
+      "PerTrimestreModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "trimestreName": {
+            "type": "string"
+          },
+          "taux": {
             "type": "integer",
             "format": "int32"
           }
@@ -2541,11 +3146,6 @@
           "priority": {
             "$ref": "#/components/schemas/PriorityLevel"
           },
-          "tauxR": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
           "modeReel": {
             "type": "string",
             "nullable": true
@@ -2635,11 +3235,6 @@
           },
           "priority": {
             "$ref": "#/components/schemas/PriorityLevel"
-          },
-          "tauxR": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
           },
           "modeReel": {
             "type": "string",

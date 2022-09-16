@@ -17,7 +17,8 @@ public class GetStatutStatByIdQueryHandler : IRequestHandler<GetStatutStatByIdQu
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
 
-    public GetStatutStatByIdQueryHandler(IApplicationDbContext context, IMapper mapper)
+
+    public GetStatutStatByIdQueryHandler(IApplicationDbContext context, IMapper mapper, ICurrentUserService currentUserService, IIdentityService identityService)
     {
         _context = context;
         _mapper = mapper;
@@ -27,7 +28,6 @@ public class GetStatutStatByIdQueryHandler : IRequestHandler<GetStatutStatByIdQu
     {
         Gestionnaire user = _context.Gestionnaires
             .Single(x => x.Id == 2);
-
         Structure structure =  _context.Structures
             .Include(p =>p.ParentStructure)
             .Include(s => s.StructureChildren)

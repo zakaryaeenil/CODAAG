@@ -16,17 +16,18 @@ public class GetProjectsQueryHandler : IRequestHandler<GetProjectsQuery, Project
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
-
-    public GetProjectsQueryHandler(IApplicationDbContext context, IMapper mapper)
+    private readonly IIdentityService _identityService;
+ 
+    public GetProjectsQueryHandler(IApplicationDbContext context, IMapper mapper, ICurrentUserService currentUserService, IIdentityService identityService)
     {
         _context = context;
         _mapper = mapper;
+        _identityService = identityService;
     }
 
     public async Task<ProjectsVm> Handle(GetProjectsQuery request, CancellationToken cancellationToken)
     {
-        Gestionnaire user = _context.Gestionnaires
-            .Single(x => x.Id == 2);
+        var user = _identityService.GetUserNameAsync(Convert.ToString(2));
 
         Structure structure =  _context.Structures
             .Include(p =>p.ParentStructure)
@@ -35,7 +36,7 @@ public class GetProjectsQueryHandler : IRequestHandler<GetProjectsQuery, Project
             .ThenInclude(pp => pp.TypeProject)
             .Include(p => p.Projects)
             .ThenInclude(pp => pp.Statut) 
-            .Single(x => x.Id == user.StructureId) ?? throw new InvalidOperationException();
+            .Single(x => x.Id == user.Id) ?? throw new InvalidOperationException();
          
         ICollection<Structure> listAll = new List<Structure>();
         listAll.Add(structure);

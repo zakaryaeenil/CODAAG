@@ -21,6 +21,7 @@ import { SProjectsViewComponent } from './statut-details/s-projects-view/s-proje
 import { SActionsViewComponent } from './statut-details/s-actions-view/s-actions-view.component';
 import { SOverviewViewComponent } from './statut-details/s-overview-view/s-overview-view.component';
 import {NgApexchartsModule} from "ng-apexcharts";
+import {CardsModule} from "../../_metronic/partials";
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import {NgApexchartsModule} from "ng-apexcharts";
         MatSortModule,
         AgGridModule.withComponents([StatutsButtonRenderComponent]),
         NgApexchartsModule,
+        CardsModule,
     ]
 })
 export class StatutsModule { }

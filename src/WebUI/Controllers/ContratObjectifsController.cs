@@ -1,3 +1,4 @@
+using CleanArchitecture.Application.ContratObjectifs.Commands.CreateBulkContratObjectif;
 using CleanArchitecture.Application.ContratObjectifs.Commands.CreateContratObjectif;
 using CleanArchitecture.Application.ContratObjectifs.Commands.DeleteContratObjectif;
 using CleanArchitecture.Application.ContratObjectifs.Commands.UpdateContratObjectif;
@@ -27,6 +28,13 @@ public class ContratObjectifsController: ApiControllerBase
     {
         return await Mediator.Send(command);
     }
+    
+    [HttpPost("bulk/create/excel"),DisableRequestSizeLimit]
+    public async Task<ActionResult<string>> CreateBulk([FromForm] CreateBulkContratObjectifCommand command)
+    {
+        return await Mediator.Send(command);
+    }
+
    [HttpPut("{id}")]
     public async Task<ActionResult> Update(int id, UpdateContratObjectifCommand command)
     {
@@ -53,4 +61,5 @@ public class ContratObjectifsController: ApiControllerBase
     {
         return await Mediator.Send(new GetContratObjectifStatByIdQuery() { ListId = id });
     }
+    
 }

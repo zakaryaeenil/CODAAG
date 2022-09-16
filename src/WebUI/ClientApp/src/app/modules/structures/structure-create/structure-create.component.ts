@@ -1,13 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 import {
   ContratObjectifsClient,
-  ContratObjectifsVm, CreateStructureCommand,
+  ContratObjectifsVm, CreateStructureCommand, FileParameter,
   StructuresClient,
   StructuresVm
 } from "../../../web-api-client";
 import {IDropdownSettings} from "ng-multiselect-dropdown";
 import {ToastrService} from "ngx-toastr";
 import {Router} from "@angular/router";
+import {ModalDismissReasons, NgbModal} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'app-structure-create',
@@ -19,6 +20,8 @@ export class StructureCreateComponent implements OnInit {
   //Init
   vm : StructuresVm
   contratsVm : ContratObjectifsVm
+  closeResult : string = "";
+  public selectedFile : File ;
 
   startD : Date
   endD : Date
@@ -41,6 +44,7 @@ export class StructureCreateComponent implements OnInit {
   constructor(private listStructures : StructuresClient,
               private listco : ContratObjectifsClient ,
               private toastr : ToastrService,
+              private modalService: NgbModal,
               private router : Router) {
    listStructures.get().subscribe(results =>{
      this.vm = results
@@ -109,7 +113,54 @@ console.log(errors)
       }
     )
   }
+  onselectedChange(event : any){
+    this.selectedFile =  event.target.files[0]
+    // this.filePara.data = event.target.files[0];
+    // this.filePara.fileName = event.target.files[0].name;
+  }
+  open(content : any) {
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+      if (result === 'yes') {
+        this.OnUpload();
+      }
+    }, (reason) => {
+      this.closeResult = `Dismissed ${StructureCreateComponent.getDismissReason(reason)}`;
+    });
+  }
+  private static getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
+  }
 
+  OnUpload(){
+    let fileParameter: FileParameter = { data: this.selectedFile, fileName: this.selectedFile.name };
+    this.listStructures.createBulk(fileParameter
+    ).subscribe(
+      results =>{
+        this.toastr.info("Structures " +results , "Emmmm!", {
+          timeOut: 3000
+        })
+        this.router.navigateByUrl('structures/all');
+      },
+      error => {
+        let errors = JSON.parse(error.response);
+        if (errors && errors.errors && errors.errors.File) {
+          errors.errors.Title.forEach((e: string | undefined) => {
+            this.toastr.error(e, "Major Error!", {
+              timeOut: 4000
+            });
+          })
+        }
+
+      }
+    )
+  }
   ngOnInit(): void {
 
   }

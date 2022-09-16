@@ -1,3 +1,4 @@
+using CleanArchitecture.Application.TypeProjects.Commands.CreateBulkTypeProject;
 using CleanArchitecture.Application.TypeProjects.Commands.CreateTypeProject;
 using CleanArchitecture.Application.TypeProjects.Commands.DeleteTypeProject;
 using CleanArchitecture.Application.TypeProjects.Commands.UpdateTypeProject;
@@ -28,6 +29,18 @@ public class TypeProjectsController : ApiControllerBase
         
         return await Mediator.Send(command);
     }
+    
+    
+    
+    
+    [HttpPost("bulk/create/excel"),DisableRequestSizeLimit]
+    public async Task<ActionResult<string>> CreateBulk([FromForm] CreateBulkTypeProjectCommand command)
+    {
+        return await Mediator.Send(command);
+    }
+    
+    
+    
     
    [HttpPut("{id}")]
    public async Task<ActionResult> Update(int id, UpdateTypeProjectCommand command)

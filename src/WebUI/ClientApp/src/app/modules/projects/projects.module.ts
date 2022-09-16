@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ProjectsRoutingModule } from './projects-routing.module';
 import { ProjectsComponent } from './projects.component';
 import { ProjectsViewComponent } from './projects-view/projects-view.component';
-import {DropdownMenusModule,} from "../../_metronic/partials";
+import {CardsModule, DropdownMenusModule,} from "../../_metronic/partials";
 import {InlineSVGModule} from "ng-inline-svg-2";
 import {NgApexchartsModule} from "ng-apexcharts";
 import {NgbDropdownModule, NgbModule} from "@ng-bootstrap/ng-bootstrap";
@@ -57,8 +57,9 @@ import {ProjectNumericEditor} from "./ProjectRenders/project-numeric-editor";
         NgMultiSelectDropDownModule,
         InlineSVGModule,
         MatSortModule,
-        AgGridModule.withComponents([ProjectButtonRenderComponent,ProjectNumericEditor]),
+        AgGridModule.withComponents([ProjectButtonRenderComponent, ProjectNumericEditor]),
         NgApexchartsModule,
+        CardsModule,
     ]
 })
 export class ProjectsModule { }

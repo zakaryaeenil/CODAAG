@@ -29,12 +29,12 @@ public class GetStructuresQueryHandler : IRequestHandler<GetStructuresQuery, Str
     public async Task<StructuresVm>  Handle(GetStructuresQuery request, CancellationToken cancellationToken)
     {
         Gestionnaire user = _context.Gestionnaires
-             .Single(x => x.Id == 2);
-
-         Structure structure =  _context.Structures
+            .Single(x => x.Id == 2);
+        Structure structure =  _context.Structures
              .Include(p =>p.ParentStructure)
              .Include(s => s.StructureChildren)
-             .Single(x => x.Id == user.StructureId) ?? throw new InvalidOperationException();
+             .Include(p => p.Projects)
+             .Single(x =>  x.Id == user.StructureId) ?? throw new InvalidOperationException();
          
          ICollection<Structure> listAll = new List<Structure>();
          listAll.Add(structure);
@@ -54,6 +54,7 @@ public class GetStructuresQueryHandler : IRequestHandler<GetStructuresQuery, Str
         Structure? t = _context.Structures
             .Include(p => p.ParentStructure)
             .Include(p => p.StructureChildren)
+            .Include(p => p.Projects)
             .SingleOrDefault(x => x.Id == k.Id);
         if (t == null)
         {

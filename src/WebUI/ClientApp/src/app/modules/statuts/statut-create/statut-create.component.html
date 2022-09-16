@@ -9,6 +9,9 @@
         <div class="card-title">
           <h2>General</h2>
         </div>
+        <div class="card-toolbar">
+          <button (click)="open(content)" type="button" class="btn btn-warning float-right">Bulk Creating Statuts</button>
+        </div>
       </div>
       <!--end::Card header-->
       <!--begin::Card body-->
@@ -101,3 +104,40 @@
   </div>
   <!--end::Main column-->
 </form>
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Bulk Create Statutss</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+
+  <div class="modal-body scroll-y px-10 px-lg-15 pt-0 pb-15">
+    <!--begin::Input group-->
+    <div class="mb-10">
+      <br><br><br><br>
+      <input (change)="onselectedChange($event)" name="selectedFile" type="file" class="file-input justify-content-between"
+      >
+      <br><br><br><br>
+      <!--begin::Separator-->
+      <div class="separator separator-dashed mb-8"></div>
+      <!--end::Separator-->
+      <br>
+      <a
+        href="./assets/examples/Statuts_insert.xlsx"
+        target="_blank"
+        download="Statuts_insert.xlsx"
+      >
+        <app-card4
+          icon="./assets/media/svg/files/file_type_excel_icon_130611.svg"
+          title="Exemplaire Statuts"
+          description="Download Exemplaire for better vision ..."
+        ></app-card4>
+      </a>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="d('Cross click')">Cancel</button>
+    <button type="button" class="btn btn-success" (click)="c('yes')">Send</button>
+  </div>
+</ng-template>

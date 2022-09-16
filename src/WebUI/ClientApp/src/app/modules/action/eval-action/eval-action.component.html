@@ -10,7 +10,8 @@
         <!--begin::Input group-->
         <div  class="mb-5">
           <!--begin::Select2-->
-          <select (change)="callType($event)" [(ngModel)]="e"  class="form-select mb-2" data-control="select2" data-hide-search="true" data-placeholder="Select an option"  >
+          <select  [(ngModel)]="e"  class="form-select mb-2" data-control="select2" data-hide-search="true" data-placeholder="Select an option"  >
+            <option   [ngValue]=null >Default</option>
             <option  *ngFor="let c of vm.evaluationDtos"  [ngValue]="c.id" >{{c.title}}</option>
           </select>
           <!--end::Select2-->

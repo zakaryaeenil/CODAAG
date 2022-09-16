@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CleanArchitecture.Application.TypeProjects.Queries.GetTypeProjectById;
 
-public class GetTypeProjectByIdQuery: IRequest<TypeProjectByIdVm>
+public class GetTypeProjectByIdQuery : IRequest<TypeProjectByIdVm>
 {
     public int ListId { get; set; }
 }
@@ -17,19 +17,19 @@ public class GetTypeProjectByIdQueryHandler : IRequestHandler<GetTypeProjectById
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
+   
 
-    public GetTypeProjectByIdQueryHandler(IApplicationDbContext context, IMapper mapper, ICsvFileBuilder fileBuilder)
+    public GetTypeProjectByIdQueryHandler(IApplicationDbContext context, IMapper mapper)
     {
         _context = context;
         _mapper = mapper;
-        //_fileBuilder = fileBuilder;
+       
     }
 
     public async Task<TypeProjectByIdVm> Handle(GetTypeProjectByIdQuery request, CancellationToken cancellationToken)
     {
         Gestionnaire user = _context.Gestionnaires
             .Single(x => x.Id == 2);
-
         Structure structure =  _context.Structures
             .Include(p =>p.ParentStructure)
             .Include(s => s.StructureChildren)

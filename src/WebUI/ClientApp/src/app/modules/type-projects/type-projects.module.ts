@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { TypeProjectsRoutingModule } from './type-projects-routing.module';
 import { TypeProjectsViewComponent } from './type-projects-view/type-projects-view.component';
 import {TypeProjectsComponent} from "./type-projects.component";
-import {DropdownMenusModule} from "../../_metronic/partials";
+import {CardsModule, DropdownMenusModule} from "../../_metronic/partials";
 import {InlineSVGModule} from "ng-inline-svg-2";
 import {NgApexchartsModule} from "ng-apexcharts";
 import {NgbDatepickerModule, NgbDropdownModule} from "@ng-bootstrap/ng-bootstrap";
@@ -43,7 +43,8 @@ import { TpProjectsComponent } from './type-project-details/tp-projects/tp-proje
         NgxPaginationModule,
         NgbDatepickerModule,
         MatSortModule,
-        AgGridModule.withComponents([ButtonRendererComponent])
+        AgGridModule.withComponents([ButtonRendererComponent]),
+        CardsModule
     ]
 })
 export class TypeProjectsModule { }

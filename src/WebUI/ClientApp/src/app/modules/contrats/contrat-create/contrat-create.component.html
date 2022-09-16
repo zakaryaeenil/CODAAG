@@ -2,6 +2,7 @@
 
   <!--begin::Aside column-->
   <div class="d-flex flex-column gap-7 gap-lg-10 w-100 w-lg-300px mb-7 me-lg-10">
+
     <!--begin::Order details-->
     <div class="card card-flush py-4">
       <!--begin::Card header-->
@@ -45,42 +46,7 @@
       <!--end::Card header-->
     </div>
     <!--end::Order details-->
-    <!--begin::Order details-->
-    <div class="card card-flush py-4">
-      <!--begin::Card header-->
-      <div class="card-header">
-        <div class="card-title">
-          <h2>Contrat Statut</h2>
-        </div>
-      </div>
-      <!--end::Card header-->
-      <!--begin::Card body-->
-      <div class="card-body pt-0">
-        <div class="d-flex flex-column gap-10">
-          <!--begin::Input group-->
-          <div class="fv-row">
-            <!--begin::Input group-->
-            <div *ngIf="vmStatuts.statutDtos" class="mb-10 fv-row">
-              <!--begin::Select2-->
-              <select [(ngModel)]="s" class="form-select mb-2" data-control="select2" data-hide-search="true" data-placeholder="Select an option" name="contratObjectifs" >
-                <option  *ngFor="let stat of vmStatuts.statutDtos" [ngValue]="stat.id" >{{stat.title}}</option>
-              </select>
-              <!--end::Select2-->
-              <!--begin::Description-->
-              <div class="text-muted fs-7">Set the Contrat Objectifs. The defeult value means he have no Contarct.</div>
-              <!--end::Description-->
-            </div>
-            <!--end::Input group-->
-            <!--begin::Description-->
-            <div class="text-muted fs-7">Set the start date of the structure to process.</div>
-            <!--end::Description-->
-          </div>
-          <!--end::Input group-->
-        </div>
-      </div>
-      <!--end::Card header-->
-    </div>
-    <!--end::Order details-->
+
   </div>
   <!--end::Aside column-->
 
@@ -93,6 +59,9 @@
         <div class="card-title">
           <h2>General</h2>
         </div>
+        <div class="card-toolbar">
+          <button (click)="open(content)" type="button" class="btn btn-warning float-right">Bulk Creating Contrats</button>
+        </div>
       </div>
       <!--end::Card header-->
       <!--begin::Card body-->
@@ -103,7 +72,7 @@
           <label class="required form-label">Contrat Name</label>
           <!--end::Label-->
           <!--begin::Input-->
-          <input [(ngModel)]="title" type="text" name="title" class="form-control mb-2" placeholder="Product name" value="" />
+          <input [(ngModel)]="title" type="text" name="title" class="form-control mb-2" placeholder="Contrat name" value="" />
           <!--end::Input-->
           <!--begin::Description-->
           <div class="text-muted fs-7">A Contrat name is required and recommended to be unique.</div>
@@ -139,7 +108,7 @@
           </select>
           <!--end::Select2-->
           <!--begin::Description-->
-          <div class="text-muted fs-7">Set the Contrat Objectifs. The defeult value means he have no Contarct.</div>
+          <div class="text-muted fs-7">Set the Contrat Objectifs. The defeult value means True.</div>
           <!--end::Description-->
         </div>
         <!--end::Input group-->
@@ -163,3 +132,40 @@
   </div>
   <!--end::Main column-->
 </form>
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Bulk Create Contrats</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+
+  <div class="modal-body scroll-y px-10 px-lg-15 pt-0 pb-15">
+    <!--begin::Input group-->
+    <div class="mb-10">
+      <br><br><br><br>
+      <input (change)="onselectedChange($event)" name="selectedFile" type="file" class="file-input justify-content-between"
+      >
+      <br><br><br><br>
+      <!--begin::Separator-->
+      <div class="separator separator-dashed mb-8"></div>
+      <!--end::Separator-->
+      <br>
+      <a
+        href="./assets/examples/Contrats_insert.xlsx"
+        target="_blank"
+        download="Contrats_insert.xlsx"
+      >
+        <app-card4
+          icon="./assets/media/svg/files/file_type_excel_icon_130611.svg"
+          title="Exemplaire Contrats"
+          description="Download Exemplaire for better vision ..."
+        ></app-card4>
+      </a>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="d('Cross click')">Cancel</button>
+    <button type="button" class="btn btn-success" (click)="c('yes')">Send</button>
+  </div>
+</ng-template>

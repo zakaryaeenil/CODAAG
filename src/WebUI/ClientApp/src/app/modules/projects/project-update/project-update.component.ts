@@ -116,7 +116,6 @@ export class ProjectUpdateComponent implements OnInit {
       title : this.project?.title,
       note : this.project?.note,
       priority : this.project?.priority,
-      tauxR : this.project?.tauxR,
       modeReel : this.project?.modeReel,
       startDate : this.project?.startDate,
       endDate : this.project?.endDate,

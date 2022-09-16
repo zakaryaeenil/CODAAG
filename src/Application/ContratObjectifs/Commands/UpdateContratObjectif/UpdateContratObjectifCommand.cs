@@ -14,7 +14,6 @@ public class UpdateContratObjectifCommand: IRequest
     public DateTime EndD { get; init; }
     public bool IsActive { get; init; } = true;
     
-    public int? Statut { get; init; }
    
 }
 public class UpdateContratObjectifCommandHandler : IRequestHandler<UpdateContratObjectifCommand>
@@ -31,13 +30,19 @@ public class UpdateContratObjectifCommandHandler : IRequestHandler<UpdateContrat
         var entity = await _context.ContratObjectifs
             .FindAsync(new object[] { request.Id }, cancellationToken);
         Statut statut = _context.Statuts
-            .Single(x => x.Id == request.Statut);
+            .Single(x => x.Id == 5);
 
         if (entity == null)
         {
             throw new NotFoundException(nameof(ContratObjectif), request.Id);
         }
-                                     
+        if (request.IsActive == true)
+        {
+            foreach (var a in _context.ContratObjectifs.ToList())
+            {
+                a.IsActive = false;
+            }
+        }                      
         entity.Title = request.Title;
         entity.StartDate = request.StartD;
         entity.EndDate = request.EndD;

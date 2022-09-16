@@ -3,7 +3,7 @@ import {
   ActionP,
   ActionPsClient,
   ActionPsWithEvalVm,
-  CreateActionPEvaluationCommand, ProjectsClient,
+  CreateActionPEvaluationCommand, CreateProjectEvaluationCommand, Project, ProjectsClient,
   ProjectsWithEvalVm
 } from "../../../web-api-client";
 import {ColDef, GridReadyEvent} from "ag-grid-community";
@@ -18,7 +18,7 @@ import {ToastrService} from "ngx-toastr";
 export class EvalProjectComponent implements OnInit {
   anio: Date = new Date();
   vm : ProjectsWithEvalVm;
-  e : number = 0;
+  e : any = null;
 
   // Each Column Definition results in one Column.
   public columnDefs: ColDef[] = [
@@ -28,10 +28,7 @@ export class EvalProjectComponent implements OnInit {
     {headerName: 'TauxR %', editable: true,field: 'tauxR',
 
       cellEditorPopup: true,
-      valueSetter: (params) =>  { this.valueSetter(params)
-        return true
-      },
-      valueFormatter : (params) =>  this.currencyFormatter(params,this.e) },
+    }
   ];
   public autoGroupColumnDef: ColDef = {
     headerName: 'Group',
@@ -65,7 +62,7 @@ export class EvalProjectComponent implements OnInit {
 
 
   // Data that gets displayed in the grid
-  public rowData$ !: ActionP[] | undefined ;
+  public rowData$ !: Project[] | undefined ;
   public rowSelection = 'multiple';
   public rowGroupPanelShow = 'always';
   public pivotPanelShow = 'always';
@@ -79,38 +76,40 @@ export class EvalProjectComponent implements OnInit {
     listsProjects.getActionEval().subscribe(
       result => {
         this.vm = result;
-         this.rowData$ = this.vm.projectsDtos
+        // this.rowData$ = this.vm.actionPDtos
       },
       error => console.error(error)
     );
 
   }
 
-  valueSetter(params  : any){
-    params.data.tauxR = params.newValue
-    console.log(params , 'params')
-    return true;
-  }
   onRowValueChanged(event : any) {
-    console.log(event.data , 'row 2')
-    this.listsProjects.createEvaluation(event.data.id,this.e,<CreateActionPEvaluationCommand>{
+    console.log(this.e , 'eval')
+    console.log(event.data , 'data')
+    this.listsProjects.createEvaluation(event.data.id,this.e,<CreateProjectEvaluationCommand>{
       tauxR : event.data.tauxR ,
       evalId : this.e,
       id : event.data.id
-    }).subscribe(result => {
-
-        this.toastr.success("Action was Evaluated  successfully !!", "Good Job!", {
-          timeOut: 3000
-        })
-        this.listsProjects.getActionEval().subscribe(
-          result => {
-            this.vm = result;
-            this.rowData$ = this.vm.projectsDtos
-            this.agGrid.api.setRowData(this.rowData$!);
-          },
-        );
+    }).subscribe(
+      res => {
+        console.log(res , 'res')
+        if (res){
+          this.toastr.success("Action was Evaluated  successfully !!", "Good Job!", {
+            timeOut: 3000
+          })
+        }
+        else if (!res){
+          this.toastr.error("Number must be superior to" , "Please Repeat!", {
+            timeOut: 3000
+          })
+        }
+        this.listsProjects.getActionEval().subscribe(result => {
+          this.vm = result;
+          this.rowData$ = this.vm.projectsDtos
+          this.agGrid.api.setRowData(this.rowData$!);
+        },);
       },
-      error => {
+        error => {
         let errors = JSON.parse(error.response);
         if (errors && errors.errors && errors.errors.tauxR) {
           errors.errors.tauxR.forEach((e: string | undefined) => {
@@ -133,13 +132,14 @@ export class EvalProjectComponent implements OnInit {
             });
           })
         }
+        this.listsProjects.getActionEval().subscribe(result => {
+          this.vm = result;
+          this.rowData$ = this.vm.projectsDtos
+          this.agGrid.api.setRowData(this.rowData$!);
+        },);
       })
   }
 
-  callType(value : any) {
-    console.log(this.e,'change')
-    this.agGrid.api.setRowData(this.rowData$!);
-  }
   ngOnInit(): void {
   }
   // Example load data from sever
@@ -148,15 +148,5 @@ export class EvalProjectComponent implements OnInit {
     this.agGrid.api = params.api;
   }
 
-  currencyFormatter(params : any , e : number)  {
-    console.log(e , 'init')
-    let a = 0;
-    params.data.evaluations.some((x : any)  => {
-      if(x.evaluationId === e){
-        a = x.tauxR;
-      }
-    });
-    return a.toString()
-  }
 
 }

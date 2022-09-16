@@ -17,22 +17,22 @@ public class GetStructureByIdQueryHandler : IRequestHandler<GetStructureByIdQuer
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
+    
 
     public GetStructureByIdQueryHandler(IApplicationDbContext context, IMapper mapper)
     {
         _context = context;
         _mapper = mapper;
-      
     }
 
     public async Task<StructureByIdVm> Handle(GetStructureByIdQuery request, CancellationToken cancellationToken)
     { 
-       Gestionnaire user = _context.Gestionnaires.Single(x => x.Id == 2);
-
+        Gestionnaire user = _context.Gestionnaires
+            .Single(x => x.Id == 2);
         Structure structure = await  _context.Structures
             .Include(p =>p.ParentStructure)
             .Include(s => s.StructureChildren)
-            .SingleOrDefaultAsync(x => x.Id == user.StructureId,cancellationToken : cancellationToken) ?? throw new InvalidOperationException();
+            .SingleOrDefaultAsync(x =>  x.Id == user.StructureId,cancellationToken : cancellationToken) ?? throw new InvalidOperationException();
          
         ICollection<Structure> listAll = new List<Structure>();
         
@@ -50,7 +50,6 @@ public class GetStructureByIdQueryHandler : IRequestHandler<GetStructureByIdQuer
                         .Include(p =>p.ParentStructure)
                         .Include(s => s.StructureChildren)
                         .Include(p =>p.Projects)
-                        .Include(g =>g.Gestionnaires)
                         .Include(a =>a.ActionPs)
                         .SingleOrDefaultAsync(x => x.Id == request.ListId,cancellationToken : cancellationToken) 
 

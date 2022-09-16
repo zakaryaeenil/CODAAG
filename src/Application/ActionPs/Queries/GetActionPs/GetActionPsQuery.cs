@@ -1,8 +1,6 @@
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using CleanArchitecture.Application.Common.Interfaces;
-using CleanArchitecture.Application.Dto;
-using CleanArchitecture.Application.Projects.Queries.GetProjects;
 using CleanArchitecture.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -17,19 +15,18 @@ public class GetActionPsQueryHandler : IRequestHandler<GetActionPsQuery, ActionP
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
-   
 
     public GetActionPsQueryHandler(IApplicationDbContext context, IMapper mapper)
     {
         _context = context;
         _mapper = mapper;
+    
     }
 
     public async Task<ActionPsVm> Handle(GetActionPsQuery request, CancellationToken cancellationToken)
     {
         Gestionnaire user = _context.Gestionnaires
             .Single(x => x.Id == 2);
-
         Structure structure =  _context.Structures
             .Include(p =>p.ParentStructure)
             .Include(s => s.StructureChildren)

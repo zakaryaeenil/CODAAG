@@ -21,7 +21,7 @@ export class PContratComponent implements OnInit {
     {headerName: 'Note',  field: 'note'},
     {headerName: 'Start Date',  field: 'startDate' ,filter: 'agDateColumnFilter', filterParams: filterParams},
     {headerName: 'End Date',  field: 'endDate' ,filter: 'agDateColumnFilter', filterParams: filterParams},
-    {headerName: 'Is Active',  field: 'isActive',
+    {headerName: 'Is Active',  field: 'isInitial',
       cellStyle: params => {
         if (params.value === true) {
           //mark police cells as red

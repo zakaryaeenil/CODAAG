@@ -1,3 +1,4 @@
+using CleanArchitecture.Application.Evaluations.Commands.CreateBulkEvaluation;
 using CleanArchitecture.Application.Evaluations.Commands.CreateEvaluation;
 using CleanArchitecture.Application.Evaluations.Commands.DeleteEvaluation;
 using CleanArchitecture.Application.Evaluations.Commands.UpdateEvaluation;
@@ -27,6 +28,12 @@ public class EvaluationsController: ApiControllerBase
     {
         return await Mediator.Send(command);
     }
+    [HttpPost("bulk/create/excel"),DisableRequestSizeLimit]
+    public async Task<ActionResult<string>> CreateBulk([FromForm] CreateBulkEvaluationCommand command)
+    {
+        return await Mediator.Send(command);
+    }
+
     
     [HttpPut("{id}")]
     public async Task<ActionResult> Update(int id, UpdateEvaluationCommand command)

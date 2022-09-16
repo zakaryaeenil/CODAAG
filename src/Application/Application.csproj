@@ -11,6 +11,8 @@
     <ItemGroup>
         <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
         <PackageReference Include="CsvHelper" Version="27.2.1" />
+        <PackageReference Include="ExcelDataReader" Version="3.7.0-develop00310" />
+        <PackageReference Include="ExcelDataReader.DataSet" Version="3.7.0-develop00310" />
         <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="10.3.4" />
         <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.0" />
@@ -24,7 +26,12 @@
     <ItemGroup>
       <Folder Include="Gestionnaires\Commands" />
       <Folder Include="Gestionnaires\Queries\GetGestionnaireById" />
-      <Folder Include="ModelImports" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="Microsoft.AspNetCore.Http.Features">
+        <HintPath>..\..\..\..\..\..\usr\local\share\dotnet\shared\Microsoft.AspNetCore.App\6.0.3\Microsoft.AspNetCore.Http.Features.dll</HintPath>
+      </Reference>
     </ItemGroup>
 
 </Project>

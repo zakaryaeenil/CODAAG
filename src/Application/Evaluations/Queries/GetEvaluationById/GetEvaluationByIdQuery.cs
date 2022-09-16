@@ -17,12 +17,14 @@ public class GetEvaluationByIdQueryHandler : IRequestHandler<GetEvaluationByIdQu
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
+   
 
-    public GetEvaluationByIdQueryHandler(IApplicationDbContext context, IMapper mapper, ICsvFileBuilder fileBuilder)
+
+    public GetEvaluationByIdQueryHandler(IApplicationDbContext context, IMapper mapper)
     {
         _context = context;
         _mapper = mapper;
-        //_fileBuilder = fileBuilder;
+     
     }
 
     public async Task<EvaluationByIdVm> Handle(GetEvaluationByIdQuery request, CancellationToken cancellationToken)

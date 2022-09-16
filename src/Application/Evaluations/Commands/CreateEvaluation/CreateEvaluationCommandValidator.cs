@@ -1,7 +1,6 @@
 using CleanArchitecture.Application.Common.Interfaces;
-using CleanArchitecture.Application.Structures.Commands.CreateStructure;
 using FluentValidation;
-using Microsoft.EntityFrameworkCore;
+
 
 namespace CleanArchitecture.Application.Evaluations.Commands.CreateEvaluation;
 

@@ -21,6 +21,7 @@ import {ActionDetailsComponent} from "./action-details/action-details.component"
 import {NgApexchartsModule} from "ng-apexcharts";
 import { EvalActionComponent } from './eval-action/eval-action.component';
 import {NumericEditorComponent} from "./ActionRenders/numeric-editor.component";
+import {CardsModule} from "../../_metronic/partials";
 
 
 @NgModule({
@@ -45,9 +46,10 @@ import {NumericEditorComponent} from "./ActionRenders/numeric-editor.component";
         FormsModule,
         NgbModule,
         MatSortModule,
-        AgGridModule.withComponents([ActionButtonRenderComponent,NumericEditorComponent]),
+        AgGridModule.withComponents([ActionButtonRenderComponent, NumericEditorComponent]),
         InlineSVGModule,
-        NgApexchartsModule
+        NgApexchartsModule,
+        CardsModule
     ]
 })
 export class ActionModule { }

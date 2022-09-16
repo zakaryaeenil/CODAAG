@@ -5,7 +5,7 @@ import { ContratsRoutingModule } from './contrats-routing.module';
 import { ContratsComponent } from './contrats.component';
 import { ContratCreateComponent } from './contrat-create/contrat-create.component';
 import {ContratViewComponent} from "./contrat-view/contrat-view.component";
-import {DropdownMenusModule} from "../../_metronic/partials";
+import {CardsModule, DropdownMenusModule} from "../../_metronic/partials";
 import {InlineSVGModule} from "ng-inline-svg-2";
 import {NgApexchartsModule} from "ng-apexcharts";
 import {NgbDropdownModule, NgbModule} from "@ng-bootstrap/ng-bootstrap";
@@ -44,7 +44,8 @@ import { CoOverViewComponent } from './contrat-details/co-over-view/co-over-view
         NgxPaginationModule,
         NgbModule,
         MatSortModule,
-        AgGridModule.withComponents([ContratButtonRenderComponent])
+        AgGridModule.withComponents([ContratButtonRenderComponent]),
+        CardsModule
     ]
 })
 export class ContratsModule { }
